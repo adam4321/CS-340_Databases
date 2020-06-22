@@ -1,3 +1,9 @@
+/******************************************************************************
+**  Author:       Adam Wright
+**  Date:         6/20/2020
+**  Description:  Node server for project 0
+******************************************************************************/
+
 var express = require('express');
 var mysql = require('./dbcon.js');
 
