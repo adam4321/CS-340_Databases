@@ -1,0 +1,59 @@
+/*************************************************************
+**  Description:  Overall css styles
+*************************************************************/
+
+/* Main container settings */
+
+#top-bar {
+    background-color: rgb(45, 122, 153);
+    padding-top: 7px;
+}
+
+#bug-logo {
+    height: 70px;
+}
+
+#dashboard-top-bar {
+    background-color: rgb(52, 144, 180);
+}
+
+#page-headline {
+    margin-left: -50px;
+}
+
+#page-links-div {
+    margin-left: 70%;
+}
+
+.page-links {
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+    margin-right: 30px;
+}
+
+/* Component Box settings*/
+
+#main-box {
+    margin: auto;
+    width: 96%;
+    margin-top: 2%;
+}
+
+
+/* Form settings */
+
+#recordForm {
+    width: 455px;
+    margin-top: 30px;
+    margin-left: 30px;
+    background-color: #d8e9e962;
+}
+
+#recordForm label, input {
+    margin: 2px;
+}
+
+#submit {
+    margin-top: 30px;
+}
