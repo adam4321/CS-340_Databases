@@ -57,6 +57,33 @@ app.get('/', function renderHome(req, res) {
 });
 
 
+// Edit bug route where a bug can be edited
+app.get('/edit-bug', function renderAddCompany(req, res) {
+    var context = {};
+    var createString = "CREATE TABLE diagnostic(" +
+    "id INT PRIMARY KEY AUTO_INCREMENT," +
+    "text VARCHAR(255) NOT NULL)";
+    mysql.pool.query('DROP TABLE IF EXISTS diagnostic', function(err){
+      if(err){
+        next(err);
+        return;
+      }
+      mysql.pool.query(createString, function(err){
+        if(err){
+          next(err);
+          return;
+        }
+        mysql.pool.query('INSERT INTO diagnostic (`text`) VALUES ("MySQL is Working!")',function(err){
+          mysql.pool.query('SELECT `text` FROM diagnostic', function(err, rows, fields){
+            context.results = JSON.stringify(rows);
+            res.render('edit-bug', context);
+          });
+        });
+      });
+    });
+});
+
+
 // Add Company route where a company can be added
 app.get('/add-company', function renderAddCompany(req, res) {
     var context = {};
