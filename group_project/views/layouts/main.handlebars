@@ -18,35 +18,42 @@
 </head>
 
 <body>
-    <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-header">
-
-    {{!-- Header section containing title --}}
-    <header id="top-bar" class="mdl-layout__header mdl-color-text--white">
-        <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
-            <a href="/">
-                <img  id="bug-logo" src="bug-2-128.png" alt="White bug icon">
-            </a>
-        <div class="mdl-layout__header-row mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--8-col-desktop">
-            <h3 id="page-headline">Software Bug Tracker</h3>
-            <div id="page-links-div">
-                <a class="page-links" href="/">Bug List</a>
-                <a class="page-links" href="/add-programmer">Add Programmer</a>
-                <a class="page-links" href="/add-project">Add Project</a>
-                <a class="page-links" href="/add-company">Add Company</a>
-            </div>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+      <header id="top-bar" class="mdl-layout__header mdl-color-text--white">
+        <div class="mdl-layout__header-row">
+          <span class="mdl-layout-title">
+            <h3>
+              <a id="page-title" href="/"><img  id="bug-logo" src="bug-2-128.png" alt="White bug icon">
+                Software Bug Tracker
+              </a>
+            </h3>
+          </span>
+          <div class="mdl-layout-spacer"></div>
+          <nav class="mdl-navigation mdl-layout--large-screen-only">
+            <a class="page-links" href="/">Bugs</a>
+            <a class="page-links" href="/add-programmer">Programmers</a>
+            <a class="page-links" href="/add-project">Projects</a>
+            <a class="page-links" href="/add-company">Companies</a>
+          </nav>
         </div>
-        </div>
-    </header>
+      </header>
+      <div class="mdl-layout__drawer">
+        <span class="mdl-layout-title">Software Bug Tracker</span>
+        <nav class="mdl-navigation mdl-layout--large-screen-only">
+          <a class="mdl-navigation__link" href="/">Bugs</a>
+          <a class="mdl-navigation__link" href="/add-programmer">Programmers</a>
+          <a class="mdl-navigation__link" href="/add-project">Projects</a>
+          <a class="mdl-navigation__link" href="/add-company">Companies</a>
+        </nav>        
+      </div>
+    </div>
 
     {{!-- Content Box for the page --}}
-    <main class="mdl-layout__content mdl-color--grey-100">
-        <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
-
-            {{{body}}}
-
-        </div>
+    <main class="mdl-layout__content">
+      <div class="page-content">
+        {{{body}}}
+      </div>
     </main>
 
-    </div>
 </body>
 </html>
