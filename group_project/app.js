@@ -33,135 +33,35 @@ app.set('port', 50000);
 // Home page route where the bug list will be rendered
 app.get('/', function renderHome(req, res) {
     var context = {};
-    var createString = "CREATE TABLE diagnostic(" +
-    "id INT PRIMARY KEY AUTO_INCREMENT," +
-    "text VARCHAR(255) NOT NULL)";
-    mysql.pool.query('DROP TABLE IF EXISTS diagnostic', function(err){
-      if(err){
-        next(err);
-        return;
-      }
-      mysql.pool.query(createString, function(err){
-        if(err){
-          next(err);
-          return;
-        }
-        mysql.pool.query('INSERT INTO diagnostic (`text`) VALUES ("MySQL is Working!")',function(err){
-          mysql.pool.query('SELECT `text` FROM diagnostic', function(err, rows, fields){
-            context.results = JSON.stringify(rows);
-            res.render('user-home', context);
-          });
-        });
-      });
-    });
+    res.render('user-home', context);
 });
 
 
 // Edit bug route where a bug can be edited
 app.get('/edit-bug', function renderAddCompany(req, res) {
     var context = {};
-    var createString = "CREATE TABLE diagnostic(" +
-    "id INT PRIMARY KEY AUTO_INCREMENT," +
-    "text VARCHAR(255) NOT NULL)";
-    mysql.pool.query('DROP TABLE IF EXISTS diagnostic', function(err){
-      if(err){
-        next(err);
-        return;
-      }
-      mysql.pool.query(createString, function(err){
-        if(err){
-          next(err);
-          return;
-        }
-        mysql.pool.query('INSERT INTO diagnostic (`text`) VALUES ("MySQL is Working!")',function(err){
-          mysql.pool.query('SELECT `text` FROM diagnostic', function(err, rows, fields){
-            context.results = JSON.stringify(rows);
-            res.render('edit-bug', context);
-          });
-        });
-      });
-    });
+    res.render('edit-bug', context);
 });
 
 
 // Add Company route where a company can be added
 app.get('/add-company', function renderAddCompany(req, res) {
     var context = {};
-    var createString = "CREATE TABLE diagnostic(" +
-    "id INT PRIMARY KEY AUTO_INCREMENT," +
-    "text VARCHAR(255) NOT NULL)";
-    mysql.pool.query('DROP TABLE IF EXISTS diagnostic', function(err){
-      if(err){
-        next(err);
-        return;
-      }
-      mysql.pool.query(createString, function(err){
-        if(err){
-          next(err);
-          return;
-        }
-        mysql.pool.query('INSERT INTO diagnostic (`text`) VALUES ("MySQL is Working!")',function(err){
-          mysql.pool.query('SELECT `text` FROM diagnostic', function(err, rows, fields){
-            context.results = JSON.stringify(rows);
-            res.render('add-company', context);
-          });
-        });
-      });
-    });
+    res.render('add-company', context);
 });
 
 
 // Add Project route where a project can be added
 app.get('/add-project', function renderAddProject(req, res) {
     var context = {};
-    var createString = "CREATE TABLE diagnostic(" +
-    "id INT PRIMARY KEY AUTO_INCREMENT," +
-    "text VARCHAR(255) NOT NULL)";
-    mysql.pool.query('DROP TABLE IF EXISTS diagnostic', function(err){
-      if(err){
-        next(err);
-        return;
-      }
-      mysql.pool.query(createString, function(err){
-        if(err){
-          next(err);
-          return;
-        }
-        mysql.pool.query('INSERT INTO diagnostic (`text`) VALUES ("MySQL is Working!")',function(err){
-          mysql.pool.query('SELECT `text` FROM diagnostic', function(err, rows, fields){
-            context.results = JSON.stringify(rows);
-            res.render('add-project', context);
-          });
-        });
-      });
-    });
+    res.render('add-project', context);
 });
 
 
 // Add Project route where a programmer can be added
 app.get('/add-programmer', function renderAddProgrammer(req, res) {
     var context = {};
-    var createString = "CREATE TABLE diagnostic(" +
-    "id INT PRIMARY KEY AUTO_INCREMENT," +
-    "text VARCHAR(255) NOT NULL)";
-    mysql.pool.query('DROP TABLE IF EXISTS diagnostic', function(err){
-      if(err){
-        next(err);
-        return;
-      }
-      mysql.pool.query(createString, function(err){
-        if(err){
-          next(err);
-          return;
-        }
-        mysql.pool.query('INSERT INTO diagnostic (`text`) VALUES ("MySQL is Working!")',function(err){
-          mysql.pool.query('SELECT `text` FROM diagnostic', function(err, rows, fields){
-            context.results = JSON.stringify(rows);
-            res.render('add-programmer', context);
-          });
-        });
-      });
-    });
+    res.render('add-programmer', context);
 });
 
 
