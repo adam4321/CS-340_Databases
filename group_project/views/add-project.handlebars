@@ -15,14 +15,14 @@
     </div>
     <div class="mdl-card__supporting-text mdl-color-text--grey-600">
 
-        <h1>OSU MySQL Results: {{results}}</h1>
+<!--         <h1>OSU MySQL Results: {{results}}</h1> -->
 
         <form id="recordForm">
             <fieldset>
         
                 <legend>Project Details</legend>
         
-                <label for="company-id">Company Id</label>
+                <label for="company-id">Company</label>
                 <input type="text" name="company-id" id="company-id-field"> <br>
         
                 <label for="started-date">Date Started</label>
@@ -32,11 +32,10 @@
                 <input type="date" name="updated-date" id="project-date-updated-field"> <br>
         
                 <label for="maintenance">In Maintenance</label>
-                <label for="maintenance">Yes</label>
-                <input type="radio" name="maintenance" value="1" id="maintenance-yes">
-        
-                <label for="maintenance">No</label>
-                <input type="radio" name="maintenance" value="0" id="maintenance-no"><br>
+                <input class="radio-input" type="radio" name="maintenance" value="1" id="maintenance-yes"><label class="radio-label" for="maintenance">Yes</label>
+                <input class="radio-input" type="radio" name="maintenance" value="0" id="maintenance-no"><label class="radio-label" for="maintenance">No</label>
+                <br>
+
                 <input 
                     type="submit" 
                     id="save" 
@@ -44,13 +43,9 @@
                     onclick="insertUser(document.getElementById('company-id-field').value,
                                         document.getElementById('project-date-started-field').value,
                                         document.getElementById('project-date-updated-field').value,
-                                        document.getElementsByName('maintenance'))"
-                >
-
+                                        document.getElementsByName('maintenance'))">
             </fieldset>
         </form>
-        <br>
-        
     </div>
 </div>
 

@@ -6,7 +6,8 @@
 
 #top-bar {
     background-color: rgb(45, 122, 153);
-    padding-top: 7px;
+    padding: 20px 0 15px 0;
+    margin-bottom: 100px;
 }
 
 #bug-logo {
@@ -21,6 +22,11 @@
     margin-left: -50px;
 }
 
+#page-title {
+    color: white;
+    text-decoration: none;
+}
+
 #page-links-div {
     margin-left: 70%;
 }
@@ -29,31 +35,82 @@
     color: white;
     text-decoration: none;
     font-size: 20px;
-    margin-right: 30px;
+    margin-right: 40px;
+}
+
+.mdl-layout__drawer-button {
+    padding-top: 15px;
+}
+
+.material-icons {
+    color: white;
+}
+
+.mdl-layout-spacer {
+    padding: 0 20px;
 }
 
 /* Component Box settings*/
 
-#main-box {
-    margin: auto;
-    width: 96%;
-    margin-top: 2%;
+.mdl-layout__content {
+    margin-top: 100px;
+    width: 100%;
 }
 
+.page-content {
+    margin: 2%;
+}
 
 /* Form settings */
 
 #recordForm {
-    width: 455px;
-    margin-top: 30px;
-    margin-left: 30px;
+    width: 450px;
     background-color: #d8e9e962;
+    margin: 10px;
+    padding: 15px;
 }
 
-#recordForm label, input {
-    margin: 2px;
+#recordForm label, #recordForm input {
+    margin: 4px;
+    display: inline-block;
+}
+
+#recordForm label {
+    width: 110px;
+}
+
+#recordForm input {
+    width: 300px;
+    padding: 5px;
+    border-radius: 2px;
 }
 
 #submit {
     margin-top: 30px;
+}
+
+#save {
+    width: 100px !important;
+    background-color: rgb(52, 144, 180);
+    color: #fff;
+    border: none;
+    margin-top: 10px !important;
+    padding: 10px !important;
+}
+
+#save:hover {
+    background-color: #226078;
+}
+
+.radio-input {
+    width: 20px !important;
+}
+
+.radio-label {
+    width: 30px !important;
+    margin-right: 20px !important;
+}
+
+legend {
+    display: none;
 }
