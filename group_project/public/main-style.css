@@ -70,7 +70,7 @@
     padding: 15px;
 }
 
-#recordForm label, #recordForm input {
+#recordForm label, #recordForm input, textarea {
     margin: 4px;
     display: inline-block;
 }
@@ -79,10 +79,15 @@
     width: 110px;
 }
 
-#recordForm input {
+.textarea-label {
+    vertical-align: top;
+}
+
+#recordForm input, textarea {
     width: 300px;
     padding: 5px;
     border-radius: 2px;
+    border: 1px solid #808080;
 }
 
 #submit {
