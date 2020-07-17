@@ -15,14 +15,14 @@
     </div>
     <div class="mdl-card__supporting-text mdl-color-text--grey-600">
 
-        <h1>OSU MySQL Results: {{results}}</h1>
+<!--         <h1>OSU MySQL Results: {{results}}</h1> -->
 
         <form id="recordForm">
             <fieldset>
         
                 <legend>Project Details</legend>
         
-                <label for="company-id">Company Id</label>
+                <label for="company-id">Company</label>
                 <input type="text" name="company-id" id="company-id-field"> <br>
         
                 <label for="started-date">Date Started</label>
@@ -32,11 +32,10 @@
                 <input type="date" name="updated-date" id="project-date-updated-field"> <br>
         
                 <label for="maintenance">In Maintenance</label>
-                <label for="maintenance">Yes</label>
-                <input type="radio" name="maintenance" value="1" id="maintenance-yes">
-        
-                <label for="maintenance">No</label>
-                <input type="radio" name="maintenance" value="0" id="maintenance-no"><br>
+                <input class="radio-input" type="radio" name="maintenance" value="1" id="maintenance-yes"><label class="radio-label" for="maintenance">Yes</label>
+                <input class="radio-input" type="radio" name="maintenance" value="0" id="maintenance-no"><label class="radio-label" for="maintenance">No</label>
+                <br>
+
                 <input 
                     type="submit" 
                     id="save" 
@@ -44,14 +43,43 @@
                     onclick="insertUser(document.getElementById('company-id-field').value,
                                         document.getElementById('project-date-started-field').value,
                                         document.getElementById('project-date-updated-field').value,
-                                        document.getElementsByName('maintenance'))"
-                >
-
+                                        document.getElementsByName('maintenance'))">
             </fieldset>
         </form>
-        <br>
-        
     </div>
 </div>
+<br>
 
+<!-- Container for Projects Table -->
+<div class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop" id="main-box">
+    <div id="dashboard-top-bar" class="mdl-card__title mdl-color-text--white">
+        <h2 class="mdl-card__title-text">Current Projects</h2>
+    </div>
+    <div class="mdl-card__supporting-text mdl-color-text--grey-600">
+        <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+            <thead>
+                <tr>
+                    <th class="mdl-data-table__cell--non-numeric">Company</th>
+                    <th class="mdl-data-table__cell--non-numeric">Date Started</th>
+                    <th class="mdl-data-table__cell--non-numeric">Last Updated</th>
+                    <th class="mdl-data-table__cell--non-numeric">In Maintenance</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="mdl-data-table__cell--non-numeric">Company 1</td>
+                    <td>1/2/34</td>
+                    <td>5/6/78</td>
+                    <td>Yes</td>
+                </tr>
+                <tr>
+                    <td class="mdl-data-table__cell--non-numeric">Company 2</td>
+                    <td>1/2/34</td>
+                    <td>5/6/78</td>
+                    <td>No</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 {{!-- <script src="add-project.js"></script> --}}
