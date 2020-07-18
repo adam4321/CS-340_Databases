@@ -14,12 +14,48 @@
     <div id="dashboard-top-bar" class="mdl-card__title mdl-color-text--white">
         <h2 class="mdl-card__title-text">Update Bug</h2>
     </div>
+
     <div class="mdl-card__supporting-text mdl-color-text--grey-600">
+        <form id="recordForm">
+            <fieldset>
+                
+                <legend>Bug Details</legend>
+                
+                <label class="textarea-label" for="bug-summary">Bug Summary</label>
+                <textarea name="bug-summary" id="bug-summary-field"></textarea> <br>
+                
+                <label class="textarea-label" for="bug-description">Bug Description</label>
+                <textarea name="bug-description" id="bug-description-field"></textarea> <br>
 
-        
-        <h1>OSU MySQL Results: {{results}}</h1>
-        
+                <label for="bug-project">Project</label>
+                <input type="text" name="bug-project" id="bug-project-field"> <br>
 
+                <label for="bug-start-date">Date Started</label>
+                <input type="date" name="bug-start-date" id="bug-start-date-field"> <br>
 
+                <label for="bug-priority">Priority</label>
+                <input type="number" name="bug-priority" id="bug-priority-field"> <br>
+
+                <label for="bug-fixed">Fixed</label>
+                <input class="radio-input" type="radio" name="bug-fixed" value="1" id="bug-fixed-yes">
+                <label class="radio-label" for="bug-fixed">Yes</label>
+                <input class="radio-input" type="radio" name="bug-fixed" value="0" id="bug-fixed-no">
+                <label class="radio-label" for="bug-fixed">No</label>
+                <br>
+
+                <label class="textarea-label" for="bug-resolution">Resolution</label>
+                <textarea name="bug-resolution" id="bug-resolution-field"></textarea> <br>
+
+                <input 
+                    type="submit" 
+                    id="save" 
+                    value="Update" 
+                    onclick="insertUser(document.getElementById('company-id-field').value,
+                                        document.getElementById('project-date-started-field').value,
+                                        document.getElementById('project-date-updated-field').value,
+                                        document.getElementsByName('maintenance'))">
+            </fieldset>
+        </form>
     </div>
+    
 </div>
