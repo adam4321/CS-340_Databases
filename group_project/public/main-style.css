@@ -66,7 +66,6 @@
 #recordForm {
     width: 450px;
     background-color: #d8e9e962;
-    margin: 10px;
     padding: 15px;
 }
 
@@ -118,4 +117,8 @@
 
 legend {
     display: none;
+}
+
+.mdl-card__supporting-text {
+    padding: 25px !important;
 }

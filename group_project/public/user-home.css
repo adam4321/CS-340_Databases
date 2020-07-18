@@ -2,6 +2,43 @@
 **  Description:  User-home component css styles
 *************************************************************/
 
-#user-history-chart {
-    height: 450px;
+#search-container {
+    margin-bottom: 25px;
+}
+
+#search-form {
+    border: 1px solid #808080;
+    border-radius: 2px;
+    position: relative;
+    display: inline-block;
+}
+
+#search-form input, #search-form button, #clear-search {
+    border: 0;
+    vertical-align: middle;
+    padding: 3px;
+}
+
+#search-form button, #clear-search {
+    right: 0;
+    left: 0;
+    background-color: rgb(45, 122, 153);
+    color: #fff;
+    width: 50px;
+}
+
+#search-form button:hover, #clear-search:hover {
+    background-color: #226078;
+} 
+
+#clear-search {
+    margin-left: 16px;
+    width: 70px;
+    padding: 9px;
+    border-radius: 2px;
+}
+
+#search-form input {
+    width: 420px;
+    padding: 5px;
 }
