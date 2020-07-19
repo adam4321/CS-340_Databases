@@ -52,3 +52,14 @@
     text-decoration: none;
     color: #fff;
 }
+
+.mdl-data-table {
+    table-layout: fixed;
+    word-break: break-all;
+    word-wrap: break-word;
+    white-space: normal;
+ }
+
+ td {
+     max-width: 200px;
+ }
