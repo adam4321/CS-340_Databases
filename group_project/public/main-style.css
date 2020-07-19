@@ -69,7 +69,7 @@
     padding: 15px;
 }
 
-#recordForm label, #recordForm input, textarea {
+#recordForm label, #recordForm input, textarea, select {
     margin: 4px;
     display: inline-block;
 }
@@ -82,7 +82,7 @@
     vertical-align: top;
 }
 
-#recordForm input, textarea {
+#recordForm input, textarea, select {
     width: 300px;
     padding: 5px;
     border-radius: 2px;
@@ -123,3 +123,6 @@ legend {
     padding: 25px !important;
 }
 
+select {
+    width: 311.6px;
+}
