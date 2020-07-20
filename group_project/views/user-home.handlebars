@@ -15,6 +15,56 @@
   </div>
   <div class="mdl-card__supporting-text mdl-color-text--grey-600">  
     <form id="recordForm">
+      <div class="grid-container">
+        <div><label class="textarea-label" for="bug-summary">Bug Summary</label></div>
+        <div><textarea name="bug-summary" id="bug-summary-field"></textarea></div>
+        <div><label class="textarea-label" for="bug-description">Bug Description</label></div>
+        <div><textarea name="bug-description" id="bug-description-field"></textarea></div>
+        <div><label for="bug-project">Project</label></div>
+        <div>
+          <select name="bug-project" id="bug-project-field">
+            <option value="" disabled selected>Select a project</option>
+            <option value="0">NULL</option>
+            <option value="1">project 1</option>
+            <option value="2">project 2</option>
+            <option value="3">project 3</option>
+          </select>          
+        </div>
+        <div><label for="bug-programmer">Programmers</label></div>
+        <div class="checkbox-container">
+          <input class="checkbox-input" type="checkbox" id="programmer1" name="programmer1" value="1">
+          <label for="programmer1">Programmer 1</label><br>
+          <input class="checkbox-input" type="checkbox" id="programmer2" name="programmer2" value="2">
+          <label for="programmer2">Programmer 2</label><br>
+          <input class="checkbox-input" type="checkbox" id="programmer3" name="programmer3" value="3">
+          <label for="programmer3">Programmer 3</label><br> 
+        </div>
+        <div><label for="bug-start-date">Date Started</label></div>
+        <div><input type="date" name="bug-start-date" id="bug-start-date-field"></div>
+        <div><label for="bug-priority">Priority</label></div>
+        <div><input type="number" name="bug-priority" id="bug-priority-field"></div>
+        <div><label for="bug-fixed">Fixed</label></div>
+        <div>
+          <input class="radio-input" type="radio" name="bug-fixed" value="1" id="bug-fixed-yes">
+          <label class="radio-label" for="bug-fixed">Yes</label>
+          <input class="radio-input" type="radio" name="bug-fixed" value="0" id="bug-fixed-no">
+          <label class="radio-label" for="bug-fixed">No</label>
+        </div>
+        <div><label class="textarea-label" for="bug-resolution">Resolution</label></div>
+        <div><textarea name="bug-resolution" id="bug-resolution-field"></textarea></div>
+        <div>
+          <input 
+            type="submit" 
+            id="save" 
+            value="Add" 
+            onclick="insertUser(document.getElementById('company-id-field').value,
+                                document.getElementById('project-date-started-field').value,
+                                document.getElementById('project-date-updated-field').value,
+                                document.getElementsByName('maintenance'))">
+        </div>
+      </div>
+    </form>
+    {{!-- <form id="recordForm">
       <fieldset>
         
         <legend>Bug Details</legend>
@@ -69,7 +119,7 @@
                                 document.getElementById('project-date-updated-field').value,
                                 document.getElementsByName('maintenance'))">
       </fieldset>
-    </form>
+    </form> --}}
   </div>
 </div>
 <br>
@@ -99,32 +149,33 @@
                     <th class="mdl-data-table__cell--non-numeric">Fixed</th>
                     <th class="mdl-data-table__cell--non-numeric">Resolution</th>
                     <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td class="mdl-data-table__cell--non-numeric">Lorem ipsum dolor sit amet.</td>
+                    <td class="mdl-data-table__cell--non-numeric">Lorem ipsum dolor sit amet consectetur adipisicing elit.</td>
                     <td class="mdl-data-table__cell--non-numeric">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Totam, facilis.</td>
-                    <td class="mdl-data-table__cell--non-numeric">project 3</td>
-                    <td class="mdl-data-table__cell--non-numeric">programmer 1<br>programmer 3</td>
+                    <td class="mdl-data-table__cell--non-numeric">Project 3</td>
+                    <td class="mdl-data-table__cell--non-numeric">Programmer 1<br>Programmer 3</td>
                     <td>1/2/34</td>
                     <td>5</td>
                     <td>Yes</td>
                     <td class="mdl-data-table__cell--non-numeric">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</td>
                     <td><a class="update-btn" href="/edit-bug">Update</a></td>
-                    <td><button class="update-btn">Delete</button></td>
+                    <td><a class="update-btn">Delete</a></td>
                 </tr>
                 <tr>
                     <td class="mdl-data-table__cell--non-numeric">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi.</td>
-                    <td class="mdl-data-table__cell--non-numeric">asdf</td>
-                    <td class="mdl-data-table__cell--non-numeric">project 1</td>
-                    <td class="mdl-data-table__cell--non-numeric">programmer 2</td>
+                    <td class="mdl-data-table__cell--non-numeric">Lorem ipsum dolor sit, amet consectetur adipisicing.</td>
+                    <td class="mdl-data-table__cell--non-numeric">Project 1</td>
+                    <td class="mdl-data-table__cell--non-numeric">Programmer 2</td>
                     <td>1/2/34</td>
                     <td>5</td>
                     <td>No</td>
                     <td class="mdl-data-table__cell--non-numeric">Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis, exercitationem.</td>
                     <td><a class="update-btn" href="/edit-bug">Update</a></td>
-                    <td><button class="update-btn">Delete</button></td>
+                    <td><a class="update-btn">Delete</a></td>
                 </tr>
             </tbody>
         </table>

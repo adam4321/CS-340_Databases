@@ -126,3 +126,21 @@ legend {
 select {
     width: 311.6px;
 }
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 120px 330px;
+    grid-column-gap: 15px;
+}
+
+.checkbox-container {
+    border: 1px solid #808080;
+    border-radius: 2px;
+    background-color: #fff;
+    margin: 5px 0 5px 4px;
+    width: 310px;
+}
+
+.checkbox-input {
+    width: 10px !important;
+}
