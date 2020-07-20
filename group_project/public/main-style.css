@@ -133,12 +133,17 @@ select {
     grid-column-gap: 15px;
 }
 
+/* Size the ADD BUG programmer checkbox container */
 .checkbox-container {
     border: 1px solid #808080;
     border-radius: 2px;
     background-color: #fff;
     margin: 5px 0 5px 4px;
     width: 310px;
+    overflow: scroll;
+    height: 90px;
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 .checkbox-input {
