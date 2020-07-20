@@ -28,7 +28,22 @@
                 <textarea name="bug-description" id="bug-description-field"></textarea> <br>
 
                 <label for="bug-project">Project</label>
-                <input type="text" name="bug-project" id="bug-project-field"> <br>
+                <select name="bug-project" id="bug-project-field">
+                    <option value="" disabled selected>Select a project</option>
+                    <option value="0">NULL</option>
+                    <option value="1">project 1</option>
+                    <option value="2">project 2</option>
+                    <option value="3">project 3</option>
+                </select><br>
+
+                <label for="bug-programmer">Programmers</label>
+                <select name="bug-programmer" id="bug-programmer-field">
+                <option value="" disabled selected>Select a Programmer</option>
+                <option value="a">programmer 1</option>
+                <option value="b">programmer 2</option>
+                <option value="c">programmer 3</option>
+                </select>
+                <br>
 
                 <label for="bug-start-date">Date Started</label>
                 <input type="date" name="bug-start-date" id="bug-start-date-field"> <br>

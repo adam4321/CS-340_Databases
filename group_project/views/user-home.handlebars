@@ -28,13 +28,14 @@
         <label for="bug-project">Project</label>
         <select name="bug-project" id="bug-project-field">
           <option value="" disabled selected>Select a project</option>
+          <option value="0">NULL</option>
           <option value="1">project 1</option>
           <option value="2">project 2</option>
           <option value="3">project 3</option>
         </select>
         <br>
 
-        <label for="bug-programmer">Programmer</label>
+        <label for="bug-programmer">Programmers</label>
         <select name="bug-programmer" id="bug-programmer-field">
           <option value="" disabled selected>Select a Programmer</option>
           <option value="a">programmer 1</option>
@@ -92,7 +93,7 @@
                     <th class="mdl-data-table__cell--non-numeric">Bug Summary</th>
                     <th class="mdl-data-table__cell--non-numeric">Bug Description</th>
                     <th class="mdl-data-table__cell--non-numeric">Project</th>
-                    <th class="mdl-data-table__cell--non-numeric">Programmer</th>
+                    <th class="mdl-data-table__cell--non-numeric">Programmers</th>
                     <th class="mdl-data-table__cell--non-numeric">Date Started</th>
                     <th class="mdl-data-table__cell--non-numeric">Priority</th>
                     <th class="mdl-data-table__cell--non-numeric">Fixed</th>
@@ -105,7 +106,7 @@
                     <td class="mdl-data-table__cell--non-numeric">Lorem ipsum dolor sit amet.</td>
                     <td class="mdl-data-table__cell--non-numeric">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Totam, facilis.</td>
                     <td class="mdl-data-table__cell--non-numeric">project 3</td>
-                    <td class="mdl-data-table__cell--non-numeric">programmer 1</td>
+                    <td class="mdl-data-table__cell--non-numeric">programmer 1<br>programmer 3</td>
                     <td>1/2/34</td>
                     <td>5</td>
                     <td>Yes</td>
