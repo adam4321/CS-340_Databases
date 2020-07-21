@@ -22,6 +22,9 @@
         
                 <legend>Project Details</legend>
         
+                <label for="project-name">Name</label>
+                <input type="text" name="project-name" id="project-name-field"><br>
+
                 <label for="project-company">Company</label>
                 <select name="project-company" id="project-company-field">
                 <option value="" disabled selected>Select a Company</option>
@@ -65,6 +68,7 @@
         <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
             <thead>
                 <tr>
+                    <th class="mdl-data-table__cell--non-numeric">Name</th>
                     <th class="mdl-data-table__cell--non-numeric">Company</th>
                     <th class="mdl-data-table__cell--non-numeric">Date Started</th>
                     <th class="mdl-data-table__cell--non-numeric">Last Updated</th>
@@ -73,17 +77,26 @@
             </thead>
             <tbody>
                 <tr>
-                    <td class="mdl-data-table__cell--non-numeric">Company 1</td>
+                    <td class="mdl-data-table__cell--non-numeric">Project 1</td>
+                    <td class="mdl-data-table__cell--non-numeric">Company 3</td>
                     <td>1/2/34</td>
                     <td>5/6/78</td>
                     <td>Yes</td>
                 </tr>
                 <tr>
+                    <td class="mdl-data-table__cell--non-numeric">Project 2</td>
                     <td class="mdl-data-table__cell--non-numeric">Company 2</td>
                     <td>1/2/34</td>
                     <td>5/6/78</td>
                     <td>No</td>
                 </tr>
+                <tr>
+                    <td class="mdl-data-table__cell--non-numeric">Project 3</td>
+                    <td class="mdl-data-table__cell--non-numeric">Company 1</td>
+                    <td>1/2/34</td>
+                    <td>5/6/78</td>
+                    <td>No</td>
+                </tr>                
             </tbody>
         </table>
     </div>
