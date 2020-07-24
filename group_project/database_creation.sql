@@ -94,11 +94,11 @@ UNLOCK TABLES;
 -- Create table and insert data for Bugs_Programmers --------------------------
 DROP TABLE IF EXISTS `Bugs_Programmers`;
 
-CREATE TABLE `Bugs` (
+CREATE TABLE `Bugs_Programmers` (
 `bugId` int(11) NOT NULL,
 `programmerId` int(11) NOT NULL,
 FOREIGN KEY (`bugId`) REFERENCES `Bugs` (`bugId`),
-FOREIGN KEY (`programmerId`) REFERENCES `Programmers` (`pogrammerId`)
+FOREIGN KEY (`programmerId`) REFERENCES `Programmers` (`programmerId`)
 ) ENGINE=InnoDB;
 
 
