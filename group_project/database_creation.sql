@@ -58,12 +58,11 @@ CREATE TABLE `Projects` (
     FOREIGN KEY (`companyId`) REFERENCES `Companies` (`companyId`)
 ) ENGINE=InnoDB;
 
-
-LOCK TABLES `Projects` WRITE, `Companies` AS c WRITE, `Companies` AS c1 WRITE;
+LOCK TABLES `Projects` WRITE, `Companies` AS c1 WRITE, `Companies` AS c2 WRITE;
 
 INSERT INTO `Projects` (`projectName`, `dateStarted`, `lastUpdated`, `inMaintenance`, `companyId`) VALUES
-    ('Project 1', '2002-03-19', '2002-03-19', TRUE, (SELECT `companyId` FROM `Companies` AS c WHERE `companyName` = 'Company 1')),
-    ('Project 2', '2020-02-27', '2020-05-08', FALSE, (SELECT `companyId` FROM `Companies` AS c1 WHERE `companyName` = 'Company 2'));
+    ('Project 1', '2002-03-19', '2002-03-19', TRUE, (SELECT `companyId` FROM `Companies` AS c1 WHERE `companyName` = 'Company 1')),
+    ('Project 2', '2020-02-27', '2020-05-08', FALSE, (SELECT `companyId` FROM `Companies` AS c2 WHERE `companyName` = 'Company 2'));
 
 UNLOCK TABLES;
 
@@ -72,21 +71,21 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `Bugs`;
 
 CREATE TABLE `Bugs` (
-`bugId` int(11) NOT NULL AUTO_INCREMENT,
-`projectId` int(11),
-`bugSummary` text NOT NULL,
-`bugDescription` text,
-`dateStarted` date NOT NULL,
-PRIMARY KEY (`bugId`),
-FOREIGN KEY (`projectId`) REFERENCES `Projects` (`projectId`)
+    `bugId` int(11) NOT NULL AUTO_INCREMENT,
+    `projectId` int(11),
+    `bugSummary` text NOT NULL,
+    `bugDescription` text,
+    `dateStarted` date NOT NULL,
+    PRIMARY KEY (`bugId`),
+    FOREIGN KEY (`projectId`) REFERENCES `Projects` (`projectId`)
 ) ENGINE=InnoDB;
 
 
-LOCK TABLE `Bugs` WRITE, `Projects` WRITE;
+LOCK TABLE `Bugs` WRITE, `Projects` AS p1 WRITE, `Projects` AS p2 WRITE;
 
 INSERT INTO `Bugs` (`projectId`, `bugSummary`, `bugDescription`, `dateStarted`) VALUES
-(),
-();
+    ((SELECT `projectId` FROM `Projects` AS p1 WHERE `projectName` = 'Project 1'), 'Bug Summary 1', 'Bug Description 1', '2000-01-01'),
+    ((SELECT `projectId` FROM `Projects` AS p2 WHERE `projectName` = 'Project 2'), 'Bug Summary 2', 'Bug Description 2', '2003-07-11');
 
 UNLOCK TABLES;
 
@@ -95,17 +94,18 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `Bugs_Programmers`;
 
 CREATE TABLE `Bugs_Programmers` (
-`bugId` int(11) NOT NULL,
-`programmerId` int(11) NOT NULL,
-FOREIGN KEY (`bugId`) REFERENCES `Bugs` (`bugId`),
-FOREIGN KEY (`programmerId`) REFERENCES `Programmers` (`programmerId`)
+    `bugId` int(11) NOT NULL,
+    `programmerId` int(11) NOT NULL,
+    PRIMARY KEY (`bugId`, `programmerId`),
+    FOREIGN KEY (`bugId`) REFERENCES `Bugs` (`bugId`),
+    FOREIGN KEY (`programmerId`) REFERENCES `Programmers` (`programmerId`)
 ) ENGINE=InnoDB;
 
 
-LOCK TABLE `Bugs` WRITE, `Programmers` WRITE;
+LOCK TABLE `Bugs_Programmers` WRITE, `Bugs` AS b1 WRITE, `Programmers` AS p1 WRITE;
 
 INSERT INTO `Bugs_Programmers` (`bugId`, `programmerId`) VALUES
-(),
-();
+    (1, 1),
+    (1, 2);
 
 UNLOCK TABLES;
