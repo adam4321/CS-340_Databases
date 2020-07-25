@@ -1,6 +1,8 @@
----------------------------------
+-- -------------------------------
 -- CS-340 Summer 2020: Group 34
----------------------------------
+-- -------------------------------
+
+SET foreign_key_checks = 0;
 
 -- Create table and insert data for Programmers -------------------------------
 DROP TABLE IF EXISTS `Programmers`;
@@ -81,7 +83,7 @@ CREATE TABLE `Bugs` (
 ) ENGINE=InnoDB;
 
 
-LOCK TABLE `Bugs` WRITE, `Projects` AS p1 WRITE, `Projects` AS p2 WRITE;
+LOCK TABLES `Bugs` WRITE, `Projects` AS p1 WRITE, `Projects` AS p2 WRITE;
 
 INSERT INTO `Bugs` (`projectId`, `bugSummary`, `bugDescription`, `dateStarted`) VALUES
     ((SELECT `projectId` FROM `Projects` AS p1 WHERE `projectName` = 'Project 1'), 'Bug Summary 1', 'Bug Description 1', '2000-01-01'),
@@ -102,10 +104,13 @@ CREATE TABLE `Bugs_Programmers` (
 ) ENGINE=InnoDB;
 
 
-LOCK TABLE `Bugs_Programmers` WRITE, `Bugs` AS b1 WRITE, `Programmers` AS p1 WRITE;
+LOCK TABLES `Bugs_Programmers` WRITE, `Bugs` AS b1 WRITE, `Programmers` AS p1 WRITE;
 
 INSERT INTO `Bugs_Programmers` (`bugId`, `programmerId`) VALUES
     (1, 1),
     (1, 2);
 
 UNLOCK TABLES;
+
+
+SET foreign_key_checks = 1;
