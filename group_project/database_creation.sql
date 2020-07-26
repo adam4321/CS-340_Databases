@@ -180,5 +180,8 @@ INSERT INTO `Bugs_Programmers` (`bugId`, `programmerId`) VALUES
     (1, 5),
     (2, 7),
     (3, 9);
+    (1, 2),
+    (2, 1), 
+    (2, 2);
 
 UNLOCK TABLES;
