@@ -4,7 +4,7 @@
 -- Companies Page -------------------------------
 
 -- View all existing Companies
-SELECT companyId, dateJoined FROM Companies
+SELECT companyId, companyName, dateJoined FROM Companies
 
 --Add new company
 INSERT INTO Companies (companyName, dateJoined) VALUES (:companyNameInput, :dateJoinedInput)
@@ -14,7 +14,7 @@ INSERT INTO Companies (companyName, dateJoined) VALUES (:companyNameInput, :date
 -- Projects Page --------------------------------
 
 -- View all existing Projects
-SELECT projectName, companyName, dateStarted, lastUpdated, inMaintenance FROM Projects AS p
+SELECT projectId, projectName, companyName, dateStarted, lastUpdated, inMaintenance FROM Projects AS p
 JOIN Companies AS c ON p.companyId = c.companyId
 GROUP BY projectId ASC
 
@@ -29,7 +29,7 @@ INSERT INTO Projects (projectName, companyId, dateStarted, lastUpdated, inMainte
 -- Programmers Page -----------------------------
 
 -- View all existing Programmers
-SELECT firstName, lastName, email, dateStarted, accessLevel FROM Programmers
+SELECT programmerId, firstName, lastName, email, dateStarted, accessLevel FROM Programmers
 
 -- Add new programmer 
 INSERT INTO Programmer (firstName, lastName, email, dateStarted, accessLevel) VALUES 
@@ -40,17 +40,22 @@ INSERT INTO Programmer (firstName, lastName, email, dateStarted, accessLevel) VA
 -- Bugs Page ------------------------------------
 
 -- View all existing Bugs
-SELECT bugSummary, bugDescription, projectName, 
-[need way to display all associated programmers], dateStarted, priority, fixed, resolution FROM Bugs
+-- ISSUE: display all associated programmers for each bug
+SELECT * FROM Bugs b
+JOIN Bugs_Programmers bp ON bp.bugId = b.bugId
+JOIN Programmers p ON bp.programmerId = p.programmerId
 
 -- Add new bug
+-- ISSUE: add multiple rows to Bugs_Programmers
 INSERT INTO Bugs (projectId, bugSummary, bugDescription, dateStarted, priority, resolution, fixed) VALUES
 ((SELECT projectId FROM Projects WHERE projectName = :projectNameInput),
 :bugSummaryInput, :bugDescriptionInput, :dateStartedInput, :priorityInput, :resolutionInput, :fixedInput)
 
 -- Update bug
+-- ISSUE: add or delete rows in Bugs_Programmers
 UPDATE Bugs SET bugSummary = :bugSummaryInput, bugDescription = :bugDescriptionInput, dateStarted = :dateStartedInput,
 priority = :priorityInput, resolution = :resolutionInput, fixed = :fixedInput WHERE bugId = :bugIdInput 
 
 -- Delete bug
+-- ISSUE: delete all rows in Bugs_Programmers associated with deleted bug
 DELETE FROM Bugs WHERE bugId = :bugIdInput
