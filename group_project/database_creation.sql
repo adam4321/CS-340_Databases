@@ -108,7 +108,9 @@ LOCK TABLES `Bugs_Programmers` WRITE, `Bugs` AS b1 WRITE, `Programmers` AS p1 WR
 
 INSERT INTO `Bugs_Programmers` (`bugId`, `programmerId`) VALUES
     (1, 1),
-    (1, 2);
+    (1, 2),
+    (2, 1), 
+    (2, 2);
 
 UNLOCK TABLES;
 
