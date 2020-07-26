@@ -41,12 +41,16 @@ INSERT INTO Programmer (firstName, lastName, email, dateStarted, accessLevel) VA
 
 -- View all existing Bugs
 SELECT bugSummary, bugDescription, projectName, 
-(need subquery from bugs_programmers to list all programmer names), dateStarted, priority, fixed, resolution FROM Bugs
+[need way to display all associated programmers], dateStarted, priority, fixed, resolution FROM Bugs
 
 -- Add new bug
-
+INSERT INTO Bugs (projectId, bugSummary, bugDescription, dateStarted, priority, resolution, fixed) VALUES
+((SELECT projectId FROM Projects WHERE projectName = :projectNameInput),
+:bugSummaryInput, :bugDescriptionInput, :dateStartedInput, :priorityInput, :resolutionInput, :fixedInput)
 
 -- Update bug
-
+UPDATE Bugs SET bugSummary = :bugSummaryInput, bugDescription = :bugDescriptionInput, dateStarted = :dateStartedInput,
+priority = :priorityInput, resolution = :resolutionInput, fixed = :fixedInput WHERE bugId = :bugIdInput 
 
 -- Delete bug
+DELETE FROM Bugs WHERE bugId = :bugIdInput
