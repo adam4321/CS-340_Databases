@@ -2,10 +2,10 @@
 -- CS-340 Summer 2020: Group 34
 -- -------------------------------
 
-SET foreign_key_checks = 0;
-
 -- Create table and insert data for Programmers -------------------------------
+SET foreign_key_checks = 0;
 DROP TABLE IF EXISTS `Programmers`;
+SET foreign_key_checks = 1;
 
 CREATE TABLE `Programmers` (
     `programmerId` int(11) NOT NULL AUTO_INCREMENT,
@@ -28,7 +28,9 @@ UNLOCK TABLES;
 
 
 -- Create table and insert data for Companies ---------------------------------
+SET foreign_key_checks = 0;
 DROP TABLE IF EXISTS `Companies`;
+SET foreign_key_checks = 1;
 
 CREATE TABLE `Companies` (
     `companyId` int(11) NOT NULL AUTO_INCREMENT,
@@ -37,7 +39,7 @@ CREATE TABLE `Companies` (
     PRIMARY KEY (`companyId`)
 ) ENGINE=InnoDB;
 
-LOCK TABLE `Companies` WRITE;
+LOCK TABLES `Companies` WRITE;
 
 INSERT INTO `Companies` VALUES
     (1, 'Company 1', '1984-07-30'),
@@ -47,7 +49,9 @@ UNLOCK TABLES;
 
 
 -- Create table and insert data for Projects ----------------------------------
+SET foreign_key_checks = 0;
 DROP TABLE IF EXISTS `Projects`;
+SET foreign_key_checks = 1;
 
 CREATE TABLE `Projects` (
     `projectId` int(11) NOT NULL AUTO_INCREMENT,
@@ -58,6 +62,8 @@ CREATE TABLE `Projects` (
     `companyId` int(11) NOT NULL,
     PRIMARY KEY (`projectId`),
     FOREIGN KEY (`companyId`) REFERENCES `Companies` (`companyId`)
+		ON UPDATE CASCADE 
+        ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 LOCK TABLES `Projects` WRITE, `Companies` AS c1 WRITE, `Companies` AS c2 WRITE;
@@ -70,7 +76,9 @@ UNLOCK TABLES;
 
 
 -- Create table and insert data for Bugs --------------------------------------
+SET foreign_key_checks = 0;
 DROP TABLE IF EXISTS `Bugs`;
+SET foreign_key_checks = 1;
 
 CREATE TABLE `Bugs` (
     `bugId` int(11) NOT NULL AUTO_INCREMENT,
@@ -80,6 +88,8 @@ CREATE TABLE `Bugs` (
     `dateStarted` date NOT NULL,
     PRIMARY KEY (`bugId`),
     FOREIGN KEY (`projectId`) REFERENCES `Projects` (`projectId`)
+		ON UPDATE CASCADE 
+        ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 
@@ -93,14 +103,20 @@ UNLOCK TABLES;
 
 
 -- Create table and insert data for Bugs_Programmers --------------------------
+SET foreign_key_checks = 0;
 DROP TABLE IF EXISTS `Bugs_Programmers`;
+SET foreign_key_checks = 1;
 
 CREATE TABLE `Bugs_Programmers` (
     `bugId` int(11) NOT NULL,
     `programmerId` int(11) NOT NULL,
     PRIMARY KEY (`bugId`, `programmerId`),
-    FOREIGN KEY (`bugId`) REFERENCES `Bugs` (`bugId`),
+    FOREIGN KEY (`bugId`) REFERENCES `Bugs` (`bugId`)
+		ON UPDATE CASCADE 
+        ON DELETE CASCADE,
     FOREIGN KEY (`programmerId`) REFERENCES `Programmers` (`programmerId`)
+		ON UPDATE CASCADE 
+        ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 
@@ -111,6 +127,3 @@ INSERT INTO `Bugs_Programmers` (`bugId`, `programmerId`) VALUES
     (1, 2);
 
 UNLOCK TABLES;
-
-
-SET foreign_key_checks = 1;
