@@ -34,29 +34,47 @@ app.set('port', 50000);
 // BUGS MAIN PAGE - Route where the bug list will be rendered
 app.get('/', function renderHome(req, res) {
     let context = {};
-    let sql_query = `SELECT b.bugId, p.projectName, b.bugSummary, b.bugDescription, b.dateStarted, b.resolution, b.priority, b.fixed 
-                    FROM Bugs b
-                    JOIN Projects p ON b.projectId = p.projectId`;
+    let sql_query = `SELECT p.firstName, p.lastName, b.bugId, pj.projectName, b.bugSummary, b.bugDescription, b.dateStarted, b.resolution, b.priority, b.fixed 
+	                FROM Programmers p 
+		                JOIN Bugs_Programmers bp ON p.programmerId = bp.programmerId
+		                JOIN Bugs b ON bp.bugId = b.bugId
+		                JOIN Projects pj ON b.projectId = pj.projectId
+			                ORDER BY bugId;`;
 
     mysql.pool.query(sql_query, (err, rows, fields) => {
         if (err) {
             next(err);
             return;
         }
-        
-        // Put the mysql data into an array for rendering
-        let bugsDbData = [];
+
+        let prevEntryBugId;           // Cache the previous entry's id to avoid duplication
+        let bugProgrammers = [];      // Hold the programmers for each entry
+        let bugsDbData = [];          // Put the mysql data into an array for rendering
+
         for (let i in rows) {
-            bugsDbData.push({
-                bugSummary: rows[i].bugSummary,
-                bugDescription: rows[i].bugDescription,
-                projectName: rows[i].projectName,
-                programmers: 'hello',
-                dateStarted: rows[i].dateStarted,
-                priority: rows[i].priority,
-                fixed: rows[i].fixed,
-                resolution: rows[i].resolution
-            });
+            // If this is the same entry as the last, then only add the programmer to the array
+            if (prevEntryBugId == rows[i].bugId) {
+                bugProgrammers.push(rows[i].firstName + ' ' + rows[i].lastName);
+            }
+            // This is a new entry
+            else {
+                prevEntryBugId = rows[i].bugId;         // Cache the previous bugId
+                bugProgrammers = [];                    // Add the programmer to the array
+                bugProgrammers.push(rows[i].firstName + ' ' + rows[i].lastName);
+
+                // Push a single entry
+                bugsDbData.push({
+                    bugId: rows[i].bugId,
+                    bugSummary: rows[i].bugSummary,
+                    bugDescription: rows[i].bugDescription,
+                    projectName: rows[i].projectName,
+                    programmers: bugProgrammers,
+                    dateStarted: rows[i].dateStarted,
+                    priority: rows[i].priority,
+                    fixed: rows[i].fixed,
+                    resolution: rows[i].resolution
+                });
+            }
         }
         context.bugs = bugsDbData;
         res.render('user-home', context);

@@ -45,15 +45,14 @@ INSERT INTO Programmer (firstName, lastName, email, dateStarted, accessLevel)
 
 -- Bugs Page ------------------------------------------------------------------
 
--- View all existing Bugs
-SELECT b.bugId, p.projectName, b.bugSummary, b.bugDescription, b.dateStarted, b.resolution, b.priority, b.fixed 
-    FROM Bugs b
-    JOIN Projects p ON b.projectId = p.projectId
-
-SELECT p.firstName, p.lastName 
-    FROM Programmers p 
-    JOIN Bugs_Programmers bp ON p.programmerId = bp.programmerId
-    WHERE bp.bugId = :bugIdInput;  -- Run once per bug
+-- View all existing Bugs with their programmers
+SELECT p.firstName, p.lastName, b.bugId, pj.projectName, b.bugSummary,
+b.bugDescription, b.dateStarted, b.resolution, b.priority, b.fixed 
+	FROM Programmers p 
+		JOIN Bugs_Programmers bp ON p.programmerId = bp.programmerId
+		JOIN Bugs b ON bp.bugId = b.bugId
+		JOIN Projects pj ON b.projectId = pj.projectId
+			ORDER BY bugId;
 
 
 -- Add new bug

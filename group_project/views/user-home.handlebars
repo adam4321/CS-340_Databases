@@ -104,7 +104,9 @@
                     <td class="mdl-data-table__cell--non-numeric">{{this.bugSummary}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{this.bugDescription}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{this.projectName}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{this.programmers}}<br>Programmer 3</td>
+                    <td class="mdl-data-table__cell--non-numeric">
+                            {{#each programmers}} {{this}} <br> {{/each}}
+                    </td>
                     <td>{{this.dateStarted}}</td>
                     <td>{{this.priority}}</td>
                     <td>{{#if this.fixed}} Yes {{else}} No {{/if}}</td>
