@@ -113,6 +113,9 @@ CREATE TABLE `Bugs` (
     `bugSummary` text NOT NULL,
     `bugDescription` text,
     `dateStarted` date NOT NULL,
+    `resolution`text,
+    `fixed` BOOLEAN DEFAULT FALSE,
+    `priority` int(11),
     PRIMARY KEY (`bugId`),
     FOREIGN KEY (`projectId`) REFERENCES `Projects` (`projectId`)
 		ON UPDATE CASCADE 
@@ -135,20 +138,20 @@ LOCK TABLES `Bugs` WRITE,
     `Projects` AS p12 WRITE,
     `Projects` AS p13 WRITE;
 
-INSERT INTO `Bugs` (`projectId`, `bugSummary`, `bugDescription`, `dateStarted`) VALUES
-    ((SELECT `projectId` FROM `Projects` AS p1 WHERE `projectName` = 'Project 1'), 'Bug Summary 1', 'Bug Description 1', '2002-09-22'),
-    ((SELECT `projectId` FROM `Projects` AS p2 WHERE `projectName` = 'Project 2'), 'Bug Summary 2', 'Bug Description 2', '2020-05-08'),
-    ((SELECT `projectId` FROM `Projects` AS p3 WHERE `projectName` = 'Project 3'), 'Bug Summary 3', 'Bug Description 3', '2015-03-02'),
-    ((SELECT `projectId` FROM `Projects` AS p4 WHERE `projectName` = 'Project 4'), 'Bug Summary 4', 'Bug Description 4', '2018-11-05'),
-    ((SELECT `projectId` FROM `Projects` AS p5 WHERE `projectName` = 'Project 5'), 'Bug Summary 5', 'Bug Description 5', '2019-08-03'),
-    ((SELECT `projectId` FROM `Projects` AS p6 WHERE `projectName` = 'Project 6'), 'Bug Summary 6', 'Bug Description 6', '2014-04-18'),
-    ((SELECT `projectId` FROM `Projects` AS p7 WHERE `projectName` = 'Project 1'), 'Bug Summary 7', 'Bug Description 7', '2005-09-21'),
-    ((SELECT `projectId` FROM `Projects` AS p8 WHERE `projectName` = 'Project 2'), 'Bug Summary 8', 'Bug Description 8', '2017-12-14'),
-    ((SELECT `projectId` FROM `Projects` AS p9 WHERE `projectName` = 'Project 3'), 'Bug Summary 9', 'Bug Description 9', '2008-06-01'),
-    ((SELECT `projectId` FROM `Projects` AS p10 WHERE `projectName` = 'Project 4'), 'Bug Summary 10', 'Bug Description 10', '2016-04-13'),
-    ((SELECT `projectId` FROM `Projects` AS p11 WHERE `projectName` = 'Project 5'), 'Bug Summary 11', 'Bug Description 11', '2016-02-11'),
-    ((SELECT `projectId` FROM `Projects` AS p12 WHERE `projectName` = 'Project 6'), 'Bug Summary 12', 'Bug Description 12', '2015-06-21'),
-    ((SELECT `projectId` FROM `Projects` AS p13 WHERE `projectName` = 'Project 1'), 'Bug Summary 13', 'Bug Description 13', '2004-03-01');
+INSERT INTO `Bugs` (`projectId`, `bugSummary`, `bugDescription`, `dateStarted`, `resolution`, `fixed`, `priority`) VALUES
+    ((SELECT `projectId` FROM `Projects` AS p1 WHERE `projectName` = 'Project 1'), 'Bug Summary 1', 'Bug Description 1', '2002-09-22', 'Still broken!', 0, 3),
+    ((SELECT `projectId` FROM `Projects` AS p2 WHERE `projectName` = 'Project 2'), 'Bug Summary 2', 'Bug Description 2', '2020-05-08', 'Still broken!', 0, 5),
+    ((SELECT `projectId` FROM `Projects` AS p3 WHERE `projectName` = 'Project 3'), 'Bug Summary 3', 'Bug Description 3', '2015-03-02', 'Still broken!', 0, 4),
+    ((SELECT `projectId` FROM `Projects` AS p4 WHERE `projectName` = 'Project 4'), 'Bug Summary 4', 'Bug Description 4', '2018-11-05', 'Still broken!', 0, 1),
+    ((SELECT `projectId` FROM `Projects` AS p5 WHERE `projectName` = 'Project 5'), 'Bug Summary 5', 'Bug Description 5', '2019-08-03', 'Still broken!', 0, 3),
+    ((SELECT `projectId` FROM `Projects` AS p6 WHERE `projectName` = 'Project 6'), 'Bug Summary 6', 'Bug Description 6', '2014-04-18', 'Still broken!', 0, 2),
+    ((SELECT `projectId` FROM `Projects` AS p7 WHERE `projectName` = 'Project 1'), 'Bug Summary 7', 'Bug Description 7', '2005-09-21', 'Still broken!', 0, 5),
+    ((SELECT `projectId` FROM `Projects` AS p8 WHERE `projectName` = 'Project 2'), 'Bug Summary 8', 'Bug Description 8', '2017-12-14', 'Still broken!', 0, 5),
+    ((SELECT `projectId` FROM `Projects` AS p9 WHERE `projectName` = 'Project 3'), 'Bug Summary 9', 'Bug Description 9', '2008-06-01', 'Still broken!', 0, 4),
+    ((SELECT `projectId` FROM `Projects` AS p10 WHERE `projectName` = 'Project 4'), 'Bug Summary 10', 'Bug Description 10', '2016-04-13', 'Still broken!', 0, 2),
+    ((SELECT `projectId` FROM `Projects` AS p11 WHERE `projectName` = 'Project 5'), 'Bug Summary 11', 'Bug Description 11', '2016-02-11', 'Still broken!', 0, 1),
+    ((SELECT `projectId` FROM `Projects` AS p12 WHERE `projectName` = 'Project 6'), 'Bug Summary 12', 'Bug Description 12', '2015-06-21', 'Still broken!', 0, 5),
+    ((SELECT `projectId` FROM `Projects` AS p13 WHERE `projectName` = 'Project 1'), 'Bug Summary 13', 'Bug Description 13', '2004-03-01', 'Still broken!', 0, 3);
 
 UNLOCK TABLES;
 

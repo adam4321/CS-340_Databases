@@ -34,13 +34,41 @@ app.set('port', 50000);
 // BUGS MAIN PAGE - Route where the bug list will be rendered
 app.get('/', function renderHome(req, res) {
     let context = {};
-    res.render('user-home', context);
+    let sql_query = `SELECT b.bugId, p.projectName, b.bugSummary, b.bugDescription, b.dateStarted, b.resolution, b.priority, b.fixed 
+                    FROM Bugs b
+                    JOIN Projects p ON b.projectId = p.projectId`;
+
+    mysql.pool.query(sql_query, (err, rows, fields) => {
+        if (err) {
+            next(err);
+            return;
+        }
+        
+        // Put the mysql data into an array for rendering
+        let bugsDbData = [];
+        for (let i in rows) {
+            bugsDbData.push({
+                bugSummary: rows[i].bugSummary,
+                bugDescription: rows[i].bugDescription,
+                projectName: rows[i].projectName,
+                programmers: 'hello',
+                dateStarted: rows[i].dateStarted,
+                priority: rows[i].priority,
+                fixed: rows[i].fixed,
+                resolution: rows[i].resolution
+            });
+        }
+        context.bugs = bugsDbData;
+        res.render('user-home', context);
+    });
 });
 
 
 // EDIT BUG PAGE - Route where a bug can be edited
 app.get('/edit-bug', function renderAddCompany(req, res) {
     let context = {};
+
+
     res.render('edit-bug', context);
 });
 
@@ -48,7 +76,9 @@ app.get('/edit-bug', function renderAddCompany(req, res) {
 // ADD COMPANY PAGE - Route to view all existing companies
 app.get('/add-company', function renderAddCompany(req, res) {
     let context = {};
-    mysql.pool.query(`SELECT * FROM Companies`, (err, rows, fields) => {
+    let sql_query = `SELECT * FROM Companies`;
+
+    mysql.pool.query(sql_query, (err, rows, fields) => {
         if (err) {
             next(err);
             return;
@@ -72,8 +102,9 @@ app.get('/add-company', function renderAddCompany(req, res) {
 // ADD PROJECT PAGE - Route where a project can be added
 app.get('/add-project', function renderAddProject(req, res) {
     let context = {};
-    mysql.pool.query(`SELECT * FROM Projects AS p 
-    JOIN Companies AS c ON p.companyId = c.companyId`, (err, rows, fields) => {
+    let sql_query = `SELECT * FROM Projects AS p JOIN Companies AS c ON p.companyId = c.companyId`;
+
+    mysql.pool.query(sql_query, (err, rows, fields) => {
         if (err) {
             next(err);
             return;
@@ -100,7 +131,15 @@ app.get('/add-project', function renderAddProject(req, res) {
 // ADD PROGRAMMER PAGE - Route where a programmer can be added
 app.get('/add-programmer', function renderAddProgrammer(req, res) {
     let context = {};
-    mysql.pool.query(`SELECT * FROM Programmers`, (err, rows, fields) => {
+    let sql_query = `SELECT * FROM Programmers`;
+
+    mysql.pool.query(sql_query, (err, rows, fields) => {
+        if (err) {
+            next(err);
+            return;
+        }
+
+        // Put the mysql data into an array for rendering
         let programmersDbData = [];
         for (let i in rows) {
             programmersDbData.push({
@@ -120,14 +159,14 @@ app.get('/add-programmer', function renderAddProgrammer(req, res) {
 /* ERROR ROUTES -------------------------------------------------------------*/
 
 // PAGE NOT FOUND - Route for bad path error page
-app.use(function(req,res) {
+app.use((req, res) => {
     res.status(404);
     res.render('404');
 });
    
 
 // INTERNAL SERVER ERROR - Route for a server-side error
-app.use(function(err, req, res, next) {
+app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500);
     res.render('500');
@@ -136,7 +175,7 @@ app.use(function(err, req, res, next) {
 
 /* LISTEN ON PORT -----------------------------------------------------------*/
 
-// PORT LISTENER - Set to render on a static port set globally
-app.listen(app.get('port'), function(){
-    console.log('Express started at http://localhost:' + app.get('port') + '; press ctrl-C to terminate.');
+// Set to render on a static port set globally
+app.listen(app.get('port'), () => {
+    console.log(`\nExpress started at http://localhost:${app.get('port')}\nPress ctrl-C to terminate.`);
 });

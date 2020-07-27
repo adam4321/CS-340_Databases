@@ -99,30 +99,20 @@
                 </tr>
             </thead>
             <tbody>
+                {{#each bugs}}
                 <tr>
-                    <td class="mdl-data-table__cell--non-numeric">Lorem ipsum dolor sit amet consectetur adipisicing elit.</td>
-                    <td class="mdl-data-table__cell--non-numeric">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Totam, facilis.</td>
-                    <td class="mdl-data-table__cell--non-numeric">Project 3</td>
-                    <td class="mdl-data-table__cell--non-numeric">Programmer 1<br>Programmer 3</td>
-                    <td>1/2/34</td>
-                    <td>5</td>
-                    <td>Yes</td>
-                    <td class="mdl-data-table__cell--non-numeric">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{this.bugSummary}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{this.bugDescription}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{this.projectName}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{this.programmers}}<br>Programmer 3</td>
+                    <td>{{this.dateStarted}}</td>
+                    <td>{{this.priority}}</td>
+                    <td>{{#if this.fixed}} Yes {{else}} No {{/if}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{this.resolution}}</td>
                     <td><a class="update-btn" href="/edit-bug">Update</a></td>
                     <td><a class="update-btn">Delete</a></td>
                 </tr>
-                <tr>
-                    <td class="mdl-data-table__cell--non-numeric">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi.</td>
-                    <td class="mdl-data-table__cell--non-numeric">Lorem ipsum dolor sit, amet consectetur adipisicing.</td>
-                    <td class="mdl-data-table__cell--non-numeric">Project 1</td>
-                    <td class="mdl-data-table__cell--non-numeric">Programmer 2</td>
-                    <td>1/2/34</td>
-                    <td>5</td>
-                    <td>No</td>
-                    <td class="mdl-data-table__cell--non-numeric">Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis, exercitationem.</td>
-                    <td><a class="update-btn" href="/edit-bug">Update</a></td>
-                    <td><a class="update-btn">Delete</a></td>
-                </tr>
+                {{/each}}
             </tbody>
         </table>
     </div>

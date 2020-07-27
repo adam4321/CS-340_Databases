@@ -12,7 +12,8 @@ SELECT * FROM Companies;
 
 
 --Add new company
-INSERT INTO Companies (companyName, dateJoined) VALUES (:companyNameInput, :dateJoinedInput);
+INSERT INTO Companies (companyName, dateJoined) 
+    VALUES (:companyNameInput, :dateJoinedInput);
 
 
 
@@ -24,10 +25,9 @@ JOIN Companies AS c ON p.companyId = c.companyId;
 
 
 -- Add new project
-INSERT INTO Projects (projectName, companyId, dateStarted, lastUpdated, inMaintenance) VALUES
-(:projectNameInput, 
-(SELECT companyId FROM Companies WHERE companyName = :companyNameInput), 
-:dateStartedInput, :lastUpdatedInput, :inMaintenanceInput);
+INSERT INTO Projects (projectName, companyId, dateStarted, lastUpdated, inMaintenance)
+    VALUES (:projectNameInput, (SELECT companyId FROM Companies WHERE companyName = :companyNameInput),
+            :dateStartedInput, :lastUpdatedInput, :inMaintenanceInput);
 
 
 
@@ -38,26 +38,28 @@ SELECT * FROM Programmers;
 
 
 -- Add new programmer 
-INSERT INTO Programmer (firstName, lastName, email, dateStarted, accessLevel) VALUES 
-(:firstNameInput, :lastNameInput, :emailInput, :dateStartedInput, :accessLevelInput);
+INSERT INTO Programmer (firstName, lastName, email, dateStarted, accessLevel) 
+    VALUES (:firstNameInput, :lastNameInput, :emailInput, :dateStartedInput, :accessLevelInput);
 
 
 
 -- Bugs Page ------------------------------------------------------------------
 
 -- View all existing Bugs
-SELECT b.bugId, p.projectName, b.bugSummary, b.bugDescription, b.dateStarted FROM Bugs b
-JOIN Projects p ON b.projectId = p.projectId
+SELECT b.bugId, p.projectName, b.bugSummary, b.bugDescription, b.dateStarted, b.resolution, b.priority, b.fixed 
+    FROM Bugs b
+    JOIN Projects p ON b.projectId = p.projectId
 
-SELECT p.firstName, p.lastName FROM Programmers p 
-JOIN Bugs_Programmers bp ON p.programmerId = bp.programmerId
-WHERE bp.bugId = :bugIdInput;  -- Run once per bug
+SELECT p.firstName, p.lastName 
+    FROM Programmers p 
+    JOIN Bugs_Programmers bp ON p.programmerId = bp.programmerId
+    WHERE bp.bugId = :bugIdInput;  -- Run once per bug
 
 
 -- Add new bug
-INSERT INTO Bugs (projectId, bugSummary, bugDescription, dateStarted, priority, resolution, fixed) VALUES
-((SELECT projectId FROM Projects WHERE projectName = :projectNameInput),
-:bugSummaryInput, :bugDescriptionInput, :dateStartedInput, :priorityInput, :resolutionInput, :fixedInput);
+INSERT INTO Bugs (projectId, bugSummary, bugDescription, dateStarted, priority, resolution, fixed) 
+    VALUES ((SELECT projectId FROM Projects WHERE projectName = :projectNameInput),
+            :bugSummaryInput, :bugDescriptionInput, :dateStartedInput, :priorityInput, :resolutionInput, :fixedInput);
 
 
 INSERT INTO Bugs_Programmers (bugId, programmerId) VALUES (:bugId, :programmerId);  -- Run once per programmer
