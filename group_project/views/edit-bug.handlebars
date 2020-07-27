@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
   <link type="image/x-icon" rel="shortcut icon" href="favicon-1.ico"/>
-  <link type="text/css" rel="stylesheet" href="user-home.css">
+  <link type="text/css" rel="stylesheet" href="css/user-home.css">
         
         
 <!-- Container for the dashboard -->
@@ -19,9 +19,9 @@
         <form id="recordForm">
             <div class="grid-container">
                 <div><label class="textarea-label" for="bug-summary">Bug Summary</label></div>
-                <div><textarea name="bug-summary" id="bug-summary-field"></textarea></div>
+                <div><textarea name="bug-summary" id="bug-summary-field">{{editBug.bugSummary}}</textarea></div>
                 <div><label class="textarea-label" for="bug-description">Bug Description</label></div>
-                <div><textarea name="bug-description" id="bug-description-field"></textarea></div>
+                <div><textarea name="bug-description" id="bug-description-field">{{editBug.bugDescription}}</textarea></div>
                 <div><label for="bug-project">Project</label></div>
                 <div>
                 <select name="bug-project" id="bug-project-field">
@@ -44,18 +44,27 @@
                 <label for="programmer3">Programmer 4</label><br>  
                 </div>
                 <div><label for="bug-start-date">Date Started</label></div>
-                <div><input type="date" name="bug-start-date" id="bug-start-date-field"></div>
+                <div><input type="date" name="bug-start-date" id="bug-start-date-field" value="{{editBug.dateStarted}}"></div>
                 <div><label for="bug-priority">Priority</label></div>
-                <div><input type="number" name="bug-priority" id="bug-priority-field"></div>
+                <div><input type="number" name="bug-priority" id="bug-priority-field" value="{{editBug.priority}}"></div>
+                
+                {{!-- Render the correct state of fixed --}}
                 <div><label for="bug-fixed">Fixed</label></div>
                 <div>
-                <input class="radio-input" type="radio" name="bug-fixed" value="1" id="bug-fixed-yes">
+                {{#if editBug.fixed}}
+                <input class="radio-input" type="radio" name="bug-fixed" value="1" id="bug-fixed-yes" checked="checked">
                 <label class="radio-label" for="bug-fixed">Yes</label>
                 <input class="radio-input" type="radio" name="bug-fixed" value="0" id="bug-fixed-no">
                 <label class="radio-label" for="bug-fixed">No</label>
+                {{else}}
+                <input class="radio-input" type="radio" name="bug-fixed" value="1" id="bug-fixed-yes">
+                <label class="radio-label" for="bug-fixed">Yes</label>
+                <input class="radio-input" type="radio" name="bug-fixed" value="0" id="bug-fixed-no" checked="checked">
+                <label class="radio-label" for="bug-fixed">No</label>
+                {{/if}}
                 </div>
                 <div><label class="textarea-label" for="bug-resolution">Resolution</label></div>
-                <div><textarea name="bug-resolution" id="bug-resolution-field"></textarea></div>
+                <div><textarea name="bug-resolution" id="bug-resolution-field">{{editBug.resolution}}</textarea></div>
                 <div>
                 <input 
                     type="submit" 

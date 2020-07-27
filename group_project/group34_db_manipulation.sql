@@ -45,6 +45,14 @@ INSERT INTO Programmer (firstName, lastName, email, dateStarted, accessLevel)
 
 -- Bugs Page ------------------------------------------------------------------
 
+-- Display the project names in the dropdown
+SELECT projectName FROM projects;
+
+
+-- Display the Programmers in the scrolling checkbox list
+SELECT firstName, lastName FROM PROGRAMMERS;
+
+
 -- View all existing Bugs with their programmers
 SELECT p.firstName, p.lastName, b.bugId, pj.projectName, b.bugSummary,
 b.bugDescription, b.dateStarted, b.resolution, b.priority, b.fixed 
@@ -64,7 +72,26 @@ INSERT INTO Bugs (projectId, bugSummary, bugDescription, dateStarted, priority, 
 INSERT INTO Bugs_Programmers (bugId, programmerId) VALUES (:bugId, :programmerId);  -- Run once per programmer
 
 
--- Update bug
+-- Update bug -----------------------------------------------------------------
+
+-- Display the project names in the dropdown
+SELECT projectName FROM projects;
+
+
+-- Display the Programmers in the scrolling checkbox list
+SELECT firstName, lastName FROM PROGRAMMERS;
+
+
+-- View all existing Bugs with their programmers
+SELECT p.firstName, p.lastName, b.bugId, pj.projectName, b.bugSummary,
+b.bugDescription, b.dateStarted, b.resolution, b.priority, b.fixed 
+	FROM Programmers p 
+		JOIN Bugs_Programmers bp ON p.programmerId = bp.programmerId
+		JOIN Bugs b ON bp.bugId = b.bugId
+		JOIN Projects pj ON b.projectId = pj.projectId
+			ORDER BY bugId;
+
+            
 UPDATE Bugs SET bugSummary = :bugSummaryInput, bugDescription = :bugDescriptionInput, dateStarted = :dateStartedInput,
 priority = :priorityInput, resolution = :resolutionInput, fixed = :fixedInput WHERE bugId = :bugIdInput;
 

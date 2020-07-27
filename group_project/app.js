@@ -32,16 +32,23 @@ app.set('port', 50000);
 /* GET ROUTES ---------------------------------------------------------------*/
 
 // BUGS MAIN PAGE - Route where the bug list will be rendered
-app.get('/', function renderHome(req, res) {
-    let context = {};
-    let sql_query = `SELECT p.firstName, p.lastName, b.bugId, pj.projectName, b.bugSummary, b.bugDescription, b.dateStarted, b.resolution, b.priority, b.fixed 
+app.get('/', function renderHome(req, res, next) {
+    
+    // 1st query gathers the projects for the dropdown
+    let sql_query_1 = `SELECT projectName FROM projects`;
+    // 2nd query gathers the programmers for the scrolling checkbox list
+    let sql_query_2 = `SELECT firstName, lastName FROM PROGRAMMERS`;
+    // 3rd query populates the bug list
+    let sql_query_3 = `SELECT p.firstName, p.lastName, b.bugId, pj.projectName, b.bugSummary, b.bugDescription, b.dateStarted, b.resolution, b.priority, b.fixed 
 	                FROM Programmers p 
 		                JOIN Bugs_Programmers bp ON p.programmerId = bp.programmerId
 		                JOIN Bugs b ON bp.bugId = b.bugId
 		                JOIN Projects pj ON b.projectId = pj.projectId
-			                ORDER BY bugId;`;
+                            ORDER BY bugId`;
+                            
+    let context = {};
 
-    mysql.pool.query(sql_query, (err, rows, fields) => {
+    mysql.pool.query(sql_query_3, (err, rows, fields) => {
         if (err) {
             next(err);
             return;
@@ -58,7 +65,7 @@ app.get('/', function renderHome(req, res) {
             }
             // This is a new entry
             else {
-                prevEntryBugId = rows[i].bugId;         // Cache the previous bugId
+                prevEntryBugId = rows[i].bugId;         // Cache the bugId
                 bugProgrammers = [];                    // Add the programmer to the array
                 bugProgrammers.push(rows[i].firstName + ' ' + rows[i].lastName);
 
@@ -83,18 +90,70 @@ app.get('/', function renderHome(req, res) {
 
 
 // EDIT BUG PAGE - Route where a bug can be edited
-app.get('/edit-bug', function renderAddCompany(req, res) {
+app.get('/edit-bug', function renderAddCompany(req, res, next) {
+    
+    // 1st query gathers the projects for the dropdown
+    let sql_query_1 = `SELECT projectName FROM projects`;
+    // 2nd query gathers the programmers for the scrolling checkbox list
+    let sql_query_2 = `SELECT firstName, lastName FROM PROGRAMMERS`;
+    // 3rd query populates the update bug form
+    let sql_query_3 = `SELECT p.firstName, p.lastName, b.bugId, pj.projectName, b.bugSummary, b.bugDescription, b.dateStarted, b.resolution, b.priority, b.fixed 
+                    FROM Programmers p 
+                        JOIN Bugs_Programmers bp ON p.programmerId = bp.programmerId
+                        JOIN Bugs b ON bp.bugId = b.bugId
+                        JOIN Projects pj ON b.projectId = pj.projectId
+                        WHERE bp.bugId=?
+                            ORDER BY bugId`
+
     let context = {};
 
+    mysql.pool.query(sql_query_3, [req.query.bugId], (err, rows, fields) => {
+        if (err) {
+            next(err);
+            return;
+        }
 
-    res.render('edit-bug', context);
+        let prevEntryBugId;           // Cache the previous entry's id to avoid duplication
+        let bugProgrammers = [];      // Hold the programmers for each entry
+        let editBugDbData = [];          // Put the mysql data into an array for rendering
+
+        for (let i in rows) {
+            // If this is the same entry as the last, then only add the programmer to the array
+            if (prevEntryBugId == rows[i].bugId) {
+                bugProgrammers.push(rows[i].firstName + ' ' + rows[i].lastName);
+            }
+            // This is a new entry
+            else {
+                prevEntryBugId = rows[i].bugId;         // Cache the bugId
+                bugProgrammers = [];                    // Add the programmer to the array
+                bugProgrammers.push(rows[i].firstName + ' ' + rows[i].lastName);
+
+                // Push a single entry
+                editBugDbData.push({
+                    bugId: rows[i].bugId,
+                    bugSummary: rows[i].bugSummary,
+                    bugDescription: rows[i].bugDescription,
+                    projectName: rows[i].projectName,
+                    programmers: bugProgrammers,
+                    dateStarted: rows[i].dateStarted,
+                    priority: rows[i].priority,
+                    fixed: rows[i].fixed,
+                    resolution: rows[i].resolution
+                });
+            }
+        }
+        context.editBug = editBugDbData[0];
+        console.log(context.editBug);
+        res.render('edit-bug', context);
+    });
 });
 
 
 // ADD COMPANY PAGE - Route to view all existing companies
-app.get('/add-company', function renderAddCompany(req, res) {
-    let context = {};
+app.get('/add-company', function renderAddCompany(req, res, next) {
+    
     let sql_query = `SELECT * FROM Companies`;
+    let context = {};
 
     mysql.pool.query(sql_query, (err, rows, fields) => {
         if (err) {
@@ -118,9 +177,10 @@ app.get('/add-company', function renderAddCompany(req, res) {
 
 
 // ADD PROJECT PAGE - Route where a project can be added
-app.get('/add-project', function renderAddProject(req, res) {
-    let context = {};
+app.get('/add-project', function renderAddProject(req, res, next) {
+    
     let sql_query = `SELECT * FROM Projects AS p JOIN Companies AS c ON p.companyId = c.companyId`;
+    let context = {};
 
     mysql.pool.query(sql_query, (err, rows, fields) => {
         if (err) {
@@ -147,9 +207,10 @@ app.get('/add-project', function renderAddProject(req, res) {
 
 
 // ADD PROGRAMMER PAGE - Route where a programmer can be added
-app.get('/add-programmer', function renderAddProgrammer(req, res) {
-    let context = {};
+app.get('/add-programmer', function renderAddProgrammer(req, res, next) {
+    
     let sql_query = `SELECT * FROM Programmers`;
+    let context = {};
 
     mysql.pool.query(sql_query, (err, rows, fields) => {
         if (err) {
