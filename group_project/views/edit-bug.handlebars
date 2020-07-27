@@ -27,21 +27,17 @@
                 <select name="bug-project" id="bug-project-field">
                     <option value="" disabled selected>Select a project</option>
                     <option value="0">NULL</option>
-                    <option value="1">project 1</option>
-                    <option value="2">project 2</option>
-                    <option value="3">project 3</option>
+                    {{#each projects}}
+                    <option value="1">{{this.projectName}}</option>
+                    {{/each}}
                 </select>          
                 </div>
                 <div><label for="bug-programmer">Programmers</label></div>
                 <div class="checkbox-container">
-                <input class="checkbox-input" type="checkbox" id="programmer1" name="programmer1" value="1">
-                <label for="programmer1">Programmer 1</label><br>
-                <input class="checkbox-input" type="checkbox" id="programmer2" name="programmer2" value="2">
-                <label for="programmer2">Programmer 2</label><br>
-                <input class="checkbox-input" type="checkbox" id="programmer3" name="programmer3" value="3">
-                <label for="programmer3">Programmer 3</label><br>
-                <input class="checkbox-input" type="checkbox" id="programmer3" name="programmer3" value="3">
-                <label for="programmer3">Programmer 4</label><br>  
+                  {{#each programmers}}
+                  <input class="checkbox-input" type="checkbox" id="programmer1" name="{{this.firstName}} {{this.lastName}}" value="1">
+                  <label for="programmer1">{{this.firstName}} {{this.lastName}}</label><br>
+                  {{/each}} 
                 </div>
                 <div><label for="bug-start-date">Date Started</label></div>
                 <div><input type="date" name="bug-start-date" id="bug-start-date-field" value="{{editBug.dateStarted}}"></div>

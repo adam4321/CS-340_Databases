@@ -35,17 +35,16 @@ app.set('port', 50000);
 app.get('/', function renderHome(req, res, next) {
     
     // 1st query gathers the projects for the dropdown
-    let sql_query_1 = `SELECT projectName FROM projects`;
+    let sql_query_1 = `SELECT projectName FROM Projects`;
     // 2nd query gathers the programmers for the scrolling checkbox list
-    let sql_query_2 = `SELECT firstName, lastName FROM PROGRAMMERS`;
+    let sql_query_2 = `SELECT firstName, lastName FROM Programmers`;
     // 3rd query populates the bug list
     let sql_query_3 = `SELECT p.firstName, p.lastName, b.bugId, pj.projectName, b.bugSummary, b.bugDescription, b.dateStarted, b.resolution, b.priority, b.fixed 
 	                FROM Programmers p 
 		                JOIN Bugs_Programmers bp ON p.programmerId = bp.programmerId
 		                JOIN Bugs b ON bp.bugId = b.bugId
 		                JOIN Projects pj ON b.projectId = pj.projectId
-                            ORDER BY bugId`;
-                            
+                            ORDER BY bugId`;                       
     let context = {};
 
     mysql.pool.query(sql_query_3, (err, rows, fields) => {
@@ -82,9 +81,40 @@ app.get('/', function renderHome(req, res, next) {
                     resolution: rows[i].resolution
                 });
             }
-        }
-        context.bugs = bugsDbData;
-        res.render('user-home', context);
+        } 
+        // Query for the list of programmers
+        mysql.pool.query(sql_query_2,  (err, rows, fields) => {
+            if (err) {
+                next(err);
+                return;
+            }
+            let programmersDbData = [];
+            for (let i in rows) {
+                programmersDbData.push({
+                    firstName: rows[i].firstName,
+                    lastName: rows[i].lastName
+                });
+            }
+            // Query for the list of projects
+            mysql.pool.query(sql_query_1,  (err, rows, fields) => {
+                if (err) {
+                    next(err);
+                    return;
+                }
+                let projectDbData = [];
+                for (let i in rows) {
+                    projectDbData.push({
+                        projectName: rows[i].projectName
+                    });
+                }
+                // After the 3 calls return then populate the context array
+                context.bugs = bugsDbData;
+                context.programmers = programmersDbData;
+                context.projects = projectDbData
+                console.log(context)
+                res.render('user-home', context);
+            });
+        });
     });
 });
 
@@ -93,9 +123,9 @@ app.get('/', function renderHome(req, res, next) {
 app.get('/edit-bug', function renderAddCompany(req, res, next) {
     
     // 1st query gathers the projects for the dropdown
-    let sql_query_1 = `SELECT projectName FROM projects`;
+    let sql_query_1 = `SELECT projectName FROM Projects`;
     // 2nd query gathers the programmers for the scrolling checkbox list
-    let sql_query_2 = `SELECT firstName, lastName FROM PROGRAMMERS`;
+    let sql_query_2 = `SELECT firstName, lastName FROM Programmers`;
     // 3rd query populates the update bug form
     let sql_query_3 = `SELECT p.firstName, p.lastName, b.bugId, pj.projectName, b.bugSummary, b.bugDescription, b.dateStarted, b.resolution, b.priority, b.fixed 
                     FROM Programmers p 
@@ -142,16 +172,76 @@ app.get('/edit-bug', function renderAddCompany(req, res, next) {
                 });
             }
         }
-        context.editBug = editBugDbData[0];
-        console.log(context.editBug);
-        res.render('edit-bug', context);
+        // Query for the list of programmers
+        mysql.pool.query(sql_query_2,  (err, rows, fields) => {
+            if (err) {
+                next(err);
+                return;
+            }
+            let programmersDbData = [];
+            for (let i in rows) {
+                programmersDbData.push({
+                    firstName: rows[i].firstName,
+                    lastName: rows[i].lastName
+                });
+            }
+            // Query for the list of projects
+            mysql.pool.query(sql_query_1,  (err, rows, fields) => {
+                if (err) {
+                    next(err);
+                    return;
+                }
+                let projectDbData = [];
+                for (let i in rows) {
+                    projectDbData.push({
+                        projectName: rows[i].projectName
+                    });
+                }
+                // After the 3 calls return then populate the context array
+                context.editBug = editBugDbData[0];
+                context.programmers = programmersDbData;
+                context.projects = projectDbData
+                console.log(context)
+                res.render('edit-bug', context);
+            });
+        });
     });
+});
+
+
+// DELETE ROW - Route to delete a row from the bug list
+app.get("/delete", function(req, res, next) {
+
+    // Delete the row with the passed in bugId
+    let sql_query_1 = `DELETE FROM Bugs WHERE bugId=?`;
+    let sql_query_2 = `SELECT * FROM Bugs`;
+
+    var context = {};
+
+    mysql.pool.query(
+        sql_query_1, [req.query.bugId],
+        function(err, result) {
+            if (err) {
+                next(err);
+                return;
+            }
+            mysql.pool.query(sql_query_2, function(err, rows, fields) {
+                if (err) {
+                    next(err);
+                    return;
+                }
+                context.results = JSON.stringify(rows);
+                res.render('user-home', context);
+            });
+        }
+    );
 });
 
 
 // ADD COMPANY PAGE - Route to view all existing companies
 app.get('/add-company', function renderAddCompany(req, res, next) {
     
+    // Find all of the current companies
     let sql_query = `SELECT * FROM Companies`;
     let context = {};
 
@@ -179,6 +269,7 @@ app.get('/add-company', function renderAddCompany(req, res, next) {
 // ADD PROJECT PAGE - Route where a project can be added
 app.get('/add-project', function renderAddProject(req, res, next) {
     
+    // Find all of the projects and their associated companies
     let sql_query = `SELECT * FROM Projects AS p JOIN Companies AS c ON p.companyId = c.companyId`;
     let context = {};
 
@@ -209,6 +300,7 @@ app.get('/add-project', function renderAddProject(req, res, next) {
 // ADD PROGRAMMER PAGE - Route where a programmer can be added
 app.get('/add-programmer', function renderAddProgrammer(req, res, next) {
     
+    // Find all of the programmers
     let sql_query = `SELECT * FROM Programmers`;
     let context = {};
 
