@@ -35,9 +35,9 @@ app.set('port', 50000);
 app.get('/', function renderHome(req, res, next) {
     
     // 1st query gathers the projects for the dropdown
-    let sql_query_1 = `SELECT projectName FROM Projects`;
+    let sql_query_1 = `SELECT projectName, projectId FROM Projects`;
     // 2nd query gathers the programmers for the scrolling checkbox list
-    let sql_query_2 = `SELECT firstName, lastName FROM Programmers`;
+    let sql_query_2 = `SELECT programmerId, firstName, lastName FROM Programmers`;
     // 3rd query populates the bug list
     let sql_query_3 = `SELECT p.firstName, p.lastName, b.bugId, pj.projectName, b.bugSummary, b.bugDescription, b.dateStarted, b.resolution, b.priority, b.fixed 
 	                FROM Programmers p 
@@ -91,6 +91,7 @@ app.get('/', function renderHome(req, res, next) {
             let programmersDbData = [];
             for (let i in rows) {
                 programmersDbData.push({
+                    programmerId: rows[i].programmerId,
                     firstName: rows[i].firstName,
                     lastName: rows[i].lastName
                 });
@@ -104,14 +105,15 @@ app.get('/', function renderHome(req, res, next) {
                 let projectDbData = [];
                 for (let i in rows) {
                     projectDbData.push({
-                        projectName: rows[i].projectName
+                        projectName: rows[i].projectName,
+                        projectId: rows[i].projectId
                     });
                 }
-                // After the 3 calls return then populate the context array
+                // After the 3 calls return, then populate the context array
                 context.bugs = bugsDbData;
                 context.programmers = programmersDbData;
-                context.projects = projectDbData
-                console.log(context)
+                context.projects = projectDbData;
+                console.log(context);
                 res.render('user-home', context);
             });
         });
@@ -123,9 +125,9 @@ app.get('/', function renderHome(req, res, next) {
 app.get('/edit-bug', function renderAddCompany(req, res, next) {
     
     // 1st query gathers the projects for the dropdown
-    let sql_query_1 = `SELECT projectName FROM Projects`;
+    let sql_query_1 = `SELECT projectName, projectId FROM Projects`;
     // 2nd query gathers the programmers for the scrolling checkbox list
-    let sql_query_2 = `SELECT firstName, lastName FROM Programmers`;
+    let sql_query_2 = `SELECT programmerId, firstName, lastName FROM Programmers`;
     // 3rd query populates the update bug form
     let sql_query_3 = `SELECT p.firstName, p.lastName, b.bugId, pj.projectName, b.bugSummary, b.bugDescription, b.dateStarted, b.resolution, b.priority, b.fixed 
                     FROM Programmers p 
@@ -145,7 +147,7 @@ app.get('/edit-bug', function renderAddCompany(req, res, next) {
 
         let prevEntryBugId;           // Cache the previous entry's id to avoid duplication
         let bugProgrammers = [];      // Hold the programmers for each entry
-        let editBugDbData = [];          // Put the mysql data into an array for rendering
+        let editBugDbData = [];       // Put the mysql data into an array for rendering
 
         for (let i in rows) {
             // If this is the same entry as the last, then only add the programmer to the array
@@ -181,6 +183,7 @@ app.get('/edit-bug', function renderAddCompany(req, res, next) {
             let programmersDbData = [];
             for (let i in rows) {
                 programmersDbData.push({
+                    programmerId: rows[i].programmerId,
                     firstName: rows[i].firstName,
                     lastName: rows[i].lastName
                 });
@@ -194,14 +197,15 @@ app.get('/edit-bug', function renderAddCompany(req, res, next) {
                 let projectDbData = [];
                 for (let i in rows) {
                     projectDbData.push({
-                        projectName: rows[i].projectName
+                        projectName: rows[i].projectName,
+                        projectId: rows[i].projectId
                     });
                 }
-                // After the 3 calls return then populate the context array
+                // After the 3 calls return, then populate the context array
                 context.editBug = editBugDbData[0];
                 context.programmers = programmersDbData;
-                context.projects = projectDbData
-                console.log(context)
+                context.projects = projectDbData;
+                console.log(context);
                 res.render('edit-bug', context);
             });
         });

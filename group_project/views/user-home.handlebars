@@ -26,14 +26,14 @@
             <option value="" disabled selected>Select a project</option>
             <option value="0">NULL</option>
             {{#each projects}}
-            <option value="1">{{this.projectName}}</option>
+            <option value="{{this.projectId}}">{{this.projectName}}</option>
             {{/each}}
           </select>          
         </div>
         <div><label for="bug-programmer">Programmers</label></div>
         <div class="checkbox-container">
           {{#each programmers}}
-          <input class="checkbox-input" type="checkbox" id="programmer1" name="{{this.firstName}} {{this.lastName}}" value="1">
+          <input class="checkbox-input" type="checkbox" id="programmer1" name="{{this.firstName}} {{this.lastName}}" value="{{this.programmerId}}">
           <label for="programmer1">{{this.firstName}} {{this.lastName}}</label><br>
           {{/each}}
         </div>

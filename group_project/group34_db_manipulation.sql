@@ -46,11 +46,11 @@ INSERT INTO Programmer (firstName, lastName, email, dateStarted, accessLevel)
 -- Bugs Page ------------------------------------------------------------------
 
 -- Display the project names in the dropdown
-SELECT projectName FROM Projects;
+SELECT projectName, projectId FROM Projects;
 
 
 -- Display the Programmers in the scrolling checkbox list
-SELECT firstName, lastName FROM Programmers;
+SELECT programmerId, firstName, lastName FROM Programmers;
 
 
 -- View all existing Bugs with their programmers
