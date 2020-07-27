@@ -1,22 +1,27 @@
--- The colon : will be used to variables containing backend data
+-- -------------------------------
+-- CS-340 Summer 2020: Group 34
+-- -------------------------------
+
+-- The colon operator : will be used to indicate variables containing backend data
 
 
--- Companies Page -------------------------------
+-- Companies Page -------------------------------------------------------------
 
 -- View all existing Companies
-SELECT companyId, companyName, dateJoined FROM Companies;
+SELECT * FROM Companies;
+
 
 --Add new company
 INSERT INTO Companies (companyName, dateJoined) VALUES (:companyNameInput, :dateJoinedInput);
 
 
 
--- Projects Page --------------------------------
+-- Projects Page --------------------------------------------------------------
 
 -- View all existing Projects
-SELECT projectId, projectName, companyName, dateStarted, lastUpdated, inMaintenance FROM Projects AS p
-JOIN Companies AS c ON p.companyId = c.companyId
-GROUP BY projectId ASC;
+SELECT * FROM Projects AS p
+JOIN Companies AS c ON p.companyId = c.companyId;
+
 
 -- Add new project
 INSERT INTO Projects (projectName, companyId, dateStarted, lastUpdated, inMaintenance) VALUES
@@ -26,10 +31,11 @@ INSERT INTO Projects (projectName, companyId, dateStarted, lastUpdated, inMainte
 
 
 
--- Programmers Page -----------------------------
+-- Programmers Page -----------------------------------------------------------
 
 -- View all existing Programmers
-SELECT programmerId, firstName, lastName, email, dateStarted, accessLevel FROM Programmers;
+SELECT * FROM Programmers;
+
 
 -- Add new programmer 
 INSERT INTO Programmer (firstName, lastName, email, dateStarted, accessLevel) VALUES 
@@ -37,7 +43,7 @@ INSERT INTO Programmer (firstName, lastName, email, dateStarted, accessLevel) VA
 
 
 
--- Bugs Page ------------------------------------
+-- Bugs Page ------------------------------------------------------------------
 
 -- View all existing Bugs
 SELECT b.bugId, p.projectName, b.bugSummary, b.bugDescription, b.dateStarted FROM Bugs b
@@ -47,20 +53,25 @@ SELECT p.firstName, p.lastName FROM Programmers p
 JOIN Bugs_Programmers bp ON p.programmerId = bp.programmerId
 WHERE bp.bugId = :bugIdInput;  -- Run once per bug
 
+
 -- Add new bug
 INSERT INTO Bugs (projectId, bugSummary, bugDescription, dateStarted, priority, resolution, fixed) VALUES
 ((SELECT projectId FROM Projects WHERE projectName = :projectNameInput),
 :bugSummaryInput, :bugDescriptionInput, :dateStartedInput, :priorityInput, :resolutionInput, :fixedInput);
 
+
 INSERT INTO Bugs_Programmers (bugId, programmerId) VALUES (:bugId, :programmerId);  -- Run once per programmer
+
 
 -- Update bug
 UPDATE Bugs SET bugSummary = :bugSummaryInput, bugDescription = :bugDescriptionInput, dateStarted = :dateStartedInput,
 priority = :priorityInput, resolution = :resolutionInput, fixed = :fixedInput WHERE bugId = :bugIdInput;
 
+
 -- Update M:M relationship
 INSERT INTO Bugs_Programmers (bugId, programmerId) VALUES (:bugId, :programmerId);
 DELETE FROM Bugs_Programmers WHERE bugId = :bugIdInput AND programmerId = :programmerId;
+
 
 -- Delete bug
 DELETE FROM Bugs_Programmers WHERE bugId = :bugIdInput;

@@ -73,27 +73,15 @@
                 </tr>
             </thead>
             <tbody>
+                {{#each projects}}
                 <tr>
-                    <td class="mdl-data-table__cell--non-numeric">Project 1</td>
-                    <td class="mdl-data-table__cell--non-numeric">Company 3</td>
-                    <td>1/2/34</td>
-                    <td>5/6/78</td>
-                    <td>Yes</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{this.projectName}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{this.companyName}}</td>
+                    <td>{{this.dateStarted}}</td>
+                    <td>{{this.lastUpdated}}</td>
+                    <td>{{#if this.inMaintenance}} Yes {{else}} No {{/if}}</td>
                 </tr>
-                <tr>
-                    <td class="mdl-data-table__cell--non-numeric">Project 2</td>
-                    <td class="mdl-data-table__cell--non-numeric">Company 2</td>
-                    <td>1/2/34</td>
-                    <td>5/6/78</td>
-                    <td>No</td>
-                </tr>
-                <tr>
-                    <td class="mdl-data-table__cell--non-numeric">Project 3</td>
-                    <td class="mdl-data-table__cell--non-numeric">Company 1</td>
-                    <td>1/2/34</td>
-                    <td>5/6/78</td>
-                    <td>No</td>
-                </tr>                
+                {{/each}}                
             </tbody>
         </table>
     </div>

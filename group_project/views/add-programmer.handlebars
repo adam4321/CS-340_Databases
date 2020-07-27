@@ -63,23 +63,18 @@
                 </tr>
             </thead>
             <tbody>
+                {{#each programmers}}
                 <tr>
-                    <td class="mdl-data-table__cell--non-numeric">joe</td>
-                    <td class="mdl-data-table__cell--non-numeric">smith</td>
-                    <td class="mdl-data-table__cell--non-numeric">js@mail.com</td>
-                    <td>1/2/34</td>
-                    <td>3</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{this.firstName}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{this.lastName}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{this.email}}</td>
+                    <td>{{this.dateStarted}}</td>
+                    <td>{{this.accessLevel}}</td>
                 </tr>
-                <tr>
-                    <td class="mdl-data-table__cell--non-numeric">bob</td>
-                    <td class="mdl-data-table__cell--non-numeric">apple</td>
-                    <td class="mdl-data-table__cell--non-numeric">ba@mail.com</td>
-                    <td>2/3/45</td>
-                    <td>4</td>
-                </tr>
+                {{/each}}
             </tbody>
         </table>
     </div>
 </div>
 
-{{!-- <script src="add-project.js"></script> --}}
+{{!-- <script src="add-programmers.js"></script> --}}
