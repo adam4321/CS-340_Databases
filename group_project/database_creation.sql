@@ -4,6 +4,7 @@
 
 -- DROP ALL OF THE EXISTING TABLES
 -- ---------------------------------------
+UNLOCK TABLES;
 DROP TABLE IF EXISTS `Bugs_Programmers`;
 DROP TABLE IF EXISTS `Bugs`;
 DROP TABLE IF EXISTS `Projects`;
@@ -54,12 +55,12 @@ CREATE TABLE `Companies` (
 LOCK TABLES `Companies` WRITE;
 
 INSERT INTO `Companies` VALUES
-    (1, 'Company 1', '1984-07-30'),
-    (2, 'Company 2', '1970-10-03'),
-    (3, 'Company 3', '2005-02-02'),
-    (4, 'Company 4', '1991-11-12'),
-    (5, 'Company 5', '1997-04-12'),
-    (6, 'Company 6', '1989-09-09');
+    (1, 'Micro-ware systems', '1994-07-30'),
+    (2, 'Solatech', '1998-10-03'),
+    (3, 'N-tier services', '2005-02-02'),
+    (4, '10x consulting', '2008-11-12'),
+    (5, 'Sell-ya marketing', '2012-04-12'),
+    (6, 'Click-it CMS', '2015-09-09');
 
 UNLOCK TABLES;
 
@@ -85,15 +86,21 @@ LOCK TABLES `Projects` WRITE,
     `Companies` AS c3 WRITE,
     `Companies` AS c4 WRITE,
     `Companies` AS c5 WRITE,
-    `Companies` AS c6 WRITE;
+    `Companies` AS c6 WRITE,
+    `Companies` AS c7 WRITE,
+    `Companies` AS c8 WRITE,
+    `Companies` AS c9 WRITE;
 
 INSERT INTO `Projects` (`projectName`, `dateStarted`, `lastUpdated`, `inMaintenance`, `companyId`) VALUES
-    ('Project 1', '2002-03-19', '2002-03-19', TRUE, (SELECT `companyId` FROM `Companies` AS c1 WHERE `companyName` = 'Company 1')),
-    ('Project 2', '2020-02-27', '2020-05-08', FALSE, (SELECT `companyId` FROM `Companies` AS c2 WHERE `companyName` = 'Company 2')),
-    ('Project 3', '2005-06-01', '2018-01-15', FALSE, (SELECT `companyId` FROM `Companies` AS c3 WHERE `companyName` = 'Company 3')),
-    ('Project 4', '2016-12-12', '2017-01-15', TRUE, (SELECT `companyId` FROM `Companies` AS c4 WHERE `companyName` = 'Company 4')),
-    ('Project 5', '2018-07-03', '2015-01-15', TRUE, (SELECT `companyId` FROM `Companies` AS c5 WHERE `companyName` = 'Company 5')),
-    ('Project 6', '2012-09-08', '2019-01-15', FALSE, (SELECT `companyId` FROM `Companies` AS c6 WHERE `companyName` = 'Company 6'));
+    ('Project 1', '2002-03-19', '2002-09-22', TRUE, (SELECT `companyId` FROM `Companies` AS c1 WHERE `companyName` = 'Micro-ware systems')),
+    ('Project 2', '2020-02-27', '2020-05-08', FALSE, (SELECT `companyId` FROM `Companies` AS c2 WHERE `companyName` = 'Solatech')),
+    ('Project 3', '2005-06-01', '2018-01-15', FALSE, (SELECT `companyId` FROM `Companies` AS c3 WHERE `companyName` = 'N-tier services')),
+    ('Project 4', '2016-12-12', '2017-01-15', TRUE, (SELECT `companyId` FROM `Companies` AS c4 WHERE `companyName` = '10x consulting')),
+    ('Project 5', '2018-07-03', '2019-01-15', TRUE, (SELECT `companyId` FROM `Companies` AS c5 WHERE `companyName` = 'Sell-ya marketing')),
+    ('Project 6', '2015-09-22', '2019-01-15', FALSE, (SELECT `companyId` FROM `Companies` AS c6 WHERE `companyName` = 'Click-it CMS')),
+    ('Project 7', '2002-03-19', '2002-09-22', TRUE, (SELECT `companyId` FROM `Companies` AS c7 WHERE `companyName` = 'Micro-ware systems')),
+    ('Project 8', '2020-02-27', '2020-05-08', FALSE, (SELECT `companyId` FROM `Companies` AS c8 WHERE `companyName` = 'Solatech')),
+    ('Project 9', '2005-06-01', '2018-01-15', FALSE, (SELECT `companyId` FROM `Companies` AS c9 WHERE `companyName` = 'N-tier services'));
 
 UNLOCK TABLES;
 
@@ -129,8 +136,8 @@ LOCK TABLES `Bugs` WRITE,
     `Projects` AS p13 WRITE;
 
 INSERT INTO `Bugs` (`projectId`, `bugSummary`, `bugDescription`, `dateStarted`) VALUES
-    ((SELECT `projectId` FROM `Projects` AS p1 WHERE `projectName` = 'Project 1'), 'Bug Summary 1', 'Bug Description 1', '2004-01-01'),
-    ((SELECT `projectId` FROM `Projects` AS p2 WHERE `projectName` = 'Project 2'), 'Bug Summary 2', 'Bug Description 2', '2020-07-11'),
+    ((SELECT `projectId` FROM `Projects` AS p1 WHERE `projectName` = 'Project 1'), 'Bug Summary 1', 'Bug Description 1', '2002-09-22'),
+    ((SELECT `projectId` FROM `Projects` AS p2 WHERE `projectName` = 'Project 2'), 'Bug Summary 2', 'Bug Description 2', '2020-05-08'),
     ((SELECT `projectId` FROM `Projects` AS p3 WHERE `projectName` = 'Project 3'), 'Bug Summary 3', 'Bug Description 3', '2015-03-02'),
     ((SELECT `projectId` FROM `Projects` AS p4 WHERE `projectName` = 'Project 4'), 'Bug Summary 4', 'Bug Description 4', '2018-11-05'),
     ((SELECT `projectId` FROM `Projects` AS p5 WHERE `projectName` = 'Project 5'), 'Bug Summary 5', 'Bug Description 5', '2019-08-03'),
@@ -180,8 +187,5 @@ INSERT INTO `Bugs_Programmers` (`bugId`, `programmerId`) VALUES
     (1, 5),
     (2, 7),
     (3, 9);
-    (1, 2),
-    (2, 1), 
-    (2, 2);
 
 UNLOCK TABLES;

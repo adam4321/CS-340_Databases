@@ -49,18 +49,12 @@
                 </tr>
             </thead>
             <tbody>
+                {{#each companies}}
                 <tr>
-                    <td class="mdl-data-table__cell--non-numeric">Company 1</td>
-                    <td>1/2/34</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{this.companyName}}</td>
+                    <td>{{this.dateJoined}}</td>
                 </tr>
-                <tr>
-                    <td class="mdl-data-table__cell--non-numeric">Company 2</td>
-                    <td>2/3/45</td>
-                </tr>
-                <tr>
-                    <td class="mdl-data-table__cell--non-numeric">Company 3</td>
-                    <td>5/6/78</td>
-                </tr>
+                {{/each}}
             </tbody>
         </table>
     </div>

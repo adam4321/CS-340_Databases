@@ -1,80 +1,132 @@
 /**********************************************************************************
-**  Description:   Node.js web server for cs340 Summer 2020 Group 34 Project
+**  Description:   Node.js web server for cs340 Summer 2020 Group 34 Project. This
+**                 file is the entry point for the application.
 **
 **                 Path of forever binary file: ./node_modules/forever/bin/forever
 **********************************************************************************/
 
 // Set up express
-var express = require('express');
-var app = express();
+const express = require('express');
+const app = express();
 
 // Set up express-handlebars
-var handlebars = require('express-handlebars').create({defaultLayout: 'main'});
+const handlebars = require('express-handlebars').create({defaultLayout: 'main'});
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 
 // Set up body-parser
-var bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // Set up MySQL using dbcon.js file
-var mysql = require('./db-config.js');
+const mysql = require('./db-config.js');
 
 // Set up route to static files
 app.use(express.static('public'));
 
-// Set port number
+// PORT NUMBER - Set static port for the appliction 
 app.set('port', 50000);
 
 
 /* GET ROUTES ---------------------------------------------------------------*/
 
-// Home page route where the bug list will be rendered
+// BUGS MAIN PAGE - Route where the bug list will be rendered
 app.get('/', function renderHome(req, res) {
-    var context = {};
+    let context = {};
     res.render('user-home', context);
 });
 
 
-// Edit bug route where a bug can be edited
+// EDIT BUG PAGE - Route where a bug can be edited
 app.get('/edit-bug', function renderAddCompany(req, res) {
-    var context = {};
+    let context = {};
     res.render('edit-bug', context);
 });
 
 
-// Add Company route where a company can be added
+// ADD COMPANY PAGE - Route to view all existing companies
 app.get('/add-company', function renderAddCompany(req, res) {
-    var context = {};
-    res.render('add-company', context);
+    let context = {};
+    mysql.pool.query(`SELECT * FROM Companies`, (err, rows, fields) => {
+        if (err) {
+            next(err);
+            return;
+        }
+
+        // Put the mysql data into an array for rendering
+        let companyDbData = [];
+        for (let i in rows) {
+            companyDbData.push({
+                companyId: rows[i].companyId,
+                companyName: rows[i].companyName,
+                dateJoined: rows[i].dateJoined,
+            });
+        }
+        context.companies = companyDbData;
+        res.render('add-company', context);
+    });
 });
 
 
-// Add Project route where a project can be added
+// ADD PROJECT PAGE - Route where a project can be added
 app.get('/add-project', function renderAddProject(req, res) {
-    var context = {};
-    res.render('add-project', context);
+    let context = {};
+    mysql.pool.query(`SELECT * FROM Projects AS p 
+    JOIN Companies AS c ON p.companyId = c.companyId`, (err, rows, fields) => {
+        if (err) {
+            next(err);
+            return;
+        }
+        
+        // Put the mysql data into an array for rendering 
+        let projectDbData = [];
+        for (let i in rows) {
+            projectDbData.push({
+                projectId: rows[i].projectId,
+                projectName: rows[i].projectName,
+                companyName: rows[i].companyName,
+                dateStarted: rows[i].dateStarted,
+                lastUpdated: rows[i].lastUpdated,
+                inMaintenance: rows[i].inMaintenance
+            });
+        }
+        context.projects = projectDbData;
+        res.render('add-project', context);
+    });
 });
 
 
-// Add Project route where a programmer can be added
+// ADD PROGRAMMER PAGE - Route where a programmer can be added
 app.get('/add-programmer', function renderAddProgrammer(req, res) {
-    var context = {};
-    res.render('add-programmer', context);
+    let context = {};
+    mysql.pool.query(`SELECT * FROM Programmers`, (err, rows, fields) => {
+        let programmersDbData = [];
+        for (let i in rows) {
+            programmersDbData.push({
+                firstName: rows[i].firstName,
+                lastName: rows[i].lastName,
+                email: rows[i].email,
+                dateStarted: rows[i].dateStarted,
+                accessLevel: rows[i].accessLevel
+            });
+        }
+        context.programmers = programmersDbData;
+        res.render('add-programmer', context);
+    })
 });
 
 
 /* ERROR ROUTES -------------------------------------------------------------*/
 
-// Route not found
+// PAGE NOT FOUND - Route for bad path error page
 app.use(function(req,res) {
     res.status(404);
     res.render('404');
 });
    
 
-// Server Error
+// INTERNAL SERVER ERROR - Route for a server-side error
 app.use(function(err, req, res, next) {
     console.error(err.stack);
     res.status(500);
@@ -84,7 +136,7 @@ app.use(function(err, req, res, next) {
 
 /* LISTEN ON PORT -----------------------------------------------------------*/
 
-// Listen on port set globally and display message to indicate listening
+// PORT LISTENER - Set to render on a static port set globally
 app.listen(app.get('port'), function(){
     console.log('Express started at http://localhost:' + app.get('port') + '; press ctrl-C to terminate.');
 });
