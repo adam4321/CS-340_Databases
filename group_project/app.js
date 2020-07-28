@@ -121,7 +121,37 @@ app.get('/', function renderHome(req, res, next) {
 });
 
 
-// EDIT BUG PAGE - Route where a bug can be edited
+// BUGS MAIN PAGE DELETE ROW - Route to delete a row from the bug list
+app.get("/delete", function(req, res, next) {
+
+    // Delete the row with the passed in bugId
+    let sql_query_1 = `DELETE FROM Bugs WHERE bugId=?`;
+    let sql_query_2 = `SELECT * FROM Bugs`;
+
+    var context = {};
+
+    mysql.pool.query(
+        sql_query_1, [req.query.bugId],
+        function(err, result) {
+            if (err) {
+                next(err);
+                return;
+            }
+            mysql.pool.query(sql_query_2, function(err, rows, fields) {
+                if (err) {
+                    next(err);
+                    return;
+                }
+                context.results = JSON.stringify(rows);
+                console.log(context);
+                res.render('user-home', context);
+            });
+        }
+    );
+});
+
+
+// EDIT BUG PAGE - Route where the edit bug page is rendered
 app.get('/edit-bug', function renderAddCompany(req, res, next) {
     
     // 1st query gathers the projects for the dropdown
@@ -213,88 +243,15 @@ app.get('/edit-bug', function renderAddCompany(req, res, next) {
 });
 
 
-// DELETE ROW - Route to delete a row from the bug list
-app.get("/delete", function(req, res, next) {
-
-    // Delete the row with the passed in bugId
-    let sql_query_1 = `DELETE FROM Bugs WHERE bugId=?`;
-    let sql_query_2 = `SELECT * FROM Bugs`;
-
-    var context = {};
-
-    mysql.pool.query(
-        sql_query_1, [req.query.bugId],
-        function(err, result) {
-            if (err) {
-                next(err);
-                return;
-            }
-            mysql.pool.query(sql_query_2, function(err, rows, fields) {
-                if (err) {
-                    next(err);
-                    return;
-                }
-                context.results = JSON.stringify(rows);
-                res.render('user-home', context);
-            });
-        }
-    );
-});
-
-
-// ADD COMPANY PAGE - Route to view all existing companies
-app.get('/add-company', function renderAddCompany(req, res, next) {
-    
-    // Find all of the current companies
-    let sql_query = `SELECT * FROM Companies`;
-    let context = {};
-
-    mysql.pool.query(sql_query, (err, rows, fields) => {
-        if (err) {
-            next(err);
-            return;
-        }
-
-        // Put the mysql data into an array for rendering
-        let companyDbData = [];
-        for (let i in rows) {
-            companyDbData.push({
-                companyId: rows[i].companyId,
-                companyName: rows[i].companyName,
-                dateJoined: rows[i].dateJoined,
-            });
-        }
-        context.companies = companyDbData;
-        console.log(context);
-        res.render('add-company', context);
-    });
-});
-
-
-// ADD COMPANY PAGE - Route to insert company data
-app.get("/insertCompany", function submitCompany(req, res, next) {
-    let sql_query = `INSERT INTO Companies (companyName, dateJoined) VALUES (?, ?)`;
-    let context = {};
-
-    mysql.pool.query(sql_query, [req.query.companyName, req.query.dateJoined], (err, result) => {
-        if (err) {
-            next(err);
-            return;
-        }
-        context.companies = result.insertId;
-        res.send(JSON.stringify(context));
-    });
-});
-
-
-// ADD PROJECT PAGE - Route where a project can be added
+// ADD PROJECT PAGE - Route where the add project page is rendered
 app.get('/add-project', function renderAddProject(req, res, next) {
     
     // Find all of the projects and their associated companies
-    let sql_query = `SELECT * FROM Projects AS p JOIN Companies AS c ON p.companyId = c.companyId`;
+    let sql_query_2 = `SELECT * FROM Projects AS p JOIN Companies AS c ON p.companyId = c.companyId`;
+    let sql_query_1 = `SELECT companyId, companyName FROM Companies`;
     let context = {};
 
-    mysql.pool.query(sql_query, (err, rows, fields) => {
+    mysql.pool.query(sql_query_2, (err, rows, fields) => {
         if (err) {
             next(err);
             return;
@@ -312,13 +269,29 @@ app.get('/add-project', function renderAddProject(req, res, next) {
                 inMaintenance: rows[i].inMaintenance
             });
         }
-        context.projects = projectDbData;
-        res.render('add-project', context);
+        // Query for the list of companies
+        mysql.pool.query(sql_query_1,  (err, rows, fields) => {
+            if (err) {
+                next(err);
+                return;
+            }
+            let companyDbData = [];
+            for (let i in rows) {
+                companyDbData.push({
+                    companyId: rows[i].companyId,
+                    companyName: rows[i].companyName
+                });
+            }
+            // After the 2 calls return, then populate the context array
+            context.companies = companyDbData;
+            context.projects = projectDbData;
+            res.render('add-project', context);
+        });
     });
 });
 
 
-// ADD PROGRAMMER PAGE - Route where a programmer can be added
+// ADD PROGRAMMER PAGE - Route where the add programmer page is rendered
 app.get('/add-programmer', function renderAddProgrammer(req, res, next) {
     
     // Find all of the programmers
@@ -345,6 +318,50 @@ app.get('/add-programmer', function renderAddProgrammer(req, res, next) {
         context.programmers = programmersDbData;
         res.render('add-programmer', context);
     })
+});
+
+
+// ADD COMPANY PAGE - Route to view all existing companies
+app.get('/add-company', function renderAddCompany(req, res, next) {
+    
+    // Find all of the current companies
+    let sql_query = `SELECT * FROM Companies`;
+    let context = {};
+
+    mysql.pool.query(sql_query, (err, rows, fields) => {
+        if (err) {
+            next(err);
+            return;
+        }
+
+        // Put the mysql data into an array for rendering
+        let companyDbData = [];
+        for (let i in rows) {
+            companyDbData.push({
+                companyId: rows[i].companyId,
+                companyName: rows[i].companyName,
+                dateJoined: rows[i].dateJoined,
+            });
+        }
+        context.companies = companyDbData;
+        res.render('add-company', context);
+    });
+});
+
+
+// ADD COMPANY PAGE INSERT NEW COMPANY - Route to insert company data
+app.get("/insertCompany", function submitCompany(req, res, next) {
+    let sql_query = `INSERT INTO Companies (companyName, dateJoined) VALUES (?, ?)`;
+    let context = {};
+
+    mysql.pool.query(sql_query, [req.query.companyName, req.query.dateJoined], (err, result) => {
+        if (err) {
+            next(err);
+            return;
+        }
+        context.companies = result.insertId;
+        res.send(JSON.stringify(context));
+    });
 });
 
 

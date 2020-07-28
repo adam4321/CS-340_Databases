@@ -25,9 +25,9 @@
                 <label for="project-company">Company</label>
                 <select name="project-company" id="project-company-field">
                 <option value="" disabled selected>Select a Company</option>
-                <option value="a">company 1</option>
-                <option value="b">company 2</option>
-                <option value="c">company 3</option>
+                {{#each companies}}
+                <option value="{{this.companyId}}">{{this.companyName}}</option>
+                {{/each}}
                 </select>
                 <br>
         

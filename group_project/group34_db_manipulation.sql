@@ -13,7 +13,7 @@ SELECT * FROM Companies;
 
 --Add new company
 INSERT INTO Companies (companyName, dateJoined) 
-    VALUES (:companyNameInput, :dateJoinedInput);
+    VALUES (:req.query.companyName, :req.query.dateJoined);
 
 
 
@@ -22,6 +22,9 @@ INSERT INTO Companies (companyName, dateJoined)
 -- View all existing Projects
 SELECT * FROM Projects AS p
 JOIN Companies AS c ON p.companyId = c.companyId;
+
+-- View all existing company names
+SELECT companyName FROM Companies;
 
 
 -- Add new project
