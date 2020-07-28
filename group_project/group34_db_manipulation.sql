@@ -7,56 +7,48 @@
 
 -- Companies Page -------------------------------------------------------------
 
--- View all existing Companies
+-- View all existing Companies --
 SELECT * FROM Companies;
 
-
---Add new company
+--Add new company --
 INSERT INTO Companies (companyName, dateJoined) 
     VALUES (:req.query.companyName, :req.query.dateJoined);
 
 
-
 -- Projects Page --------------------------------------------------------------
 
--- View all existing Projects
+-- View all existing Projects --
 SELECT * FROM Projects AS p
 JOIN Companies AS c ON p.companyId = c.companyId;
 
--- View all existing company names
+-- View all existing company names --
 SELECT companyName FROM Companies;
 
-
--- Add new project
+-- Add new project --
 INSERT INTO Projects (projectName, companyId, dateStarted, lastUpdated, inMaintenance)
     VALUES (:req.query.projectName, (SELECT companyId FROM Companies WHERE companyName = :req.query.companyName),
             :req.query.dateStarted, :req.query.lastUpdated, :req.query.inMaintenance);
 
 
-
 -- Programmers Page -----------------------------------------------------------
 
--- View all existing Programmers
+-- View all existing Programmers --
 SELECT * FROM Programmers;
 
-
--- Add new programmer 
-INSERT INTO Programmer (firstName, lastName, email, dateStarted, accessLevel) 
+-- Add new programmer --
+INSERT INTO Programmers (firstName, lastName, email, dateStarted, accessLevel) 
     VALUES (:firstNameInput, :lastNameInput, :emailInput, :dateStartedInput, :accessLevelInput);
-
 
 
 -- Bugs Page ------------------------------------------------------------------
 
--- Display the project names in the dropdown
+-- Display the project names in the dropdown --
 SELECT projectName, projectId FROM Projects;
 
-
--- Display the Programmers in the scrolling checkbox list
+-- Display the Programmers in the scrolling checkbox list --
 SELECT programmerId, firstName, lastName FROM Programmers;
 
-
--- View all existing Bugs with their programmers
+-- View all existing Bugs with their programmers --
 SELECT p.firstName, p.lastName, b.bugId, pj.projectName, b.bugSummary,
 b.bugDescription, b.dateStarted, b.resolution, b.priority, b.fixed 
 	FROM Programmers p 
@@ -65,8 +57,7 @@ b.bugDescription, b.dateStarted, b.resolution, b.priority, b.fixed
 		JOIN Projects pj ON b.projectId = pj.projectId
 			ORDER BY bugId;
 
-
--- Add new bug
+-- Add new bug --
 INSERT INTO Bugs (projectId, bugSummary, bugDescription, dateStarted, priority, resolution, fixed) 
     VALUES ((SELECT projectId FROM Projects WHERE projectName = :projectNameInput),
             :bugSummaryInput, :bugDescriptionInput, :dateStartedInput, :priorityInput, :resolutionInput, :fixedInput);
@@ -77,15 +68,13 @@ INSERT INTO Bugs_Programmers (bugId, programmerId) VALUES (:bugId, :programmerId
 
 -- Update bug -----------------------------------------------------------------
 
--- Display the project names in the dropdown
+-- Display the project names in the dropdown --
 SELECT projectName FROM projects;
 
-
--- Display the Programmers in the scrolling checkbox list
+-- Display the Programmers in the scrolling checkbox list --
 SELECT firstName, lastName FROM PROGRAMMERS;
 
-
--- View all existing Bugs with their programmers
+-- View all existing Bugs with their programmers --
 SELECT p.firstName, p.lastName, b.bugId, pj.projectName, b.bugSummary,
 b.bugDescription, b.dateStarted, b.resolution, b.priority, b.fixed 
 	FROM Programmers p 
@@ -94,7 +83,7 @@ b.bugDescription, b.dateStarted, b.resolution, b.priority, b.fixed
 		JOIN Projects pj ON b.projectId = pj.projectId
 			ORDER BY bugId;
 
-            
+
 UPDATE Bugs SET bugSummary = :bugSummaryInput, bugDescription = :bugDescriptionInput, dateStarted = :dateStartedInput,
 priority = :priorityInput, resolution = :resolutionInput, fixed = :fixedInput WHERE bugId = :bugIdInput;
 

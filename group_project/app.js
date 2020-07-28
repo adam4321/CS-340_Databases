@@ -288,13 +288,24 @@ app.get('/add-programmer', function renderAddProgrammer(req, res, next) {
     })
 });
 
-// SKELETON - NEEDS CODE
+
 // ADD PROGRAMMER PAGE INSERT NEW PROGRAMMER - Route to insert programmer data
 app.get("/insertProgrammer", function submitProgrammer(req, res, next) {
-    let sql_query = ``;
+
+    // Insert the form data into the Programmers table
+    let sql_query = `INSERT INTO Programmers (firstName, lastName, email, dateStarted, accessLevel) 
+                        VALUES (?, ?, ?, ?, ?)`;
+
     let context = {};
 
-    mysql.pool.query(sql_query, [ ], (err, result) => {
+    mysql.pool.query(sql_query,
+        [
+            req.query.firstName,
+            req.query.lastName, 
+            req.query.email, 
+            req.query.dateStarted, 
+            req.query.accessLevel
+        ], (err, result) => {
         if (err) {
             next(err);
             return;
@@ -355,6 +366,8 @@ app.get('/add-project', function renderAddProject(req, res, next) {
 
 // ADD PROJECT PAGE INSERT NEW PROJECT - Route to insert project data
 app.get("/insertProject", function submitProject(req, res, next) {
+
+    // Insert the form data into the Projects table
     let sql_query = `INSERT INTO Projects (projectName, companyId, dateStarted, lastUpdated, inMaintenance)
                         VALUES (?, (SELECT companyId FROM Companies WHERE companyName = ?), ?, ?, ?)`;
     let context = {};

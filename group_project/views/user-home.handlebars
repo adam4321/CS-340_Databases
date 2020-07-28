@@ -14,15 +14,15 @@
     <h2 class="mdl-card__title-text">Add Bug</h2>
   </div>
   <div class="mdl-card__supporting-text mdl-color-text--grey-600">  
-    <form id="recordForm">
+    <form id="recordForm" action="/insertBug">
       <div class="grid-container">
         <div><label class="textarea-label" for="bug-summary">Bug Summary</label></div>
-        <div><textarea name="bug-summary" id="bug-summary-field"></textarea></div>
+        <div><textarea required name="bug-summary" id="bug-summary-field"></textarea></div>
         <div><label class="textarea-label" for="bug-description">Bug Description</label></div>
-        <div><textarea name="bug-description" id="bug-description-field"></textarea></div>
+        <div><textarea required name="bug-description" id="bug-description-field"></textarea></div>
         <div><label for="bug-project">Project</label></div>
         <div>
-          <select name="bug-project" id="bug-project-field">
+          <select required name="bug-project" id="bug-project-field">
             <option value="" disabled selected>Select a project</option>
             <option value="0">NULL</option>
             {{#each projects}}
@@ -38,27 +38,20 @@
             {{/each}}
         </div>
         <div><label for="bug-start-date">Date Started</label></div>
-        <div><input type="date" name="bug-start-date" id="bug-start-date-field"></div>
+        <div><input required type="date" name="bug-start-date" id="bug-start-date-field"></div>
         <div><label for="bug-priority">Priority</label></div>
-        <div><input type="number" max="5" name="bug-priority" id="bug-priority-field"></div>
+        <div><input required type="number" max="5" name="bug-priority" id="bug-priority-field"></div>
         <div><label for="bug-fixed">Fixed</label></div>
         <div>
           <input class="radio-input" type="radio" name="bug-fixed" value="1" id="bug-fixed-yes">
           <label class="radio-label" for="bug-fixed">Yes</label>
-          <input class="radio-input" type="radio" name="bug-fixed" value="0" id="bug-fixed-no">
+          <input class="radio-input" type="radio" name="bug-fixed" value="0" id="bug-fixed-no" checked>
           <label class="radio-label" for="bug-fixed">No</label>
         </div>
         <div><label class="textarea-label" for="bug-resolution">Resolution</label></div>
         <div><textarea name="bug-resolution" id="bug-resolution-field"></textarea></div>
         <div>
-          <input 
-            type="submit" 
-            id="save" 
-            value="Add" 
-            onclick="insertUser(document.getElementById('company-id-field').value,
-                                document.getElementById('project-date-started-field').value,
-                                document.getElementById('project-date-updated-field').value,
-                                document.getElementsByName('maintenance'))">
+          <input type="submit" id="save" value="Add" >
         </div>
       </div>
     </form>
@@ -79,7 +72,7 @@
         <button id="clear-search">View All</button>
       </div>
       
-        <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+        <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" id="recordTable">
             <thead>
                 <tr>
                     <th class="mdl-data-table__cell--non-numeric">Bug Summary</th>

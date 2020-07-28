@@ -14,32 +14,27 @@
     </div>
     <div class="mdl-card__supporting-text mdl-color-text--grey-600">
 
-        <form id="recordForm">
+        <form id="recordForm" action="/insertProgrammer">
             <fieldset>
         
                 <legend>Programmer Details</legend>
         
                 <label for="programmer-fname">First name</label>
-                <input type="text" name="programmer-fname" id="programmer-fname-field"> <br>
+                <input required type="text" name="programmerFName" id="programmer-fname-field"> <br>
 
                 <label for="programmer-lname">Last name</label>
-                <input type="text" name="programmer-lname" id="programmer-lname-field"> <br>
+                <input required type="text" name="programmerLName" id="programmer-lname-field"> <br>
 
                 <label for="programmer-email">Email</label>
-                <input type="text" name="user-email" id="programmer-email-field"> <br>
+                <input required type="text" name="userEmail" id="programmer-email-field"> <br>
         
                 <label for="started-date">Date Started</label>
-                <input type="date" name="started-date" id="project-date-started-field"> <br>
+                <input required type="date" name="startedDate" id="project-date-started-field"> <br>
 
                 <label for="programmer-access">Access Level</label>
-                <input type="number" name="programmer-access" id="programmer-access-field" min="1" max="4"> <br>
+                <input required type="number" name="programmerAccess" id="programmer-access-field" min="1" max="4"> <br>
 
-                <input 
-                    type="submit" id="save" value="Add" 
-                    onclick="insertUser(document.getElementById('company-id-field').value,
-                                        document.getElementById('project-date-started-field').value,
-                                        document.getElementById('project-date-updated-field').value,
-                                        document.getElementsByName('maintenance'))">
+                <input type="submit" id="save" value="Add">
             </fieldset>
         </form>
     </div>
@@ -52,7 +47,7 @@
         <h2 class="mdl-card__title-text">Current Programmers</h2>
     </div>
     <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-        <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+        <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" id="recordTable">
             <thead>
                 <tr>
                     <th class="mdl-data-table__cell--non-numeric">Programmer Name</th>

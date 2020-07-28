@@ -19,10 +19,10 @@
                 <legend>Project Details</legend>
         
                 <label for="project-name">Project Name</label>
-                <input type="text" name="projectName" id="project-name-field"><br>
+                <input required type="text" name="projectName" id="project-name-field"><br>
 
                 <label for="project-company">Company</label>
-                <select name="projectCompany" id="project-company-field">
+                <select required name="projectCompany" id="project-company-field">
                 <option disabled selected>Select a Company</option>
 
                 {{#each companies}}
@@ -31,13 +31,13 @@
                 </select> <br>
         
                 <label for="started-date">Date Started</label>
-                <input type="date" name="startedDate" id="project-date-started-field"> <br>
+                <input required type="date" name="startedDate" id="project-date-started-field"> <br>
 
                 <label for="updated-date">Last Updated</label>
-                <input type="date" name="updatedDate" id="project-date-updated-field"> <br>
+                <input required type="date" name="updatedDate" id="project-date-updated-field"> <br>
         
                 <label for="maintenance">In Maintenance</label>
-                <input class="radio-input" type="radio" name="maintenance" value="1" id="maintenance-yes"><label class="radio-label" for="maintenance">Yes</label>
+                <input checked class="radio-input" type="radio" name="maintenance" value="1" id="maintenance-yes"><label class="radio-label" for="maintenance">Yes</label>
                 <input class="radio-input" type="radio" name="maintenance" value="0" id="maintenance-no"><label class="radio-label" for="maintenance">No</label>
                 <br>
 

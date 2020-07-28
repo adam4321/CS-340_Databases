@@ -19,9 +19,9 @@
         <form id="recordForm">
             <div class="grid-container">
                 <div><label class="textarea-label" for="bug-summary">Bug Summary</label></div>
-                <div><textarea name="bug-summary" id="bug-summary-field">{{editBug.bugSummary}}</textarea></div>
+                <div><textarea required name="bug-summary" id="bug-summary-field">{{editBug.bugSummary}}</textarea></div>
                 <div><label class="textarea-label" for="bug-description">Bug Description</label></div>
-                <div><textarea name="bug-description" id="bug-description-field">{{editBug.bugDescription}}</textarea></div>
+                <div><textarea required name="bug-description" id="bug-description-field">{{editBug.bugDescription}}</textarea></div>
                 <div><label for="bug-project">Project</label></div>
                 <div>
                 <select name="bug-project" id="bug-project-field">
@@ -44,9 +44,9 @@
                     {{/each}} 
                 </div>
                 <div><label for="bug-start-date">Date Started</label></div>
-                <div><input type="date" name="bug-start-date" id="bug-start-date-field" value="{{editBug.dateStarted}}"></div>
+                <div><input required type="date" name="bug-start-date" id="bug-start-date-field" value="{{editBug.dateStarted}}"></div>
                 <div><label for="bug-priority">Priority</label></div>
-                <div><input type="number" max="5" name="bug-priority" id="bug-priority-field" value="{{editBug.priority}}"></div>
+                <div><input required type="number" max="5" name="bug-priority" id="bug-priority-field" value="{{editBug.priority}}"></div>
                 
                 {{!-- Render the correct state of fixed --}}
                 <div><label for="bug-fixed">Fixed</label></div>
