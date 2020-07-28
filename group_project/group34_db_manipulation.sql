@@ -37,7 +37,7 @@ SELECT * FROM Programmers;
 
 -- Add new programmer --
 INSERT INTO Programmers (firstName, lastName, email, dateStarted, accessLevel) 
-    VALUES (:firstNameInput, :lastNameInput, :emailInput, :dateStartedInput, :accessLevelInput);
+    VALUES (:req.query.firstName, :req.query.lastName, :req.query.email, :req.query.dateStarted, :req.query.accessLevel);
 
 
 -- Bugs Page ------------------------------------------------------------------
@@ -54,16 +54,16 @@ b.bugDescription, b.dateStarted, b.resolution, b.priority, b.fixed
 	FROM Programmers p 
 		JOIN Bugs_Programmers bp ON p.programmerId = bp.programmerId
 		JOIN Bugs b ON bp.bugId = b.bugId
-		JOIN Projects pj ON b.projectId = pj.projectId
-			ORDER BY bugId;
+		LEFT OUTER JOIN Projects pj ON b.projectId <=> pj.projectId
+                            ORDER BY bugId;
 
 -- Add new bug --
-INSERT INTO Bugs (projectId, bugSummary, bugDescription, dateStarted, priority, resolution, fixed) 
-    VALUES ((SELECT projectId FROM Projects WHERE projectName = :projectNameInput),
-            :bugSummaryInput, :bugDescriptionInput, :dateStartedInput, :priorityInput, :resolutionInput, :fixedInput);
+INSERT INTO Bugs (bugSummary, bugDescription, projectId, dateStarted, priority, fixed, resolution) 
+    VALUES (:req.query.bugSummary, :req.query.bugDescription,:req.query.bugProject,
+             :req.query.bugStartDate, :req.query.bugPriority, :req.query.bugFixed, :req.query.bugResolution);
 
-
-INSERT INTO Bugs_Programmers (bugId, programmerId) VALUES (:bugId, :programmerId);  -- Run once per programmer
+-- Run in a loop to insert a Bugs_Programmers row for each programmer --
+INSERT INTO Bugs_Programmers (bugId, programmerId) VALUES (:result.insertId, :req.query.programmer[i]);
 
 
 -- Update bug -----------------------------------------------------------------
@@ -80,7 +80,7 @@ b.bugDescription, b.dateStarted, b.resolution, b.priority, b.fixed
 	FROM Programmers p 
 		JOIN Bugs_Programmers bp ON p.programmerId = bp.programmerId
 		JOIN Bugs b ON bp.bugId = b.bugId
-		JOIN Projects pj ON b.projectId = pj.projectId
+		LEFT OUTER JOIN Projects pj ON b.projectId = pj.projectId
 			ORDER BY bugId;
 
 

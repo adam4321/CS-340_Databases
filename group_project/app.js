@@ -43,7 +43,7 @@ app.get('/', function renderHome(req, res, next) {
 	                FROM Programmers p 
 		                JOIN Bugs_Programmers bp ON p.programmerId = bp.programmerId
 		                JOIN Bugs b ON bp.bugId = b.bugId
-		                JOIN Projects pj ON b.projectId = pj.projectId
+                        LEFT OUTER JOIN Projects pj ON b.projectId <=> pj.projectId
                             ORDER BY bugId`;                       
     let context = {};
 
@@ -120,17 +120,49 @@ app.get('/', function renderHome(req, res, next) {
     });
 });
 
-// SKELETON - NEEDS CODE
+
 // MAIN BUG PAGE INSERT NEW BUG - Route to insert bug data
 app.get("/insertBug", function submitBug(req, res, next) {
-    let sql_query = ``;
-    let context = {};
+    // Query to insert the bug data
+    let sql_query_1 = `INSERT INTO Bugs (bugSummary, bugDescription, projectId, dateStarted, priority, fixed, resolution) 
+                            VALUES (?, ?, ?, ?, ?, ?, ?)`;
+    // Query to run in loop to create Bugs_Programmers instances
+    let sql_query_2 = `INSERT INTO Bugs_Programmers (bugId, programmerId) 
+                            VALUES (?, ?)`;
 
-    mysql.pool.query(sql_query, [ ], (err, result) => {
+    let context = {};
+    let bugId;
+
+    // Insert new bug data
+    mysql.pool.query(sql_query_1,
+        [
+            req.query.bugSummary,
+            req.query.bugDescription,
+            req.query.bugProject,
+            req.query.bugStartDate,
+            req.query.bugPriority,
+            req.query.bugFixed,
+            req.query.bugResolution
+        ], (err, result) => {
         if (err) {
             next(err);
             return;
         }
+        bugId = result.insertId;
+        // Run the Bugs_Programmers insertion for each programmer
+        for (let i in req.query.programmer) {
+            mysql.pool.query(sql_query_2,
+                [
+                    result.insertId,
+                    req.query.programmer[i]
+                ], (err, result, ) => {
+                if (err) {
+                    next(err);
+                    return;
+                }
+            })
+        }
+        context.id = bugId;
         context.bugs = result.insertId;
         res.send(JSON.stringify(context));
     });
@@ -153,7 +185,7 @@ app.get("/deleteBug", function(req, res, next) {
                 next(err);
                 return;
             }
-            mysql.pool.query(sql_query_2, function(err, rows, fields) {
+            mysql.pool.query(sql_query_2, (err, rows, fields) => {
                 if (err) {
                     next(err);
                     return;
@@ -179,7 +211,7 @@ app.get('/edit-bug', function renderAddCompany(req, res, next) {
                     FROM Programmers p 
                         JOIN Bugs_Programmers bp ON p.programmerId = bp.programmerId
                         JOIN Bugs b ON bp.bugId = b.bugId
-                        JOIN Projects pj ON b.projectId = pj.projectId
+                        LEFT OUTER JOIN Projects pj ON b.projectId = pj.projectId
                         WHERE bp.bugId=?
                             ORDER BY bugId`
 

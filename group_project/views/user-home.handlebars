@@ -17,14 +17,14 @@
     <form id="recordForm" action="/insertBug">
       <div class="grid-container">
         <div><label class="textarea-label" for="bug-summary">Bug Summary</label></div>
-        <div><textarea required name="bug-summary" id="bug-summary-field"></textarea></div>
+        <div><textarea required name="bugSummary" id="bug-summary-field"></textarea></div>
         <div><label class="textarea-label" for="bug-description">Bug Description</label></div>
-        <div><textarea required name="bug-description" id="bug-description-field"></textarea></div>
+        <div><textarea required name="bugDescription" id="bug-description-field"></textarea></div>
         <div><label for="bug-project">Project</label></div>
         <div>
-          <select required name="bug-project" id="bug-project-field">
+          <select required name="bugProject" id="bug-project-field">
             <option value="" disabled selected>Select a project</option>
-            <option value="0">NULL</option>
+            <option value="">NULL</option>
             {{#each projects}}
             <option value="{{this.projectId}}">{{this.projectName}}</option>
             {{/each}}
@@ -33,23 +33,23 @@
         <div><label for="bug-programmer">Programmers</label></div>
         <div class="checkbox-container">
             {{#each programmers}}
-            <input class="checkbox-input" type="checkbox" id="programmer1" name="{{this.firstName}} {{this.lastName}}" value="{{this.programmerId}}">
-            <label for="programmer1">{{this.firstName}} {{this.lastName}}</label><br>
+            <input class="checkbox-input" type="checkbox" id="programmer1" name="programmerId" value="{{this.programmerId}}">
+            <label value="{{this.firstName}} {{this.lastName}}" for="programmer1">{{this.firstName}} {{this.lastName}}</label><br>
             {{/each}}
         </div>
         <div><label for="bug-start-date">Date Started</label></div>
-        <div><input required type="date" name="bug-start-date" id="bug-start-date-field"></div>
+        <div><input required type="date" name="bugStartDate" id="bug-start-date-field"></div>
         <div><label for="bug-priority">Priority</label></div>
-        <div><input required type="number" max="5" name="bug-priority" id="bug-priority-field"></div>
+        <div><input required type="number" max="5" name="bugPriority" id="bug-priority-field"></div>
         <div><label for="bug-fixed">Fixed</label></div>
         <div>
-          <input class="radio-input" type="radio" name="bug-fixed" value="1" id="bug-fixed-yes">
-          <label class="radio-label" for="bug-fixed">Yes</label>
-          <input class="radio-input" type="radio" name="bug-fixed" value="0" id="bug-fixed-no" checked>
-          <label class="radio-label" for="bug-fixed">No</label>
+          <input class="radio-input" type="radio" name="bugFixed" value="1" id="bug-fixed-yes">
+          <label class="radio-label" for="bugFixed">Yes</label>
+          <input class="radio-input" type="radio" name="bugFixed" value="0" id="bug-fixed-no" checked>
+          <label class="radio-label" for="bugFixed">No</label>
         </div>
         <div><label class="textarea-label" for="bug-resolution">Resolution</label></div>
-        <div><textarea name="bug-resolution" id="bug-resolution-field"></textarea></div>
+        <div><textarea name="bugResolution" id="bug-resolution-field"></textarea></div>
         <div>
           <input type="submit" id="save" value="Add" >
         </div>
