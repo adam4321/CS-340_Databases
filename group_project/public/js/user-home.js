@@ -51,22 +51,30 @@ recordForm.addEventListener('submit', (e) => {
     }
 
     // Gather the selected programmer's names for rendering to the new cell
-    let programmerList = '';
+    let programmerList = [];
+    let programmerCount = 0;
     for (let i = 0; i < recordForm.elements.length; i++) {
         try {
             if (recordForm.elements.programmerId[i].checked) {
-                programmerList += `${recordForm.elements.programmerId[i].nextElementSibling.innerHTML}\n`;
+                programmerCount++;
+                programmerList.push(recordForm.elements.programmerId[i].nextElementSibling.innerHTML);
             }
         } catch {
             continue;
         }
     }
 
+    // Fill the project, if it has a value
+    let projectStr = '';
+    if (recordForm.elements.bugProject.value) {
+        projectStr += `&bugProject=${recordForm.elements.bugProject.value}`
+    }
+
     // String that holds the form data
     let parameterString =
     'bugSummary=' + recordForm.elements.bugSummary.value +
     '&bugDescription=' + recordForm.elements.bugDescription.value +
-    '&bugProject='       + recordForm.elements.bugProject.value +
+    projectStr                                                   +
     programmerStr                                               +
     '&bugStartDate=' + recordForm.elements.bugStartDate.value +
     '&bugPriority=' + recordForm.elements.bugPriority.value +
@@ -99,15 +107,25 @@ recordForm.addEventListener('submit', (e) => {
         // Project element
         let projectCell = document.createElement('td');
         let dropdown = document.getElementById("bug-project-field");
+        projectCell.className = 'mdl-data-table__cell--non-numeric'; 
         projectCell.textContent = dropdown.options[dropdown.selectedIndex].text;
         newRow.appendChild(projectCell);
 
         // Programmers element
         let programmerCell = document.createElement('td');
-        programmerCell.textContent = programmerList;
         programmerCell.className = 'mdl-data-table__cell--non-numeric';
         newRow.appendChild(programmerCell);
+        let progList = document.createElement('ul');
+        let progElem = document.createElement('li')
+        programmerCell.appendChild(progList);
+        progList.appendChild(progElem);
 
+        for (let i = 0; i < programmerCount; i++) {
+            progElem.textContent = programmerList[i];
+            progElem = document.createElement('li');
+            progList.appendChild(progElem);
+        }
+        
         // Date started element
         let dateCell = document.createElement('td');
         dateCell.textContent = recordForm.elements.bugStartDate.value;

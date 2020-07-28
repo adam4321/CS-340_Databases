@@ -40,7 +40,7 @@
         <div><label for="bug-start-date">Date Started</label></div>
         <div><input required type="date" name="bugStartDate" id="bug-start-date-field"></div>
         <div><label for="bug-priority">Priority</label></div>
-        <div><input required type="number" max="5" name="bugPriority" id="bug-priority-field"></div>
+        <div><input required type="number" min="1" max="5" name="bugPriority" id="bug-priority-field"></div>
         <div><label for="bug-fixed">Fixed</label></div>
         <div>
           <input class="radio-input" type="radio" name="bugFixed" value="1" id="bug-fixed-yes">
@@ -92,7 +92,9 @@
                 <tr>
                     <td class="mdl-data-table__cell--non-numeric">{{this.bugSummary}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{this.bugDescription}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{this.projectName}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">
+                        {{#if this.projectName}}{{this.projectName}}{{else}}NULL{{/if}}
+                    </td>
                     <td class="mdl-data-table__cell--non-numeric">
                             {{#each programmers}} {{this}} <br> {{/each}}
                     </td>
