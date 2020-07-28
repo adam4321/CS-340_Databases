@@ -15,21 +15,21 @@
     </div>
     <div class="mdl-card__supporting-text mdl-color-text--grey-600">
 
-        <form id="recordForm">
+        <form id="recordForm" action="/updateCompany">
             <fieldset>
                 <legend>Add a new Company</legend>
         
                 <label for="company-name">Company Name</label>
-                <input type="text" name="company-name" id="company-name-field"><br>
+                <input type="text" name="companyName" id="company-name-field"><br>
 
                 <label for="company-date-joined">Date Joined</label>
-                <input type="date" name="company-date-joined" id="company-date-joined-field"><br>
+                <input type="date" name="dateJoined" id="company-date-joined-field"><br>
 
                 <input 
                     type="submit" 
                     id="save" 
                     value="Add" 
-                    onclick="insertUser(document.getElementById('company-name-field').value">
+                >
             </fieldset>
         </form>
     </div>
@@ -41,7 +41,7 @@
         <h2 class="mdl-card__title-text">Current Companies</h2>
     </div>
     <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-        <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+        <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" id="recordTable">
             <thead>
                 <tr>
                     <th class="mdl-data-table__cell--non-numeric">Company Name</th>

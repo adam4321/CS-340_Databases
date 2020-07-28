@@ -265,7 +265,24 @@ app.get('/add-company', function renderAddCompany(req, res, next) {
             });
         }
         context.companies = companyDbData;
+        console.log(context);
         res.render('add-company', context);
+    });
+});
+
+
+// ADD COMPANY PAGE - Route to insert company data
+app.get("/insertCompany", function submitCompany(req, res, next) {
+    let sql_query = `INSERT INTO Companies (companyName, dateJoined) VALUES (?, ?)`;
+    let context = {};
+
+    mysql.pool.query(sql_query, [req.query.companyName, req.query.dateJoined], (err, result) => {
+        if (err) {
+            next(err);
+            return;
+        }
+        context.companies = result.insertId;
+        res.send(JSON.stringify(context));
     });
 });
 

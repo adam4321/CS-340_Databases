@@ -32,15 +32,15 @@
         </div>
         <div><label for="bug-programmer">Programmers</label></div>
         <div class="checkbox-container">
-          {{#each programmers}}
-          <input class="checkbox-input" type="checkbox" id="programmer1" name="{{this.firstName}} {{this.lastName}}" value="{{this.programmerId}}">
-          <label for="programmer1">{{this.firstName}} {{this.lastName}}</label><br>
-          {{/each}}
+            {{#each programmers}}
+            <input class="checkbox-input" type="checkbox" id="programmer1" name="{{this.firstName}} {{this.lastName}}" value="{{this.programmerId}}">
+            <label for="programmer1">{{this.firstName}} {{this.lastName}}</label><br>
+            {{/each}}
         </div>
         <div><label for="bug-start-date">Date Started</label></div>
         <div><input type="date" name="bug-start-date" id="bug-start-date-field"></div>
         <div><label for="bug-priority">Priority</label></div>
-        <div><input type="number" name="bug-priority" id="bug-priority-field"></div>
+        <div><input type="number" max="5" name="bug-priority" id="bug-priority-field"></div>
         <div><label for="bug-fixed">Fixed</label></div>
         <div>
           <input class="radio-input" type="radio" name="bug-fixed" value="1" id="bug-fixed-yes">
