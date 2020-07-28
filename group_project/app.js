@@ -120,9 +120,25 @@ app.get('/', function renderHome(req, res, next) {
     });
 });
 
+// SKELETON - NEEDS CODE
+// MAIN BUG PAGE INSERT NEW BUG - Route to insert bug data
+app.get("/insertBug", function submitBug(req, res, next) {
+    let sql_query = ``;
+    let context = {};
 
+    mysql.pool.query(sql_query, [ ], (err, result) => {
+        if (err) {
+            next(err);
+            return;
+        }
+        context.bugs = result.insertId;
+        res.send(JSON.stringify(context));
+    });
+});
+
+// SKELETON - NEEDS CODE
 // BUGS MAIN PAGE DELETE ROW - Route to delete a row from the bug list
-app.get("/delete", function(req, res, next) {
+app.get("/deleteBug", function(req, res, next) {
 
     // Delete the row with the passed in bugId
     let sql_query_1 = `DELETE FROM Bugs WHERE bugId=?`;
@@ -243,6 +259,52 @@ app.get('/edit-bug', function renderAddCompany(req, res, next) {
 });
 
 
+// ADD PROGRAMMER PAGE - Route where the add programmer page is rendered
+app.get('/add-programmer', function renderAddProgrammer(req, res, next) {
+    
+    // Find all of the programmers
+    let sql_query = `SELECT * FROM Programmers`;
+    let context = {};
+
+    mysql.pool.query(sql_query, (err, rows, fields) => {
+        if (err) {
+            next(err);
+            return;
+        }
+
+        // Put the mysql data into an array for rendering
+        let programmersDbData = [];
+        for (let i in rows) {
+            programmersDbData.push({
+                firstName: rows[i].firstName,
+                lastName: rows[i].lastName,
+                email: rows[i].email,
+                dateStarted: rows[i].dateStarted,
+                accessLevel: rows[i].accessLevel
+            });
+        }
+        context.programmers = programmersDbData;
+        res.render('add-programmer', context);
+    })
+});
+
+// SKELETON - NEEDS CODE
+// ADD PROGRAMMER PAGE INSERT NEW PROGRAMMER - Route to insert programmer data
+app.get("/insertProgrammer", function submitProgrammer(req, res, next) {
+    let sql_query = ``;
+    let context = {};
+
+    mysql.pool.query(sql_query, [ ], (err, result) => {
+        if (err) {
+            next(err);
+            return;
+        }
+        context.programmers = result.insertId;
+        res.send(JSON.stringify(context));
+    });
+});
+
+
 // ADD PROJECT PAGE - Route where the add project page is rendered
 app.get('/add-project', function renderAddProject(req, res, next) {
     
@@ -291,33 +353,28 @@ app.get('/add-project', function renderAddProject(req, res, next) {
 });
 
 
-// ADD PROGRAMMER PAGE - Route where the add programmer page is rendered
-app.get('/add-programmer', function renderAddProgrammer(req, res, next) {
-    
-    // Find all of the programmers
-    let sql_query = `SELECT * FROM Programmers`;
+// ADD PROJECT PAGE INSERT NEW PROJECT - Route to insert project data
+app.get("/insertProject", function submitProject(req, res, next) {
+    let sql_query = `INSERT INTO Projects (projectName, companyId, dateStarted, lastUpdated, inMaintenance)
+                        VALUES (?, (SELECT companyId FROM Companies WHERE companyName = ?), ?, ?, ?)`;
     let context = {};
 
-    mysql.pool.query(sql_query, (err, rows, fields) => {
+    mysql.pool.query(sql_query, 
+        [
+            req.query.projectName,
+            req.query.companyName,
+            req.query.dateStarted,
+            req.query.lastUpdated,
+            req.query.inMaintenance
+        ],
+        (err, result) => {
         if (err) {
             next(err);
             return;
         }
-
-        // Put the mysql data into an array for rendering
-        let programmersDbData = [];
-        for (let i in rows) {
-            programmersDbData.push({
-                firstName: rows[i].firstName,
-                lastName: rows[i].lastName,
-                email: rows[i].email,
-                dateStarted: rows[i].dateStarted,
-                accessLevel: rows[i].accessLevel
-            });
-        }
-        context.programmers = programmersDbData;
-        res.render('add-programmer', context);
-    })
+        context.projects = result.insertId;
+        res.send(JSON.stringify(context));
+    });
 });
 
 

@@ -29,8 +29,8 @@ SELECT companyName FROM Companies;
 
 -- Add new project
 INSERT INTO Projects (projectName, companyId, dateStarted, lastUpdated, inMaintenance)
-    VALUES (:projectNameInput, (SELECT companyId FROM Companies WHERE companyName = :companyNameInput),
-            :dateStartedInput, :lastUpdatedInput, :inMaintenanceInput);
+    VALUES (:req.query.projectName, (SELECT companyId FROM Companies WHERE companyName = :req.query.companyName),
+            :req.query.dateStarted, :req.query.lastUpdated, :req.query.inMaintenance);
 
 
 

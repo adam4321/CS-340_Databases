@@ -28,3 +28,8 @@ function deleteBug(tbl, curRow, bugId) {
         }
     }
 }
+
+
+// Function to submit the form data
+let recordForm = document.getElementById('recordForm');
+

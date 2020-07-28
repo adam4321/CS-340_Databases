@@ -55,8 +55,7 @@
         <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
             <thead>
                 <tr>
-                    <th class="mdl-data-table__cell--non-numeric">First Name</th>
-                    <th class="mdl-data-table__cell--non-numeric">Last Name</th>
+                    <th class="mdl-data-table__cell--non-numeric">Programmer Name</th>
                     <th class="mdl-data-table__cell--non-numeric">Email</th>
                     <th class="mdl-data-table__cell--non-numeric">Date Started</th>
                     <th class="mdl-data-table__cell--non-numeric">Access Level</th>
@@ -65,8 +64,7 @@
             <tbody>
                 {{#each programmers}}
                 <tr>
-                    <td class="mdl-data-table__cell--non-numeric">{{this.firstName}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{this.lastName}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{this.firstName}} {{this.lastName}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{this.email}}</td>
                     <td>{{this.dateStarted}}</td>
                     <td>{{this.accessLevel}}</td>

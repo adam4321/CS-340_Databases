@@ -14,42 +14,34 @@
         <h2 class="mdl-card__title-text">Add Project</h2>
     </div>
     <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-        <form id="recordForm">
+        <form id="recordForm" action="/insertProject">
             <fieldset>
-        
                 <legend>Project Details</legend>
         
                 <label for="project-name">Project Name</label>
-                <input type="text" name="project-name" id="project-name-field"><br>
+                <input type="text" name="projectName" id="project-name-field"><br>
 
                 <label for="project-company">Company</label>
-                <select name="project-company" id="project-company-field">
-                <option value="" disabled selected>Select a Company</option>
+                <select name="projectCompany" id="project-company-field">
+                <option disabled selected>Select a Company</option>
+
                 {{#each companies}}
-                <option value="{{this.companyId}}">{{this.companyName}}</option>
+                <option>{{this.companyName}}</option>
                 {{/each}}
-                </select>
-                <br>
+                </select> <br>
         
                 <label for="started-date">Date Started</label>
-                <input type="date" name="started-date" id="project-date-started-field"> <br>
+                <input type="date" name="startedDate" id="project-date-started-field"> <br>
 
                 <label for="updated-date">Last Updated</label>
-                <input type="date" name="updated-date" id="project-date-updated-field"> <br>
+                <input type="date" name="updatedDate" id="project-date-updated-field"> <br>
         
                 <label for="maintenance">In Maintenance</label>
                 <input class="radio-input" type="radio" name="maintenance" value="1" id="maintenance-yes"><label class="radio-label" for="maintenance">Yes</label>
                 <input class="radio-input" type="radio" name="maintenance" value="0" id="maintenance-no"><label class="radio-label" for="maintenance">No</label>
                 <br>
 
-                <input 
-                    type="submit" 
-                    id="save" 
-                    value="Add" 
-                    onclick="insertUser(document.getElementById('company-id-field').value,
-                                        document.getElementById('project-date-started-field').value,
-                                        document.getElementById('project-date-updated-field').value,
-                                        document.getElementsByName('maintenance'))">
+                <input type="submit" id="save" value="Add">
             </fieldset>
         </form>
     </div>
@@ -62,7 +54,7 @@
         <h2 class="mdl-card__title-text">Current Projects</h2>
     </div>
     <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-        <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+        <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" id="recordTable">
             <thead>
                 <tr>
                     <th class="mdl-data-table__cell--non-numeric">Project Name</th>
