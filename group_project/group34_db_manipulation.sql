@@ -94,5 +94,4 @@ DELETE FROM Bugs_Programmers WHERE bugId = :bugIdInput AND programmerId = :progr
 
 
 -- Delete bug
-DELETE FROM Bugs_Programmers WHERE bugId = :bugIdInput;
-DELETE FROM Bugs WHERE bugId = :bugIdInput;
+DELETE FROM Bugs WHERE bugId = :req.query.bugId;

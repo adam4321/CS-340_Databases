@@ -8,7 +8,7 @@ let recordForm = document.getElementById('recordForm');
 recordForm.addEventListener('submit', (e) => {
     e.preventDefault();
     let req = new XMLHttpRequest();
-    let queryString = '/insertProject';
+    let queryString = '/projects/insertProject';
 
     // String that holds the form data
     let parameterString =
