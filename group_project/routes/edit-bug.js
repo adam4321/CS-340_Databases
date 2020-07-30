@@ -1,8 +1,8 @@
 /*************************************************************
-**  Description: PROJECTS PAGE - server side node.js routes
+**  Description: EDIT BUG PAGE - server side node.js routes
 **
-**  Contains:    /projects/
-**               /projects/insertProject
+**  Contains:    /edit-bug/
+**               /edit-bug/updateBug
 **************************************************************/
 
 const express = require('express');
