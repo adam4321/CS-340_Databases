@@ -10,9 +10,15 @@ const express = require('express');
 const app = express();
 
 // Set up express-handlebars
-const handlebars = require('express-handlebars').create({defaultLayout: 'main'});
-app.engine('handlebars', handlebars.engine);
-app.set('view engine', 'handlebars');
+const handlebars = require('express-handlebars');
+app.set('view engine', '.hbs');
+app.engine('.hbs', handlebars({
+    layoutsDir: __dirname + '/views/layouts',
+    defaultLayout: 'main',
+    extname: '.hbs',
+    helpers: require('./config/handlebars-helpers.js')
+}));
+
 
 // Set up body-parser
 const bodyParser = require('body-parser');

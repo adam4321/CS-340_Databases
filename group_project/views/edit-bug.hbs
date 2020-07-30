@@ -25,21 +25,23 @@
                 <div><label for="bug-project">Project</label></div>
                 <div>
                 <select name="bug-project" id="bug-project-field">
-                    {{#with editBug}} {{#if this.projectName}}
-                    <option value="" selected="selected">{{this.projectName}}</option>
-                    {{else}}
-                    <option value="0" selected="selected">NULL</option>
-                    {{/if}} {{/with}}
+                    {{#with editBug}} 
+                        {{#if this.projectName}}
+                            <option value="" selected="selected">{{this.projectName}}</option>
+                        {{else}}
+                            <option value="0" selected="selected">NULL</option>
+                        {{/if}} 
+                    {{/with}}
                     <option value="0">NULL</option>
                     {{#each projects}}
-                    <option value="{{this.projectId}}">{{this.projectName}}</option>
+                        <option value="{{this.projectId}}">{{this.projectName}}</option>
                     {{/each}}
                 </select>          
                 </div>
                 <div><label for="bug-programmer">Programmers</label></div>
                 <div class="checkbox-container">
                     {{#each programmers}}
-                        {{#if this.programmers.checked}}
+                        {{findChecked this.programmerId}}
                             <input checked="checked" 
                                 class="checkbox-input" 
                                 type="checkbox" 
@@ -47,14 +49,6 @@
                                 name="programmerId" 
                                 value="{{this.programmerId}}"
                             >
-                        {{else}}
-                            <input class="checkbox-input" 
-                                type="checkbox" 
-                                id="programmer1" 
-                                name="programmerId" 
-                                value="{{this.programmerId}}"
-                            >
-                        {{/if}}
                         <label for="programmer1">{{this.firstName}} {{this.lastName}}</label><br>
                     {{/each}} 
                 </div>
