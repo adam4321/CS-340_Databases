@@ -103,7 +103,7 @@
                     <td>{{#if this.fixed}} Yes {{else}} No {{/if}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{this.resolution}}</td>
                     <td><a class="update-btn" href="/edit-bug?bugId={{this.bugId}}">Update</a></td>
-                    <td><a class="update-btn">Delete</a></td>
+                    <td><input type="button" value="Delete" class="update-btn" onclick="deleteBug('recordTable', this, {{this.bugId}})"></td>
                 </tr>
                 {{/each}}
             </tbody>

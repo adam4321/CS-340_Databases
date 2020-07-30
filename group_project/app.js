@@ -168,7 +168,7 @@ app.get("/insertBug", function submitBug(req, res, next) {
     });
 });
 
-// SKELETON - NEEDS CODE
+
 // BUGS MAIN PAGE DELETE ROW - Route to delete a row from the bug list
 app.get("/deleteBug", function(req, res, next) {
 

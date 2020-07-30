@@ -39,7 +39,11 @@
                 <div><label for="bug-programmer">Programmers</label></div>
                 <div class="checkbox-container">
                     {{#each programmers}}
+                    {{#if this.programmers.checked}}
+                    <input checked="checked" class="checkbox-input" type="checkbox" id="programmer1" name="programmerId" value="{{this.programmerId}}">
+                    {{else}}
                     <input class="checkbox-input" type="checkbox" id="programmer1" name="programmerId" value="{{this.programmerId}}">
+                    {{/if}}
                     <label for="programmer1">{{this.firstName}} {{this.lastName}}</label><br>
                     {{/each}} 
                 </div>
