@@ -18,7 +18,7 @@ function renderEditBug(req, res, next) {
     let sql_query_2 = `SELECT programmerId, firstName, lastName FROM Programmers`;
 
     // 3rd query populates the update bug form
-    let sql_query_3 = `SELECT p.firstName, p.lastName, b.bugId, pj.projectName, b.bugSummary, b.bugDescription, b.dateStarted, b.resolution, b.priority, b.fixed 
+    let sql_query_3 = `SELECT p.programmerId, b.bugId, pj.projectName, b.bugSummary, b.bugDescription, b.dateStarted, b.resolution, b.priority, b.fixed 
                     FROM Programmers p 
                         JOIN Bugs_Programmers bp ON p.programmerId = bp.programmerId
                         JOIN Bugs b ON bp.bugId = b.bugId
@@ -42,13 +42,13 @@ function renderEditBug(req, res, next) {
         for (let i in rows) {
             // If this is the same entry as the last, then only add the programmer to the array
             if (prevEntryBugId == rows[i].bugId) {
-                bugProgrammers.push(rows[i].firstName + ' ' + rows[i].lastName);
+                bugProgrammers.push(rows[i].programmerId);
             }
             // This is a new entry
             else {
                 prevEntryBugId = rows[i].bugId;         // Cache the bugId
                 bugProgrammers = [];                    // Add the programmer to the array
-                bugProgrammers.push(rows[i].firstName + ' ' + rows[i].lastName);
+                bugProgrammers.push(rows[i].programmerId);
 
                 // Push a single entry
                 editBugDbData.push({
