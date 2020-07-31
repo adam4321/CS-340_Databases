@@ -8,7 +8,9 @@ module.exports = {
         return "BAR!";
     },
     findChecked: function findProgrammersChecked(inputId, bug) {
-        for (let i in bug.programmers) {
+        // console.log(inputId)
+        console.log(bug)
+        for (let i in inputId) {
             if (inputId == bug.programmers.programmerId) {
                 document.getElementById("myCheck").checked = true;
             }

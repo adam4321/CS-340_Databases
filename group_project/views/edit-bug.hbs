@@ -41,11 +41,11 @@
                 <div><label for="bug-programmer">Programmers</label></div>
                 <div class="checkbox-container">
                     {{#each programmers}}
-                        {{findChecked this.programmerId}}
+                        {{findChecked this.programmerId this}}
                             <input checked="checked" 
                                 class="checkbox-input" 
                                 type="checkbox" 
-                                id="programmer1" 
+                                id="{{this.programmerId}}" 
                                 name="programmerId" 
                                 value="{{this.programmerId}}"
                             >
