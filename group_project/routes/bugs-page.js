@@ -19,8 +19,9 @@ function renderHome(req, res, next) {
     let sql_query_2 = `SELECT programmerId, firstName, lastName FROM Programmers`;
     
     // 3rd query populates the bug list
-    let sql_query_3 = `SELECT p.firstName, p.lastName, b.bugId, pj.projectName, b.bugSummary, b.bugDescription, b.dateStarted, b.resolution, b.priority, b.fixed 
-	                FROM Programmers p 
+    let sql_query_3 = `SELECT p.firstName, p.lastName, b.bugId, pj.projectName, b.bugSummary, b.bugDescription, 
+                        b.dateStarted, b.resolution, b.priority, b.fixed 
+	                    FROM Programmers p 
 		                JOIN Bugs_Programmers bp ON p.programmerId = bp.programmerId
 		                JOIN Bugs b ON bp.bugId = b.bugId
                         LEFT OUTER JOIN Projects pj ON b.projectId <=> pj.projectId
@@ -95,7 +96,7 @@ function renderHome(req, res, next) {
                 context.bugs = bugsDbData;
                 context.programmers = programmersDbData;
                 context.projects = projectDbData;
-                console.log(context);
+                // console.log(context);
                 res.render('user-home', context);
             });
         });
@@ -181,10 +182,129 @@ function deleteBug(req, res, next) {
 }
 
 
+// BUGS MAIN PAGE SEARCH BUG - Function to search for string in bugs table
+function searchBug(req, res, next) {
+    let searchQuery = 'SELECT bugId FROM Bugs WHERE CONCAT(bugSummary, bugDescription, resolution) LIKE "%' + 
+                        req.query.searchString + '%"';
+
+    const mysql = req.app.get('mysql');                 
+    let context = {};
+    
+    mysql.pool.query(searchQuery, (err, result) => {
+        if(err) {
+            next(err);
+            return;
+        }
+
+        // Get list of matching bugIds 
+        resultsList = [];
+        for(i = 0; i < result.length; i++) {
+            resultsList.push(result[i].bugId)
+        }
+        idString = resultsList.join();
+
+        // 1st query gathers the projects for the dropdown
+        let sql_query_1 = `SELECT projectName, projectId FROM Projects`;
+
+        // 2nd query gathers the programmers for the scrolling checkbox list
+        let sql_query_2 = `SELECT programmerId, firstName, lastName FROM Programmers`;
+
+        let bugsQuery = 'SELECT p.firstName, p.lastName, b.bugId, pj.projectName, b.bugSummary, b.bugDescription, ' + 
+                        'b.dateStarted, b.resolution, b.priority, b.fixed FROM Programmers p ' + 
+                        'JOIN Bugs_Programmers bp ON p.programmerId = bp.programmerId ' + 
+                        'JOIN Bugs b ON bp.bugId = b.bugId ' + 
+                        'LEFT OUTER JOIN Projects pj ON b.projectId = pj.projectId ' + 
+                        'WHERE b.bugId IN (' + idString + ') ' +
+                        'ORDER BY b.bugId;';
+
+        // let bugsQuery = 'SELECT GROUP_CONCAT(DISTINCT p.firstName, " ",p.lastName SEPARATOR "\n") AS programmers, ' + 
+        //                 'b.bugId, pj.projectName, b.bugSummary, b.bugDescription, b.dateStarted, b.resolution, b.priority, ' + 
+        //                 'b.fixed FROM Programmers p JOIN Bugs_Programmers bp ON p.programmerId = bp.programmerId ' +
+        //                 'JOIN Bugs b ON bp.bugId = b.bugId LEFT OUTER JOIN Projects pj ON b.projectId = pj.projectId ' + 
+        //                 'WHERE b.bugId IN (' + idString + ') GROUP BY b.bugId ORDER BY b.bugId;' 
+
+        console.log(bugsQuery)  // copy-paste query into phpmyadmin
+
+        mysql.pool.query(bugsQuery, (err, rows, fields) => {
+            if (err) {
+                next(err);
+                return;
+            }
+            // console.log(rows);
+
+            let prevEntryBugId;
+            let bugProgrammers = [];
+            let matchingBugsData = [];
+
+            for (let i in rows) {
+                if (prevEntryBugId == rows[i].bugId) {
+                    bugProgrammers.push(rows[i].firstName + ' ' + rows[i].lastName);
+                }
+                else {
+                    prevEntryBugId = rows[i].bugId;
+                    bugProgrammers.push(rows[i].firstName + ' ' + rows[i].lastName);
+
+                    matchingBugsData.push({
+                        bugId: rows[i].bugId,
+                        bugSummary: rows[i].bugSummary,
+                        bugDescription: rows[i].bugDescription,
+                        projectName: rows[i].projectName,
+                        programmers: bugProgrammers,
+                        dateStarted: rows[i].dateStarted,
+                        priority: rows[i].priority,
+                        fixed: rows[i].fixed,
+                        resolution: rows[i].resolution
+                    })
+
+                    bugProgrammers = [];
+                }
+            }
+
+            mysql.pool.query(sql_query_2, (err, rows, fields) => {
+                if (err) {
+                    next(err);
+                    return;
+                }
+                let programmersDbData = [];
+                for (let i in rows) {
+                    programmersDbData.push({
+                        programmerId: rows[i].programmerId,
+                        firstName: rows[i].firstName,
+                        lastName: rows[i].lastName
+                    });
+                }
+                // Query for the list of projects
+                mysql.pool.query(sql_query_1,  (err, rows, fields) => {
+                    if (err) {
+                        next(err);
+                        return;
+                    }
+                    let projectDbData = [];
+                    for (let i in rows) {
+                        projectDbData.push({
+                            projectName: rows[i].projectName,
+                            projectId: rows[i].projectId
+                        });
+                    }
+                        
+                    // After the 3 calls return, then populate the context array
+                    context.bugs = matchingBugsData;
+                    context.programmers = programmersDbData;
+                    context.projects = projectDbData;
+                    console.log(context);
+                    res.render('user-home', context);
+                });
+            })
+        });
+    });
+};
+
+
 /* PROJECTS PAGE ROUTES ---------------------------------------------------- */
 
 router.get('/', renderHome);
 router.get('/insertBug', submitBug);
 router.get('/deleteBug', deleteBug);
+router.get('/searchBug', searchBug);
 
 module.exports = router;

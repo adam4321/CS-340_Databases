@@ -178,4 +178,27 @@ function deleteBug(tbl, curRow, bugId) {
             table.deleteRow(i);
         }
     }
-}
+} 
+
+
+// SEARCH BUG CLIENT SIDE - Function call to search bug table for substring
+let searchButton = document.getElementById("search-btn");
+searchButton.onclick = searchBug;
+
+function searchBug() {
+    let searchString = document.getElementById("search-input").value;
+    let queryString = "/searchBug";
+    let req = new XMLHttpRequest();
+    console.log(searchString);
+
+    req.open("GET", queryString + "?searchString=" + searchString, true);   
+    req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    req.addEventListener("load", () => {
+        if (req.status >= 200 && req.status < 400) {
+        } else {
+        console.log("Search request error");
+        }
+    });
+
+    req.send(queryString + "?searchString=" + searchString); 
+};
