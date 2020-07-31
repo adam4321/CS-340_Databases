@@ -33,11 +33,12 @@
         <div><label for="bug-programmer">Programmers</label></div>
         <div class="checkbox-container">
             {{#each programmers}}
-                <input class="checkbox-input" 
-                        type="checkbox" 
-                        id="{{this.programmerId}}" 
-                        name="programmerId" 
-                        value="{{this.programmerId}}"
+                <input 
+                    class="checkbox-input" 
+                    type="checkbox" 
+                    id="{{this.programmerId}}" 
+                    name="programmerId" 
+                    value="{{this.programmerId}}"
                 >
                 <label value="{{this.firstName}} {{this.lastName}}" 
                     for="programmer1">{{this.firstName}} {{this.lastName}}
@@ -58,7 +59,7 @@
         <div><label class="textarea-label" for="bug-resolution">Resolution</label></div>
         <div><textarea name="bugResolution" id="bug-resolution-field"></textarea></div>
         <div>
-          <input type="submit" id="save" value="Add" >
+          <input type="submit" id="save" value="Add" onclick="checkBoxChecked()">
         </div>
       </div>
     </form>
@@ -114,7 +115,8 @@
                     <td class="mdl-data-table__cell--non-numeric">{{this.resolution}}</td>
                     <td><a class="update-btn" href="/edit-bug?bugId={{this.bugId}}">Update</a></td>
                     <td>
-                        <input type="button" 
+                        <input 
+                            type="button" 
                             value="Delete" 
                             class="update-btn" 
                             onclick="deleteBug('recordTable', this, {{this.bugId}})"

@@ -16,7 +16,7 @@
     </div>
 
     <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-        <form id="recordForm">
+        <form id="recordForm" action="/updateBug">
             <div class="grid-container">
                 <div><label class="textarea-label" for="bug-summary">Bug Summary</label></div>
                 <div><textarea required name="bug-summary" id="bug-summary-field">{{editBug.bugSummary}}</textarea></div>
@@ -42,7 +42,8 @@
                 <div class="checkbox-container">
                     {{#each programmers}}
                         {{#if this.checked}}
-                            <input checked="checked" 
+                            <input 
+                                checked="checked" 
                                 class="checkbox-input" 
                                 type="checkbox" 
                                 id="{{this.programmerId}}" 
@@ -50,7 +51,8 @@
                                 value="{{this.programmerId}}"
                             >
                         {{else}}
-                            <input class="checkbox-input" 
+                            <input 
+                                class="checkbox-input" 
                                 type="checkbox" 
                                 id="{{this.programmerId}}" 
                                 name="programmerId" 
@@ -83,11 +85,12 @@
                 <div><label class="textarea-label" for="bug-resolution">Resolution</label></div>
                 <div><textarea name="bug-resolution" id="bug-resolution-field">{{editBug.resolution}}</textarea></div>
                 <div>
-                    <input type="submit" id="save" value="Update">
+                    <input type="submit" id="save" value="Update" onclick="checkBoxChecked()">
                 </div>
             </div>
         </form>
     </div>
 </div>
 
-
+{{!-- Client side javascript file --}}
+<script src="js/edit-bug.js"></script>

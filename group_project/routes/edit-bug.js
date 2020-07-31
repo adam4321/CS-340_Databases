@@ -104,7 +104,6 @@ function renderEditBug(req, res, next) {
                 context.editBug = editBugDbData[0];
                 context.programmers = programmersDbData;
                 context.projects = projectDbData;
-                console.log(context);
                 res.render('edit-bug', context);
             });
         });
@@ -112,7 +111,6 @@ function renderEditBug(req, res, next) {
 }
 
 
-// SKELETON NEEDS CODE !!!
 // SUBMIT BUG EDIT - Function to submit a bug update
 function submitBugEdit(req, res, next) {
     const mysql = req.app.get('mysql');
