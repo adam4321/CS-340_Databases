@@ -41,7 +41,7 @@
                 <div><label for="bug-programmer">Programmers</label></div>
                 <div class="checkbox-container">
                     {{#each programmers}}
-                        {{findChecked this.programmerId this}}
+                        {{#if this.checked}}
                             <input checked="checked" 
                                 class="checkbox-input" 
                                 type="checkbox" 
@@ -49,6 +49,14 @@
                                 name="programmerId" 
                                 value="{{this.programmerId}}"
                             >
+                        {{else}}
+                            <input class="checkbox-input" 
+                                type="checkbox" 
+                                id="{{this.programmerId}}" 
+                                name="programmerId" 
+                                value="{{this.programmerId}}"
+                            >
+                        {{/if}}
                         <label for="programmer1">{{this.firstName}} {{this.lastName}}</label><br>
                     {{/each}} 
                 </div>

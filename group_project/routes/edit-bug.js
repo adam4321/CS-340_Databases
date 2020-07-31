@@ -64,6 +64,7 @@ function renderEditBug(req, res, next) {
                 });
             }
         }
+
         // Query for the list of programmers
         mysql.pool.query(sql_query_2,  (err, rows, fields) => {
             if (err) {
@@ -75,9 +76,17 @@ function renderEditBug(req, res, next) {
                 programmersDbData.push({
                     programmerId: rows[i].programmerId,
                     firstName: rows[i].firstName,
-                    lastName: rows[i].lastName
+                    lastName: rows[i].lastName,
+                    checked: false
                 });
+                // If the programmer's Id is set in the bug then checked becomes true
+                for (let j in editBugDbData[0].programmers) {
+                    if (editBugDbData[0].programmers[j] == rows[i].programmerId) {
+                        programmersDbData[i].checked = true;
+                    }
+                }
             }
+
             // Query for the list of projects
             mysql.pool.query(sql_query_1,  (err, rows, fields) => {
                 if (err) {
