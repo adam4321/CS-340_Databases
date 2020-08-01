@@ -242,6 +242,7 @@ function searchBug(req, res, next) {
                 }
                 else {
                     prevEntryBugId = rows[i].bugId;
+                    bugProgrammers = [];
                     bugProgrammers.push(rows[i].firstName + ' ' + rows[i].lastName);
 
                     matchingBugsData.push({
@@ -254,9 +255,7 @@ function searchBug(req, res, next) {
                         priority: rows[i].priority,
                         fixed: rows[i].fixed,
                         resolution: rows[i].resolution
-                    })
-
-                    bugProgrammers = [];
+                    }) 
                 }
             }
 
@@ -292,7 +291,9 @@ function searchBug(req, res, next) {
                     context.programmers = programmersDbData;
                     context.projects = projectDbData;
                     console.log(context);
-                    res.render('user-home', context);
+                    console.log(context.bugs[0].programmers);
+                    // res.render('user-home', context);
+                    res.send(JSON.stringify(context));
                 });
             })
         });

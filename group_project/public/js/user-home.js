@@ -2,6 +2,9 @@
 **  Description: USER-HOME client-side JavaScript file
 **************************************************************/
 
+// where did this line of code come from??
+// const { delete } = require("../../routes/bugs-page");
+
 // INSERT BUG CLIENT SIDE - Function to submit the bugs form data
 let recordForm = document.getElementById('recordForm');
 
@@ -193,12 +196,121 @@ function searchBug() {
 
     req.open("GET", queryString + "?searchString=" + searchString, true);   
     req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    req.send(queryString + "?searchString=" + searchString); 
+
     req.addEventListener("load", () => {
         if (req.status >= 200 && req.status < 400) {
+            let bugsArray = JSON.parse(req.responseText).bugs;
+            console.log(bugsArray);
+            // clear table before building search results
+            let tableBody = document.getElementById("table-body");
+            tableBody.innerHTML = '';
+
+            // build row for each result
+            // for (let bug in bugsArray) {
+            //     console.log(typeof bug);
+            //     //createRow(tableBody, bug);
+            // }
+            bugsArray.forEach(element => {
+                createRow(tableBody, element);
+            });
+
+            console.log("exiting...")
         } else {
-        console.log("Search request error");
+            console.log("Search request error");
         }
     });
-
-    req.send(queryString + "?searchString=" + searchString); 
 };
+
+
+// Function to create new bug row after searching
+function createRow(tableBody, bugData) {
+    let newRow = tableBody.insertRow(-1);
+
+    // Bug Summary element
+    let summaryCell = document.createElement('td');
+    summaryCell.textContent = bugData.bugSummary;
+    summaryCell.className = 'mdl-data-table__cell--non-numeric'; 
+    newRow.appendChild(summaryCell);
+
+    // Bug Description element
+    let descriptionCell = document.createElement('td');
+    descriptionCell.textContent = bugData.bugDescription;
+    descriptionCell.className = 'mdl-data-table__cell--non-numeric'; 
+    newRow.appendChild(descriptionCell);
+
+    // Project element
+    let projectCell = document.createElement('td');
+    projectCell.className = 'mdl-data-table__cell--non-numeric'; 
+    projectCell.textContent = bugData.projectName;
+    newRow.appendChild(projectCell);
+
+    // Programmers element
+    let programmerCell = document.createElement('td');
+    programmerCell.className = 'mdl-data-table__cell--non-numeric';
+    let cellString = '';
+    for (i = 0; i < bugData.programmers.length; i++) {
+        cellString += bugData.programmers[i] + '<br>';
+    }
+    programmerCell.innerHTML = cellString;
+    newRow.appendChild(programmerCell);
+
+    // Date started element
+    let dateCell = document.createElement('td');
+    dateCell.textContent = bugData.dateStarted;
+    newRow.appendChild(dateCell);
+
+    // Priority element
+    let priorityCell = document.createElement('td');
+    priorityCell.textContent = bugData.priority;
+    newRow.appendChild(priorityCell);
+
+    // Fixed element
+    let fixedCell = document.createElement('td');
+    if (bugData.fixed == 0) {
+        fixedCell.textContent = "No"
+    } else {
+        fixedCell.textContent = "Yes";
+    }
+    newRow.appendChild(fixedCell);
+
+    // Resolution element
+    let resolutionCell = document.createElement('td');
+    resolutionCell.className = 'mdl-data-table__cell--non-numeric'
+    resolutionCell.textContent = bugData.resolution;
+    newRow.appendChild(resolutionCell);
+
+    // Update button element
+    let updateCell = document.createElement('td');
+    newRow.appendChild(updateCell);
+    let updateBtn = document.createElement('a');
+    updateCell.appendChild(updateBtn);
+    updateBtn.text = "Update"
+    updateBtn.className = "update-btn";
+    updateBtn.href = `/edit-bug?bugId=${bugData.bugId}`;
+
+    // Delete button element
+    let deleteCell = document.createElement('td');
+    newRow.appendChild(deleteCell);
+    let deleteBtn = document.createElement('a');
+    deleteCell.appendChild(deleteBtn);
+    deleteBtn.type = "button";
+    deleteBtn.text = "Delete";
+    deleteBtn.className = "update-btn";
+    deleteBtn.setAttribute('onclick', `deleteBug('recordTable', this, ${bugData.bugId})`);
+}
+
+// TODO: 
+// change behavior of pressing 'enter' on search bar. 
+// deal with 'view all' button. 
+
+// Change behavior of pressing 'Enter' on search bar. 
+let searchInput = document.getElementById("search-input");
+
+searchInput.addEventListener('keyup', function(event) {
+    if (event.keyCode === 13) {
+        event.preventDefault();
+        document.getElementById('search-btn').click();
+        alert("enter pressed")
+    }
+});
