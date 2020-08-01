@@ -18,7 +18,7 @@ function renderEditBug(req, res, next) {
     let sql_query_2 = `SELECT programmerId, firstName, lastName FROM Programmers`;
 
     // 3rd query populates the update bug form
-    let sql_query_3 = `SELECT p.programmerId, b.bugId, pj.projectName, b.bugSummary, b.bugDescription, b.dateStarted, b.resolution, b.priority, b.fixed 
+    let sql_query_3 = `SELECT p.programmerId, b.bugId, pj.projectName, b.bugSummary, b.bugDescription, b.dateStarted, b.resolution, b.priority, b.fixed, b.projectId 
                     FROM Programmers p 
                         JOIN Bugs_Programmers bp ON p.programmerId = bp.programmerId
                         JOIN Bugs b ON bp.bugId = b.bugId
@@ -60,7 +60,8 @@ function renderEditBug(req, res, next) {
                     dateStarted: rows[i].dateStarted,
                     priority: rows[i].priority,
                     fixed: rows[i].fixed,
-                    resolution: rows[i].resolution
+                    resolution: rows[i].resolution,
+                    project: rows[i].projectId
                 });
             }
         }

@@ -76,6 +76,8 @@ recordForm.addEventListener('submit', (e) => {
     if (recordForm.elements.bugProject.value) {
         projectStr += `&bugProject=${recordForm.elements.bugProject.value}`
     }
+    console.log(recordForm.elements.bugProject)
+    console.log(projectStr)
 
     // String that holds the form data
     let parameterString =
