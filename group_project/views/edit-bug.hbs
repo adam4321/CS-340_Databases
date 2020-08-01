@@ -71,14 +71,14 @@
                 <div><label for="bug-fixed">Fixed</label></div>
                 <div>
                     {{#if editBug.fixed}}
-                    <input class="radio-input" type="radio" name="bugFixed" value="1" id="bug-fixed-yes" checked="checked">
+                    <input class="radio-input" type="radio" name="bugFixed" value="1" id="bug-fixed-yes" checked>
                     <label class="radio-label" for="bug-fixed">Yes</label>
                     <input class="radio-input" type="radio" name="bugFixed" value="0" id="bug-fixed-no">
                     <label class="radio-label" for="bug-fixed">No</label>
                     {{else}}
-                    <input class="radio-input" type="radio" name="bugFixed" value="0" id="bug-fixed-yes">
+                    <input class="radio-input" type="radio" name="bugFixed" value="1" id="bug-fixed-yes">
                     <label class="radio-label" for="bug-fixed">Yes</label>
-                    <input class="radio-input" type="radio" name="bugFixed" value="1" id="bug-fixed-no" checked="checked">
+                    <input class="radio-input" type="radio" name="bugFixed" value="0" id="bug-fixed-no" checked>
                     <label class="radio-label" for="bug-fixed">No</label>
                     {{/if}}
                 </div>

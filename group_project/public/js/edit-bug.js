@@ -98,9 +98,7 @@ recordForm.addEventListener('submit', (e) => {
     if (req.status >= 200 && req.status < 400) {
         // Return the user to the bugs page
         window.location.href = "/";
-        // console.log('RECEIVED')
-        // let response = JSON.parse(req.responseText);
-        // console.log(response)
+  
     } else {
         console.log('Database return error');
     }
