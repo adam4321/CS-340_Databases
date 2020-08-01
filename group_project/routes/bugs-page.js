@@ -139,11 +139,12 @@ function submitBug(req, res, next) {
                     result.insertId,
                     req.query.programmer[i]
                 ], (err, result, ) => {
-                if (err) {
-                    next(err);
-                    return;
+                    if (err) {
+                        next(err);
+                        return;
+                    }
                 }
-            })
+            )
         }
         context.id = bugId;
         context.bugs = result.insertId;

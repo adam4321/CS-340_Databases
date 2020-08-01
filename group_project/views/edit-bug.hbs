@@ -18,18 +18,18 @@
     <div class="mdl-card__supporting-text mdl-color-text--grey-600">
         <form id="recordForm" action="/updateBug">
             <div class="grid-container">
-                <div><label class="textarea-label" for="bug-summary">Bug Summary</label></div>
-                <div><textarea required name="bug-summary" id="bug-summary-field">{{editBug.bugSummary}}</textarea></div>
+                <div><label class="textarea-label" for="bugSummary">Bug Summary</label></div>
+                <div><textarea required name="bugSummary" id="bug-summary-field">{{editBug.bugSummary}}</textarea></div>
                 <div><label class="textarea-label" for="bug-description">Bug Description</label></div>
-                <div><textarea required name="bug-description" id="bug-description-field">{{editBug.bugDescription}}</textarea></div>
+                <div><textarea required name="bugDescription" id="bug-description-field">{{editBug.bugDescription}}</textarea></div>
                 <div><label for="bug-project">Project</label></div>
                 <div>
-                <select name="bug-project" id="bug-project-field">
+                <select name="bugProject" id="bug-project-field">
                     {{#with editBug}} 
                         {{#if this.projectName}}
-                            <option value="" selected="selected">{{this.projectName}}</option>
+                            <option value="{{this.projectId}}" selected="selected">{{this.projectName}}</option>
                         {{else}}
-                            <option value="0" selected="selected">NULL</option>
+                            <option value="{{this.projectId}}" selected="selected">NULL</option>
                         {{/if}} 
                     {{/with}}
                     <option value="0">NULL</option>
@@ -38,7 +38,7 @@
                     {{/each}}
                 </select>          
                 </div>
-                <div><label for="bug-programmer">Programmers</label></div>
+                <div><label for="bugProgrammer">Programmers</label></div>
                 <div class="checkbox-container">
                     {{#each programmers}}
                         {{#if this.checked}}
@@ -63,27 +63,27 @@
                     {{/each}} 
                 </div>
                 <div><label for="bug-start-date">Date Started</label></div>
-                <div><input required type="date" name="bug-start-date" id="bug-start-date-field" value="{{editBug.dateStarted}}"></div>
+                <div><input required type="date" name="bugStartDate" id="bug-start-date-field" value="{{editBug.dateStarted}}"></div>
                 <div><label for="bug-priority">Priority</label></div>
-                <div><input required type="number" min="1" max="5" name="bug-priority" id="bug-priority-field" value="{{editBug.priority}}"></div>
+                <div><input required type="number" min="1" max="5" name="bugPriority" id="bug-priority-field" value="{{editBug.priority}}"></div>
                 
                 {{!-- Render the correct state of fixed --}}
                 <div><label for="bug-fixed">Fixed</label></div>
                 <div>
                     {{#if editBug.fixed}}
-                    <input class="radio-input" type="radio" name="bug-fixed" value="1" id="bug-fixed-yes" checked="checked">
+                    <input class="radio-input" type="radio" name="bugFixed" value="1" id="bug-fixed-yes" checked="checked">
                     <label class="radio-label" for="bug-fixed">Yes</label>
-                    <input class="radio-input" type="radio" name="bug-fixed" value="0" id="bug-fixed-no">
+                    <input class="radio-input" type="radio" name="bugFixed" value="0" id="bug-fixed-no">
                     <label class="radio-label" for="bug-fixed">No</label>
                     {{else}}
-                    <input class="radio-input" type="radio" name="bug-fixed" value="0" id="bug-fixed-yes">
+                    <input class="radio-input" type="radio" name="bugFixed" value="0" id="bug-fixed-yes">
                     <label class="radio-label" for="bug-fixed">Yes</label>
-                    <input class="radio-input" type="radio" name="bug-fixed" value="1" id="bug-fixed-no" checked="checked">
+                    <input class="radio-input" type="radio" name="bugFixed" value="1" id="bug-fixed-no" checked="checked">
                     <label class="radio-label" for="bug-fixed">No</label>
                     {{/if}}
                 </div>
                 <div><label class="textarea-label" for="bug-resolution">Resolution</label></div>
-                <div><textarea name="bug-resolution" id="bug-resolution-field">{{editBug.resolution}}</textarea></div>
+                <div><textarea name="bugResolution" id="bug-resolution-field">{{editBug.resolution}}</textarea></div>
                 <div>
                     <input type="submit" id="save" value="Update" onclick="checkBoxChecked()">
                 </div>

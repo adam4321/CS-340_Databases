@@ -113,11 +113,52 @@ function renderEditBug(req, res, next) {
 
 // SUBMIT BUG EDIT - Function to submit a bug update
 function submitBugEdit(req, res, next) {
+    // Query to insert the bug data
+    let sql_query_1 = `INSERT INTO Bugs (bugSummary, bugDescription, projectId, dateStarted, priority, fixed, resolution) 
+                            VALUES (?, ?, ?, ?, ?, ?, ?)`;
+    // Query to run in loop to create Bugs_Programmers instances
+    let sql_query_2 = `INSERT INTO Bugs_Programmers (bugId, programmerId) 
+                            VALUES (?, ?)`;
+
     const mysql = req.app.get('mysql');
     let context = {};
+    let bugId;
 
-
-
+    // Insert new bug data
+    mysql.pool.query(sql_query_1,
+        [
+            req.query.bugSummary,
+            req.query.bugDescription,
+            req.query.bugProject,
+            req.query.bugStartDate,
+            req.query.bugPriority,
+            req.query.bugFixed,
+            req.query.bugResolution
+        ], (err, result) => {
+        if (err) {
+            next(err);
+            return;
+        }
+        bugId = result.insertId;
+        // Run the Bugs_Programmers insertion for each programmer
+        for (let i in req.query.programmer) {
+            mysql.pool.query(sql_query_2,
+                [
+                    result.insertId,
+                    req.query.programmer[i]
+                ], (err, result, ) => {
+                    if (err) {
+                        next(err);
+                        return;
+                    }
+                }
+            )
+        }
+        context.id = bugId;
+        context.bugs = result.insertId;
+        console.log(context);
+        res.send(JSON.stringify(context));
+    });
 }
 
 

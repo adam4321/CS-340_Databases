@@ -43,7 +43,7 @@ app.set('port', 50000);
 app.use('/', require('./routes/bugs-page.js'));
 
 // EDIT BUG PAGE ROUTES
-app.use('/edit-bug', require('./routes/edit-bug.js'));
+app.use('/edit-bug', require('./routes/edit-bug-page.js'));
 
 // PROGRAMMERS PAGE ROUTES
 app.use('/programmers', require('./routes/programmers-page.js'));
