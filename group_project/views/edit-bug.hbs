@@ -85,7 +85,7 @@
                 <div><label class="textarea-label" for="bug-resolution">Resolution</label></div>
                 <div><textarea name="bugResolution" id="bug-resolution-field">{{editBug.resolution}}</textarea></div>
                 <div>
-                    <input type="submit" id="save" value="Update" onclick="checkBoxChecked()">
+                    <input type="submit" id="save" name="{{editBug.bugId}}" value="Submit" onclick="checkBoxChecked()">
                 </div>
             </div>
         </form>

@@ -38,6 +38,7 @@ function checkBoxChecked() {
 
 // UPDATE BUG CLIENT SIDE - Function to submit the bug's form data
 let recordForm = document.getElementById('recordForm');
+bugId = document.getElementById("save");
 
 recordForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -85,7 +86,8 @@ recordForm.addEventListener('submit', (e) => {
     '&bugStartDate=' + recordForm.elements.bugStartDate.value +
     '&bugPriority=' + recordForm.elements.bugPriority.value +
     '&bugFixed=' + recordForm.elements.bugFixed.value +
-    '&bugResolution=' + recordForm.elements.bugResolution.value
+    '&bugResolution=' + recordForm.elements.bugResolution.value +
+    '&bugId=' + bugId.name
 
     // Ajax request
     req.open('GET', queryString + '?' + parameterString, true);
@@ -93,10 +95,10 @@ recordForm.addEventListener('submit', (e) => {
     req.addEventListener('load', () => {
     if (req.status >= 200 && req.status < 400) {
         // Return the user to the bugs page
-        // window.location.href = "/";
-        console.log('RECEIVED')
-        let response = JSON.parse(req.responseText);
-        console.log(response)
+        window.location.href = "/";
+        // console.log('RECEIVED')
+        // let response = JSON.parse(req.responseText);
+        // console.log(response)
     } else {
         console.log('Database return error');
     }
