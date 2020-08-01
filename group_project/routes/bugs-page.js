@@ -184,6 +184,7 @@ function deleteBug(req, res, next) {
 
 // BUGS MAIN PAGE SEARCH BUG - Function to search for string in bugs table
 function searchBug(req, res, next) {
+    // query to find bug entries that contain substring
     let searchQuery = 'SELECT bugId FROM Bugs WHERE CONCAT(bugSummary, bugDescription, resolution) LIKE "%' + 
                         req.query.searchString + '%"';
 
@@ -196,6 +197,13 @@ function searchBug(req, res, next) {
             return;
         }
 
+        // if no results were found in initial search query
+        if(result.length == 0) {
+            context.bugs = [];
+            res.send(JSON.stringify(context));
+            return;
+        }
+
         // Get list of matching bugIds 
         resultsList = [];
         for(i = 0; i < result.length; i++) {
@@ -203,12 +211,7 @@ function searchBug(req, res, next) {
         }
         idString = resultsList.join();
 
-        // 1st query gathers the projects for the dropdown
-        let sql_query_1 = `SELECT projectName, projectId FROM Projects`;
-
-        // 2nd query gathers the programmers for the scrolling checkbox list
-        let sql_query_2 = `SELECT programmerId, firstName, lastName FROM Programmers`;
-
+        // query to gather data of bugs in the initial query results
         let bugsQuery = 'SELECT p.firstName, p.lastName, b.bugId, pj.projectName, b.bugSummary, b.bugDescription, ' + 
                         'b.dateStarted, b.resolution, b.priority, b.fixed FROM Programmers p ' + 
                         'JOIN Bugs_Programmers bp ON p.programmerId = bp.programmerId ' + 
@@ -217,20 +220,13 @@ function searchBug(req, res, next) {
                         'WHERE b.bugId IN (' + idString + ') ' +
                         'ORDER BY b.bugId;';
 
-        // let bugsQuery = 'SELECT GROUP_CONCAT(DISTINCT p.firstName, " ",p.lastName SEPARATOR "\n") AS programmers, ' + 
-        //                 'b.bugId, pj.projectName, b.bugSummary, b.bugDescription, b.dateStarted, b.resolution, b.priority, ' + 
-        //                 'b.fixed FROM Programmers p JOIN Bugs_Programmers bp ON p.programmerId = bp.programmerId ' +
-        //                 'JOIN Bugs b ON bp.bugId = b.bugId LEFT OUTER JOIN Projects pj ON b.projectId = pj.projectId ' + 
-        //                 'WHERE b.bugId IN (' + idString + ') GROUP BY b.bugId ORDER BY b.bugId;' 
-
-        console.log(bugsQuery)  // copy-paste query into phpmyadmin
+        // console.log(bugsQuery)  // this string can be pasted in phpmyadmin for testing
 
         mysql.pool.query(bugsQuery, (err, rows, fields) => {
             if (err) {
                 next(err);
                 return;
             }
-            // console.log(rows);
 
             let prevEntryBugId;
             let bugProgrammers = [];
@@ -259,43 +255,8 @@ function searchBug(req, res, next) {
                 }
             }
 
-            mysql.pool.query(sql_query_2, (err, rows, fields) => {
-                if (err) {
-                    next(err);
-                    return;
-                }
-                let programmersDbData = [];
-                for (let i in rows) {
-                    programmersDbData.push({
-                        programmerId: rows[i].programmerId,
-                        firstName: rows[i].firstName,
-                        lastName: rows[i].lastName
-                    });
-                }
-                // Query for the list of projects
-                mysql.pool.query(sql_query_1,  (err, rows, fields) => {
-                    if (err) {
-                        next(err);
-                        return;
-                    }
-                    let projectDbData = [];
-                    for (let i in rows) {
-                        projectDbData.push({
-                            projectName: rows[i].projectName,
-                            projectId: rows[i].projectId
-                        });
-                    }
-                        
-                    // After the 3 calls return, then populate the context array
-                    context.bugs = matchingBugsData;
-                    context.programmers = programmersDbData;
-                    context.projects = projectDbData;
-                    console.log(context);
-                    console.log(context.bugs[0].programmers);
-                    // res.render('user-home', context);
-                    res.send(JSON.stringify(context));
-                });
-            })
+            context.bugs = matchingBugsData;
+            res.send(JSON.stringify(context));
         });
     });
 };

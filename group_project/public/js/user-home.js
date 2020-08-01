@@ -2,9 +2,6 @@
 **  Description: USER-HOME client-side JavaScript file
 **************************************************************/
 
-// where did this line of code come from??
-// const { delete } = require("../../routes/bugs-page");
-
 // INSERT BUG CLIENT SIDE - Function to submit the bugs form data
 let recordForm = document.getElementById('recordForm');
 
@@ -192,7 +189,6 @@ function searchBug() {
     let searchString = document.getElementById("search-input").value;
     let queryString = "/searchBug";
     let req = new XMLHttpRequest();
-    console.log(searchString);
 
     req.open("GET", queryString + "?searchString=" + searchString, true);   
     req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -201,23 +197,28 @@ function searchBug() {
     req.addEventListener("load", () => {
         if (req.status >= 200 && req.status < 400) {
             let bugsArray = JSON.parse(req.responseText).bugs;
-            console.log(bugsArray);
+
             // clear table before building search results
             let tableBody = document.getElementById("table-body");
             tableBody.innerHTML = '';
 
-            // build row for each result
-            // for (let bug in bugsArray) {
-            //     console.log(typeof bug);
-            //     //createRow(tableBody, bug);
-            // }
+            // if no results are found
+            if(bugsArray.length == 0) {
+                let newRow = tableBody.insertRow(-1);
+                let summaryCell = document.createElement('td');
+                summaryCell.textContent = "No results found!";
+                summaryCell.style.color = "#ff0000";
+                summaryCell.className = 'mdl-data-table__cell--non-numeric'; 
+                newRow.appendChild(summaryCell);
+                return;
+            }
+
+            // build rows for each bug if there is at least one result
             bugsArray.forEach(element => {
                 createRow(tableBody, element);
             });
-
-            console.log("exiting...")
         } else {
-            console.log("Search request error");
+            console.log("Search request error.");
         }
     });
 };
@@ -300,17 +301,12 @@ function createRow(tableBody, bugData) {
     deleteBtn.setAttribute('onclick', `deleteBug('recordTable', this, ${bugData.bugId})`);
 }
 
-// TODO: 
-// change behavior of pressing 'enter' on search bar. 
-// deal with 'view all' button. 
-
 // Change behavior of pressing 'Enter' on search bar. 
 let searchInput = document.getElementById("search-input");
 
-searchInput.addEventListener('keyup', function(event) {
+searchInput.addEventListener('keydown', function(event) {
     if (event.keyCode === 13) {
         event.preventDefault();
         document.getElementById('search-btn').click();
-        alert("enter pressed")
     }
 });
