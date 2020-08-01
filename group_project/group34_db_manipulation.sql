@@ -65,6 +65,9 @@ INSERT INTO Bugs (bugSummary, bugDescription, projectId, dateStarted, priority, 
 -- Run in a loop to insert a Bugs_Programmers row for each programmer --
 INSERT INTO Bugs_Programmers (bugId, programmerId) VALUES (:result.insertId, :req.query.programmer[i]);
 
+-- Delete bug --
+DELETE FROM Bugs WHERE bugId = :req.query.bugId;
+
 
 -- Update bug -----------------------------------------------------------------
 
@@ -84,14 +87,13 @@ b.bugDescription, b.dateStarted, b.resolution, b.priority, b.fixed
 			ORDER BY bugId;
 
 
+-- Update M:M relationship Bugs_Programmers --
 UPDATE Bugs SET bugSummary = :bugSummaryInput, bugDescription = :bugDescriptionInput, dateStarted = :dateStartedInput,
-priority = :priorityInput, resolution = :resolutionInput, fixed = :fixedInput WHERE bugId = :bugIdInput;
+priority = :priorityInput, resolution = :resolutionInput, fixed = :fixedInput 
+    WHERE bugId = :bugIdInput;
 
+ -- Delete the previous Bugs_Programmers rows --
+DELETE FROM Bugs_Programmers WHERE bugId = :req.query.bugId;
 
--- Update M:M relationship
-INSERT INTO Bugs_Programmers (bugId, programmerId) VALUES (:bugId, :programmerId);
-DELETE FROM Bugs_Programmers WHERE bugId = :bugIdInput AND programmerId = :programmerId;
-
-
--- Delete bug
-DELETE FROM Bugs WHERE bugId = :req.query.bugId;
+-- Run in a loop to insert a Bugs_Programmers row for each programmer --
+INSERT INTO Bugs_Programmers (bugId, programmerId) VALUES (:req.query.bugId, :req.query.programmer[i]);

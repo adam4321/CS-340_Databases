@@ -114,11 +114,14 @@ function renderEditBug(req, res, next) {
 // SUBMIT BUG EDIT - Function to submit a bug update
 function submitBugEdit(req, res, next) {
     // Query to insert the bug data
-    let sql_query_1 = `UPDATE Bugs SET bugSummary=?, bugDescription=?, projectId=?, dateStarted=?,
-                        priority=?, fixed=?, resolution=?
+    let sql_query_1 = `UPDATE Bugs SET bugSummary=?, bugDescription=?, projectId=?, dateStarted=?, priority=?, fixed=?, resolution=?
                             WHERE bugId = ?`;
-    // Query to run in loop to create Bugs_Programmers instances
-    let sql_query_2 = `INSERT INTO Bugs_Programmers (bugId, programmerId) 
+    
+    // Query to delete all Bugs_Programmers for the current bugId
+    let sql_query_2 = `DELETE FROM Bugs_Programmers WHERE bugId=?`;
+
+    // Query to run in loop to create Bugs_Programmers instances for the current bugId
+    let sql_query_3 = `INSERT INTO Bugs_Programmers (bugId, programmerId) 
                             VALUES (?, ?)`;
 
     const mysql = req.app.get('mysql');
@@ -140,25 +143,32 @@ function submitBugEdit(req, res, next) {
             next(err);
             return;
         }
-        bugId = result.insertId;
-        // Run the Bugs_Programmers insertion for each programmer
-        for (let i in req.query.programmer) {
-            mysql.pool.query(sql_query_2,
-                [
-                    result.insertId,
-                    req.query.programmer[i]
-                ], (err, result, ) => {
-                    if (err) {
-                        next(err);
-                        return;
+
+        // Delete all existing Bugs_Programmers rows
+        mysql.pool.query(sql_query_2, [req.query.bugId], (err, result) => {
+            if (err) {
+                next(err);
+                return;
+            }
+
+            // Run the Bugs_Programmers insertion for each programmer
+            for (let i in req.query.programmer) {
+                mysql.pool.query(sql_query_3,
+                    [
+                        req.query.bugId,
+                        req.query.programmer[i]
+                    ], (err, result, ) => {
+                        if (err) {
+                            next(err);
+                            return;
+                        }
                     }
-                }
-            )
-        }
-        context.id = bugId;
-        context.bugs = result.insertId;
-        console.log(context);
-        res.send(JSON.stringify(context));
+                )
+            }
+            context.id = req.query.bugId;
+            context.bugs = result.insertId;
+            res.send(JSON.stringify(context));
+        });
     });
 }
 
