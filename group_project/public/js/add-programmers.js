@@ -3,10 +3,13 @@
 **************************************************************/
 
 let recordForm = document.getElementById('recordForm');
+let spinner = document.getElementById('spinner');
+spinner.style.visibility = "hidden"; 
 
 // Function to submit the form data
 recordForm.addEventListener('submit', (e) => {
     e.preventDefault();
+    spinner.style.visibility = "visible"; 
     let req = new XMLHttpRequest();
     let queryString = '/programmers/insertProgrammer';
 
@@ -39,6 +42,7 @@ recordForm.addEventListener('submit', (e) => {
         // Email element
         let emailCell = document.createElement('td');
         emailCell.textContent = recordForm.elements.userEmail.value;
+        emailCell.className = 'mdl-data-table__cell--non-numeric';
         newRow.appendChild(emailCell);
 
         // Date Started element
@@ -52,7 +56,8 @@ recordForm.addEventListener('submit', (e) => {
         newRow.appendChild(levelCell);
 
         // Clear the submit form
-        document.getElementById('recordForm').reset()
+        document.getElementById('recordForm').reset();
+        setTimeout(() => { spinner.style.visibility = "hidden"; }, 800);
     } else {
         console.log('Database return error');
     }

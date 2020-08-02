@@ -75,3 +75,7 @@ li {
     padding: 0;
     margin-left: 1px;
 }
+
+#spinner {
+    margin-top: 15px;
+}

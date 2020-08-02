@@ -3,10 +3,13 @@
 **************************************************************/
 
 let recordForm = document.getElementById('recordForm');
+let spinner = document.getElementById('spinner');
+spinner.style.visibility = "hidden"; 
 
 // Function to submit the form data
 recordForm.addEventListener('submit', (e) => {
     e.preventDefault();
+    spinner.style.visibility = "visible";
     let req = new XMLHttpRequest();
     let queryString = '/projects/insertProject';
 
@@ -63,7 +66,8 @@ recordForm.addEventListener('submit', (e) => {
         newRow.appendChild(maintenanceCell);
 
         // Clear the submit form
-        document.getElementById('recordForm').reset()
+        document.getElementById('recordForm').reset();
+        setTimeout(() => { spinner.style.visibility = "hidden"; }, 800);
     } else {
         console.log('Database return error');
     }

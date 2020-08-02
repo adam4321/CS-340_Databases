@@ -149,3 +149,9 @@ select {
 .checkbox-input {
     width: 10px !important;
 }
+
+/* Spacing for the submission button spinner animation */
+.mdl-spinner {
+    margin-bottom: -10px;
+    margin-left: 25px;
+}

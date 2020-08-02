@@ -3,10 +3,13 @@
 **************************************************************/
 
 let recordForm = document.getElementById('recordForm');
+let spinner = document.getElementById('spinner');
+spinner.style.visibility = "hidden"; 
 
 // Function to submit the form data
 recordForm.addEventListener('submit', (e) => {
     e.preventDefault();
+    spinner.style.visibility = "visible"; 
     let req = new XMLHttpRequest();
     let queryString = '/companies/insertCompany';
 
@@ -38,8 +41,10 @@ recordForm.addEventListener('submit', (e) => {
         dateCell.textContent = recordForm.elements.dateJoined.value;
         newRow.appendChild(dateCell);
 
-        // Clear the submit form
-        document.getElementById('recordForm').reset()
+        // Clear the submit form and stop spinner
+        document.getElementById('recordForm').reset();
+        setTimeout(() => { spinner.style.visibility = "hidden"; }, 800);
+        
     } else {
         console.log('Database return error');
     }

@@ -38,9 +38,12 @@ function checkBoxChecked() {
 
 // INSERT BUG CLIENT SIDE - Function to submit the bug's form data
 let recordForm = document.getElementById('recordForm');
+let spinner = document.getElementById('spinner');
+spinner.style.visibility = "hidden";
 
 recordForm.addEventListener('submit', (e) => {
     e.preventDefault();
+    spinner.style.visibility = "visible"; 
     let req = new XMLHttpRequest();
     let queryString = '/insertBug';
 
@@ -178,7 +181,8 @@ recordForm.addEventListener('submit', (e) => {
         
 
         // Clear the submit form
-        document.getElementById('recordForm').reset()
+        document.getElementById('recordForm').reset();
+        setTimeout(() => { spinner.style.visibility = "hidden"; }, 800);
     } else {
         console.log('Database return error');
     }
@@ -293,6 +297,7 @@ function searchBug() {
             bugsArray.forEach(element => {
                 createRow(tableBody, element);
             });
+            document.getElementById('search-form').reset()
         } else {
             console.log("Search request error.");
         }
