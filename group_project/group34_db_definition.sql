@@ -29,16 +29,16 @@ CREATE TABLE `Programmers` (
 LOCK TABLES `Programmers` WRITE;
 
 INSERT INTO `Programmers` VALUES 
-    (1, 'Joe', 'Smith', 'js@mail.com', '1999-05-05', 2), 
-    (2, 'Andy', 'Ng', 'an@mail.com', '2001-04-13', 3),
-    (3, 'Sally', 'Smith', 'ss@gmail.com', '1997-12-31', 2),
-    (4, 'Jack', 'Miller', 'jm@gmail.com', '1998-01-01', 1),
-    (5, 'Amy', 'Ellis', 'ae@yahoo.com', '1996-08-17', 3),
-    (6, 'Dan', 'King', 'dk@yahoo.com', '1995-11-11', 2),
-    (7, 'Kate', 'Hooper', 'kh@gmail.com', '2000-07-06', 2),
-    (8, 'Ben', 'Kent', 'bk@yahoo.com', '1999-03-20', 3),
-    (9, 'Kyle', 'Gable', 'kg@gmail.com', '1996-05-03', 2),
-    (10, 'Jen', 'Thomas', 'jt@gmail.com', '1998-09-20', 3);
+    (1, 'Joe', 'Smith', 'joe_s@mail.com', '1999-05-05', 2), 
+    (2, 'Andy', 'Ng', 'andy_n@mail.com', '2001-04-13', 3),
+    (3, 'Sally', 'Smith', 'sally_s@gmail.com', '1997-12-31', 2),
+    (4, 'Jack', 'Miller', 'jack_m@gmail.com', '1998-01-01', 1),
+    (5, 'Amy', 'Ellis', 'amy_e@yahoo.com', '1996-08-17', 3),
+    (6, 'Dan', 'King', 'dan_k@yahoo.com', '1995-11-11', 2),
+    (7, 'Kate', 'Hooper', 'kate_h@gmail.com', '2000-07-06', 2),
+    (8, 'Ben', 'Kent', 'ben_k@yahoo.com', '1999-03-20', 3),
+    (9, 'Kyle', 'Gable', 'kyle_g@gmail.com', '1996-05-03', 2),
+    (10, 'Jen', 'Thomas', 'jen_t@gmail.com', '1998-09-20', 3);
 
 UNLOCK TABLES;
 
@@ -92,15 +92,15 @@ LOCK TABLES `Projects` WRITE,
     `Companies` AS c9 WRITE;
 
 INSERT INTO `Projects` (`projectName`, `dateStarted`, `lastUpdated`, `inMaintenance`, `companyId`) VALUES
-    ('Project 1', '2002-03-19', '2002-09-22', TRUE, (SELECT `companyId` FROM `Companies` AS c1 WHERE `companyName` = 'Micro-ware systems')),
-    ('Project 2', '2020-02-27', '2020-05-08', FALSE, (SELECT `companyId` FROM `Companies` AS c2 WHERE `companyName` = 'Solatech')),
-    ('Project 3', '2005-06-01', '2018-01-15', FALSE, (SELECT `companyId` FROM `Companies` AS c3 WHERE `companyName` = 'N-tier services')),
-    ('Project 4', '2016-12-12', '2017-01-15', TRUE, (SELECT `companyId` FROM `Companies` AS c4 WHERE `companyName` = '10x consulting')),
-    ('Project 5', '2018-07-03', '2019-01-15', TRUE, (SELECT `companyId` FROM `Companies` AS c5 WHERE `companyName` = 'Sell-ya marketing')),
-    ('Project 6', '2015-09-22', '2019-01-15', FALSE, (SELECT `companyId` FROM `Companies` AS c6 WHERE `companyName` = 'Click-it CMS')),
-    ('Project 7', '2002-03-19', '2002-09-22', TRUE, (SELECT `companyId` FROM `Companies` AS c7 WHERE `companyName` = 'Micro-ware systems')),
-    ('Project 8', '2020-02-27', '2020-05-08', FALSE, (SELECT `companyId` FROM `Companies` AS c8 WHERE `companyName` = 'Solatech')),
-    ('Project 9', '2005-06-01', '2018-01-15', FALSE, (SELECT `companyId` FROM `Companies` AS c9 WHERE `companyName` = 'N-tier services'));
+    ('MicroSheets', '2002-03-19', '2002-09-22', TRUE, (SELECT `companyId` FROM `Companies` AS c1 WHERE `companyName` = 'Micro-ware systems')),
+    ('1N\-router firmware', '2020-02-27', '2020-05-08', TRUE, (SELECT `companyId` FROM `Companies` AS c2 WHERE `companyName` = 'Solatech')),
+    ('NetDash', '2005-06-01', '2018-01-15', TRUE, (SELECT `companyId` FROM `Companies` AS c3 WHERE `companyName` = 'N-tier services')),
+    ('Force CRM', '2016-12-12', '2017-01-15', TRUE, (SELECT `companyId` FROM `Companies` AS c4 WHERE `companyName` = '10x consulting')),
+    ('SY design system', '2018-07-03', '2019-01-15', TRUE, (SELECT `companyId` FROM `Companies` AS c5 WHERE `companyName` = 'Sell-ya marketing')),
+    ('T-best CMS', '2015-09-22', '2019-01-15', TRUE, (SELECT `companyId` FROM `Companies` AS c6 WHERE `companyName` = 'Click-it CMS')),
+    ('eText Editor', '2002-03-19', '2002-09-22', TRUE, (SELECT `companyId` FROM `Companies` AS c7 WHERE `companyName` = 'Micro-ware systems')),
+    ('1R\-rf receiver', '2020-02-27', '2020-05-08', FALSE, (SELECT `companyId` FROM `Companies` AS c8 WHERE `companyName` = 'Solatech')),
+    ('NetMonitor', '2005-06-01', '2018-01-15', TRUE, (SELECT `companyId` FROM `Companies` AS c9 WHERE `companyName` = 'N-tier services'));
 
 UNLOCK TABLES;
 
@@ -139,19 +139,19 @@ LOCK TABLES `Bugs` WRITE,
     `Projects` AS p13 WRITE;
 
 INSERT INTO `Bugs` (`projectId`, `bugSummary`, `bugDescription`, `dateStarted`, `resolution`, `fixed`, `priority`) VALUES
-    ((SELECT `projectId` FROM `Projects` AS p1 WHERE `projectName` = 'Project 1'), 'Bug Summary 1', 'Bug Description 1', '2002-09-22', 'Still broken!', 0, 3),
-    ((SELECT `projectId` FROM `Projects` AS p2 WHERE `projectName` = 'Project 2'), 'Bug Summary 2', 'Bug Description 2', '2020-05-08', 'Still broken!', 0, 5),
-    ((SELECT `projectId` FROM `Projects` AS p3 WHERE `projectName` = 'Project 3'), 'Bug Summary 3', 'Bug Description 3', '2015-03-02', 'Still broken!', 0, 4),
-    ((SELECT `projectId` FROM `Projects` AS p4 WHERE `projectName` = 'Project 4'), 'Bug Summary 4', 'Bug Description 4', '2018-11-05', 'Still broken!', 0, 1),
-    ((SELECT `projectId` FROM `Projects` AS p5 WHERE `projectName` = 'Project 5'), 'Bug Summary 5', 'Bug Description 5', '2019-08-03', 'Still broken!', 0, 3),
-    ((SELECT `projectId` FROM `Projects` AS p6 WHERE `projectName` = 'Project 6'), 'Bug Summary 6', 'Bug Description 6', '2014-04-18', 'Still broken!', 0, 2),
-    ((SELECT `projectId` FROM `Projects` AS p7 WHERE `projectName` = 'Project 1'), 'Bug Summary 7', 'Bug Description 7', '2005-09-21', 'Still broken!', 0, 5),
-    ((SELECT `projectId` FROM `Projects` AS p8 WHERE `projectName` = 'Project 2'), 'Bug Summary 8', 'Bug Description 8', '2017-12-14', 'Still broken!', 0, 5),
-    ((SELECT `projectId` FROM `Projects` AS p9 WHERE `projectName` = 'Project 3'), 'Bug Summary 9', 'Bug Description 9', '2008-06-01', 'Still broken!', 0, 4),
-    ((SELECT `projectId` FROM `Projects` AS p10 WHERE `projectName` = 'Project 4'), 'Bug Summary 10', 'Bug Description 10', '2016-04-13', 'Still broken!', 0, 2),
-    ((SELECT `projectId` FROM `Projects` AS p11 WHERE `projectName` = 'Project 5'), 'Bug Summary 11', 'Bug Description 11', '2016-02-11', 'Still broken!', 0, 1),
-    ((SELECT `projectId` FROM `Projects` AS p12 WHERE `projectName` = 'Project 6'), 'Bug Summary 12', 'Bug Description 12', '2015-06-21', 'Still broken!', 0, 5),
-    ((SELECT `projectId` FROM `Projects` AS p13 WHERE `projectName` = 'Project 1'), 'Bug Summary 13', 'Bug Description 13', '2004-03-01', 'Still broken!', 0, 3);
+    ((SELECT `projectId` FROM `Projects` AS p1 WHERE `projectName` = 'MicroSheets'), 'Window close error', 'Bug Description 1', '2002-09-22', '', 0, 3),
+    ((SELECT `projectId` FROM `Projects` AS p2 WHERE `projectName` = '1N\-router firmware'), 'CLI error', 'Bug Description 2', '2020-05-08', '', 0, 5),
+    ((SELECT `projectId` FROM `Projects` AS p3 WHERE `projectName` = 'NetDash'), 'Logging error', 'Bug Description 3', '2015-03-02', '', 0, 4),
+    ((SELECT `projectId` FROM `Projects` AS p4 WHERE `projectName` = 'Force CRM'), 'Button location', 'Bug Description 4', '2018-11-05', 'Fixed sql syntax', 1, 1),
+    ((SELECT `projectId` FROM `Projects` AS p5 WHERE `projectName` = 'SY design system'), 'Color match', 'Bug Description 5', '2019-08-03', '', 0, 3),
+    ((SELECT `projectId` FROM `Projects` AS p6 WHERE `projectName` = 'T-best CMS'), 'Login error', 'Bug Description 6', '2014-04-18', '', 0, 2),
+    ((SELECT `projectId` FROM `Projects` AS p7 WHERE `projectName` = 'eText Editor'), 'Window error', 'Bug Description 7', '2005-09-21', '', 0, 5),
+    ((SELECT `projectId` FROM `Projects` AS p8 WHERE `projectName` = '1N\-router firmware'), 'ICMP error', 'Bug Description 8', '2017-12-14', '', 0, 5),
+    ((SELECT `projectId` FROM `Projects` AS p9 WHERE `projectName` = 'NetDash'), 'API error', 'Bug Description 9', '2008-06-01', 'Rolled back dependency', 1, 4),
+    ((SELECT `projectId` FROM `Projects` AS p10 WHERE `projectName` = 'Force CRM'), 'Failed log', 'Bug Description 10', '2016-04-13', '', 0, 2),
+    ((SELECT `projectId` FROM `Projects` AS p11 WHERE `projectName` = 'SY design system'), 'Import error', 'Bug Description 11', '2016-02-11', '', 0, 1),
+    ((SELECT `projectId` FROM `Projects` AS p12 WHERE `projectName` = 'T-best CMS'), 'API error', 'Bug Description 12', '2015-06-21', 'Still broken!!!', 0, 5),
+    ((SELECT `projectId` FROM `Projects` AS p13 WHERE `projectName` = 'eText Editor'), 'Undo error', 'Bug Description 13', '2004-03-01', '', 0, 3);
 
 UNLOCK TABLES;
 
