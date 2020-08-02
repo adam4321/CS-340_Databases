@@ -19,8 +19,9 @@ function renderHome(req, res, next) {
     let sql_query_2 = `SELECT programmerId, firstName, lastName FROM Programmers`;
     
     // 3rd query populates the bug list
-    let sql_query_3 = `SELECT p.firstName, p.lastName, b.bugId, pj.projectName, b.bugSummary, b.bugDescription, b.dateStarted, b.resolution, b.priority, b.fixed 
-	                FROM Programmers p 
+    let sql_query_3 = `SELECT p.firstName, p.lastName, b.bugId, pj.projectName, b.bugSummary, b.bugDescription, 
+                        b.dateStarted, b.resolution, b.priority, b.fixed 
+	                    FROM Programmers p 
 		                JOIN Bugs_Programmers bp ON p.programmerId = bp.programmerId
 		                JOIN Bugs b ON bp.bugId = b.bugId
                         LEFT OUTER JOIN Projects pj ON b.projectId <=> pj.projectId
@@ -95,7 +96,7 @@ function renderHome(req, res, next) {
                 context.bugs = bugsDbData;
                 context.programmers = programmersDbData;
                 context.projects = projectDbData;
-                console.log(context);
+                // console.log(context);
                 res.render('user-home', context);
             });
         });
@@ -182,10 +183,153 @@ function deleteBug(req, res, next) {
 }
 
 
+// BUGS MAIN PAGE SEARCH BUG - Function to search for string in bugs table
+function searchBug(req, res, next) {
+    // query to find bug entries that contain substring
+    let searchQuery = 'SELECT bugId FROM Bugs WHERE CONCAT(bugSummary, bugDescription, resolution) LIKE "%' + 
+                        req.query.searchString + '%"';
+
+    const mysql = req.app.get('mysql');                 
+    let context = {};
+    
+    mysql.pool.query(searchQuery, (err, result) => {
+        if(err) {
+            next(err);
+            return;
+        }
+
+        // if no results were found in initial search query
+        if(result.length == 0) {
+            context.bugs = [];
+            res.send(JSON.stringify(context));
+            return;
+        }
+
+        // Get list of matching bugIds 
+        resultsList = [];
+        for(i = 0; i < result.length; i++) {
+            resultsList.push(result[i].bugId)
+        }
+        idString = resultsList.join();
+
+        // query to gather data of bugs in the initial query results
+        let bugsQuery = 'SELECT p.firstName, p.lastName, b.bugId, pj.projectName, b.bugSummary, b.bugDescription, ' + 
+                        'b.dateStarted, b.resolution, b.priority, b.fixed FROM Programmers p ' + 
+                        'JOIN Bugs_Programmers bp ON p.programmerId = bp.programmerId ' + 
+                        'JOIN Bugs b ON bp.bugId = b.bugId ' + 
+                        'LEFT OUTER JOIN Projects pj ON b.projectId = pj.projectId ' + 
+                        'WHERE b.bugId IN (' + idString + ') ' +
+                        'ORDER BY b.bugId;';
+
+        // console.log(bugsQuery)  // this string can be pasted in phpmyadmin for testing
+
+        mysql.pool.query(bugsQuery, (err, rows, fields) => {
+            if (err) {
+                next(err);
+                return;
+            }
+
+            let prevEntryBugId;
+            let bugProgrammers = [];
+            let matchingBugsData = [];
+
+            for (let i in rows) {
+                if (prevEntryBugId == rows[i].bugId) {
+                    bugProgrammers.push(rows[i].firstName + ' ' + rows[i].lastName);
+                }
+                else {
+                    prevEntryBugId = rows[i].bugId;
+                    bugProgrammers = [];
+                    bugProgrammers.push(rows[i].firstName + ' ' + rows[i].lastName);
+
+                    matchingBugsData.push({
+                        bugId: rows[i].bugId,
+                        bugSummary: rows[i].bugSummary,
+                        bugDescription: rows[i].bugDescription,
+                        projectName: rows[i].projectName,
+                        programmers: bugProgrammers,
+                        dateStarted: rows[i].dateStarted,
+                        priority: rows[i].priority,
+                        fixed: rows[i].fixed,
+                        resolution: rows[i].resolution
+                    }) 
+                }
+            }
+
+            context.bugs = matchingBugsData;
+            res.send(JSON.stringify(context));
+        });
+    });
+};
+
+
+// BUGS MAIN PAGE VIEW ALL BUGS - Function to clear search results and display all bugs
+function viewAllBugs(req, res, next) {
+    let viewAllQuery = `SELECT p.firstName, p.lastName, b.bugId, pj.projectName, b.bugSummary, b.bugDescription, 
+                        b.dateStarted, b.resolution, b.priority, b.fixed 
+	                    FROM Programmers p 
+		                JOIN Bugs_Programmers bp ON p.programmerId = bp.programmerId
+		                JOIN Bugs b ON bp.bugId = b.bugId
+                        LEFT OUTER JOIN Projects pj ON b.projectId <=> pj.projectId
+                            ORDER BY bugId`;
+
+    const mysql = req.app.get('mysql');                 
+    let context = {};
+    
+    mysql.pool.query(viewAllQuery, (err, result) => {
+        if(err) {
+            next(err);
+            return;
+        }
+
+        // if no results were found in initial search query
+        if(result.length == 0) {
+            context.bugs = [];
+            res.send(JSON.stringify(context));
+            return;
+        }
+
+        let rows = result;
+
+        let prevEntryBugId;
+            let bugProgrammers = [];
+            let matchingBugsData = [];
+
+            for (let i in rows) {
+                if (prevEntryBugId == rows[i].bugId) {
+                    bugProgrammers.push(rows[i].firstName + ' ' + rows[i].lastName);
+                }
+                else {
+                    prevEntryBugId = rows[i].bugId;
+                    bugProgrammers = [];
+                    bugProgrammers.push(rows[i].firstName + ' ' + rows[i].lastName);
+
+                    matchingBugsData.push({
+                        bugId: rows[i].bugId,
+                        bugSummary: rows[i].bugSummary,
+                        bugDescription: rows[i].bugDescription,
+                        projectName: rows[i].projectName,
+                        programmers: bugProgrammers,
+                        dateStarted: rows[i].dateStarted,
+                        priority: rows[i].priority,
+                        fixed: rows[i].fixed,
+                        resolution: rows[i].resolution
+                    }) 
+                }
+            }
+
+            context.bugs = matchingBugsData;
+            res.send(JSON.stringify(context));
+    });
+}
+
+
 /* PROJECTS PAGE ROUTES ---------------------------------------------------- */
 
 router.get('/', renderHome);
 router.get('/insertBug', submitBug);
 router.get('/deleteBug', deleteBug);
+router.get('/searchBug', searchBug);
+router.get('/viewAllBugs', viewAllBugs);
 
 module.exports = router;

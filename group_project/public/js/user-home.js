@@ -212,4 +212,180 @@ function deleteBug(tbl, curRow, bugId) {
             table.deleteRow(i);
         }
     }
+} 
+
+
+// VIEW ALL BUGS CLIENT SIDE - Function call to clear search results
+let viewAllButton = document.getElementById("clear-search");
+viewAllButton.setAttribute('onclick', 'viewAllBugs()');
+
+function viewAllBugs() {
+    queryString = "/viewAllBugs";
+    let req = new XMLHttpRequest();
+
+    req.open("GET", queryString, true);   
+    req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    req.send(queryString); 
+
+    req.addEventListener("load", () => {
+        if (req.status >= 200 && req.status < 400) {
+            let bugsArray = JSON.parse(req.responseText).bugs;
+
+            // clear table before building search results
+            let tableBody = document.getElementById("table-body");
+            tableBody.innerHTML = '';
+
+            // if no existing bugs
+            if(bugsArray.length == 0) {
+                let newRow = tableBody.insertRow(-1);
+                let summaryCell = document.createElement('td');
+                summaryCell.textContent = "No current bugs!";
+                summaryCell.style.color = "#ff0000";
+                summaryCell.className = 'mdl-data-table__cell--non-numeric'; 
+                newRow.appendChild(summaryCell);
+                return;
+            }
+
+            // build rows for each bug if there is at least one result
+            bugsArray.forEach(element => {
+                createRow(tableBody, element);
+            });
+        } else {
+            console.log("View all bugs: request error.");
+        }
+    });
 }
+
+
+// SEARCH BUG CLIENT SIDE - Function call to search bug table for substring
+let searchButton = document.getElementById("search-btn");
+searchButton.onclick = searchBug;
+
+function searchBug() {
+    let searchString = document.getElementById("search-input").value;
+    let queryString = "/searchBug";
+    let req = new XMLHttpRequest();
+
+    req.open("GET", queryString + "?searchString=" + searchString, true);   
+    req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    req.send(queryString + "?searchString=" + searchString); 
+
+    req.addEventListener("load", () => {
+        if (req.status >= 200 && req.status < 400) {
+            let bugsArray = JSON.parse(req.responseText).bugs;
+
+            // clear table before building search results
+            let tableBody = document.getElementById("table-body");
+            tableBody.innerHTML = '';
+
+            // if no results are found
+            if(bugsArray.length == 0) {
+                let newRow = tableBody.insertRow(-1);
+                let summaryCell = document.createElement('td');
+                summaryCell.textContent = "No results found!";
+                summaryCell.style.color = "#ff0000";
+                summaryCell.className = 'mdl-data-table__cell--non-numeric'; 
+                newRow.appendChild(summaryCell);
+                return;
+            }
+
+            // build rows for each bug if there is at least one result
+            bugsArray.forEach(element => {
+                createRow(tableBody, element);
+            });
+        } else {
+            console.log("Search request error.");
+        }
+    });
+};
+
+
+// Function to create new bug row after searching
+function createRow(tableBody, bugData) {
+    let newRow = tableBody.insertRow(-1);
+
+    // Bug Summary element
+    let summaryCell = document.createElement('td');
+    summaryCell.textContent = bugData.bugSummary;
+    summaryCell.className = 'mdl-data-table__cell--non-numeric'; 
+    newRow.appendChild(summaryCell);
+
+    // Bug Description element
+    let descriptionCell = document.createElement('td');
+    descriptionCell.textContent = bugData.bugDescription;
+    descriptionCell.className = 'mdl-data-table__cell--non-numeric'; 
+    newRow.appendChild(descriptionCell);
+
+    // Project element
+    let projectCell = document.createElement('td');
+    projectCell.className = 'mdl-data-table__cell--non-numeric'; 
+    projectCell.textContent = bugData.projectName;
+    if(projectCell.textContent == "") {
+        projectCell.textContent = "NULL";
+    }
+    newRow.appendChild(projectCell);
+
+    // Programmers element
+    let programmerCell = document.createElement('td');
+    programmerCell.className = 'mdl-data-table__cell--non-numeric';
+    let cellString = '';
+    for (i = 0; i < bugData.programmers.length; i++) {
+        cellString += bugData.programmers[i] + '<br>';
+    }
+    programmerCell.innerHTML = cellString;
+    newRow.appendChild(programmerCell);
+
+    // Date started element
+    let dateCell = document.createElement('td');
+    dateCell.textContent = bugData.dateStarted;
+    newRow.appendChild(dateCell);
+
+    // Priority element
+    let priorityCell = document.createElement('td');
+    priorityCell.textContent = bugData.priority;
+    newRow.appendChild(priorityCell);
+
+    // Fixed element
+    let fixedCell = document.createElement('td');
+    if (bugData.fixed == 0) {
+        fixedCell.textContent = "No"
+    } else {
+        fixedCell.textContent = "Yes";
+    }
+    newRow.appendChild(fixedCell);
+
+    // Resolution element
+    let resolutionCell = document.createElement('td');
+    resolutionCell.className = 'mdl-data-table__cell--non-numeric'
+    resolutionCell.textContent = bugData.resolution;
+    newRow.appendChild(resolutionCell);
+
+    // Update button element
+    let updateCell = document.createElement('td');
+    newRow.appendChild(updateCell);
+    let updateBtn = document.createElement('a');
+    updateCell.appendChild(updateBtn);
+    updateBtn.text = "Update"
+    updateBtn.className = "update-btn";
+    updateBtn.href = `/edit-bug?bugId=${bugData.bugId}`;
+
+    // Delete button element
+    let deleteCell = document.createElement('td');
+    newRow.appendChild(deleteCell);
+    let deleteBtn = document.createElement('a');
+    deleteCell.appendChild(deleteBtn);
+    deleteBtn.type = "button";
+    deleteBtn.text = "Delete";
+    deleteBtn.className = "update-btn";
+    deleteBtn.setAttribute('onclick', `deleteBug('recordTable', this, ${bugData.bugId})`);
+}
+
+// Change behavior of pressing 'Enter' on search bar. 
+let searchInput = document.getElementById("search-input");
+
+searchInput.addEventListener('keydown', function(event) {
+    if (event.keyCode === 13) {
+        event.preventDefault();
+        document.getElementById('search-btn').click();
+    }
+});
