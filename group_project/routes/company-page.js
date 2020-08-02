@@ -16,7 +16,7 @@ function displayCompanyPage(req, res, next) {
     let sql_query = `SELECT * FROM Companies`;
     let context = {};
 
-    mysql.pool.query(sql_query, (err, rows, fields) => {
+    mysql.pool.query(sql_query, (err, rows) => {
         if (err) {
             next(err);
             return;

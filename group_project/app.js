@@ -15,8 +15,7 @@ app.set('view engine', '.hbs');
 app.engine('.hbs', handlebars({
     layoutsDir: __dirname + '/views/layouts',
     defaultLayout: 'main',
-    extname: '.hbs',
-    helpers: require('./config/handlebars-helpers.js')
+    extname: '.hbs'
 }));
 
 

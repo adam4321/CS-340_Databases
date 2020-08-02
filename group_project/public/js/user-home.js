@@ -107,14 +107,20 @@ recordForm.addEventListener('submit', (e) => {
 
         // Bug Summary element
         let summaryCell = document.createElement('td');
-        summaryCell.textContent = recordForm.elements.bugSummary.value;
         summaryCell.className = 'mdl-data-table__cell--non-numeric'; 
+        let innerCell = document.createElement('div');
+        summaryCell.appendChild(innerCell);
+        innerCell.className = 'user-text';
+        innerCell.textContent = recordForm.elements.bugSummary.value;
         newRow.appendChild(summaryCell);
 
         // Bug Description element
         let descriptionCell = document.createElement('td');
-        descriptionCell.textContent = recordForm.elements.bugDescription.value;
         descriptionCell.className = 'mdl-data-table__cell--non-numeric'; 
+        innerCell = document.createElement('div');
+        descriptionCell.appendChild(innerCell);
+        innerCell.className = 'user-text';
+        innerCell.textContent = recordForm.elements.bugDescription.value;
         newRow.appendChild(descriptionCell);
 
         // Project element
@@ -160,8 +166,11 @@ recordForm.addEventListener('submit', (e) => {
 
         // Resolution element
         let resolutionCell = document.createElement('td');
-        resolutionCell.textContent = recordForm.elements.bugResolution.value;
         resolutionCell.className = 'mdl-data-table__cell--non-numeric'
+        innerCell = document.createElement('div');
+        resolutionCell.appendChild(innerCell);
+        innerCell.textContent = recordForm.elements.bugResolution.value;
+        innerCell.className = 'user-text';
         newRow.appendChild(resolutionCell);
 
         // Update button element
@@ -179,14 +188,15 @@ recordForm.addEventListener('submit', (e) => {
         newRow.appendChild(deleteCell);
         let deleteBtn = document.createElement('a');
         deleteCell.appendChild(deleteBtn);
-        deleteBtn.text = "Delete"
+        deleteBtn.type = "button";
+        deleteBtn.text = "Delete";
         deleteBtn.className = "update-btn";
-        deleteBtn.href = ``;
+        deleteBtn.setAttribute('onclick', `deleteBug('recordTable', this, ${response.id})`);
         
-
         // Clear the submit form
         document.getElementById('recordForm').reset();
-        setTimeout(() => { spinner.style.visibility = "hidden"; }, 800);
+        setTimeout(() => { spinner.style.visibility = "hidden"; }, 1000);
+
     } else {
         console.log('Database return error');
     }
@@ -307,6 +317,8 @@ function searchBug() {
             bugsArray.forEach(element => {
                 createRow(tableBody, element);
             });
+
+            // Clear the searchbar
             document.getElementById('search-form').reset()
         } else {
             console.log("Search request error.");
@@ -321,14 +333,20 @@ function createRow(tableBody, bugData) {
 
     // Bug Summary element
     let summaryCell = document.createElement('td');
-    summaryCell.textContent = bugData.bugSummary;
-    summaryCell.className = 'mdl-data-table__cell--non-numeric'; 
+    summaryCell.className = 'mdl-data-table__cell--non-numeric';
+    let innerCell = document.createElement('div');
+    summaryCell.appendChild(innerCell);
+    innerCell.textContent = bugData.bugSummary;
+    innerCell.className = 'user-text';
     newRow.appendChild(summaryCell);
 
     // Bug Description element
     let descriptionCell = document.createElement('td');
-    descriptionCell.textContent = bugData.bugDescription;
-    descriptionCell.className = 'mdl-data-table__cell--non-numeric'; 
+    descriptionCell.className = 'mdl-data-table__cell--non-numeric';
+    innerCell = document.createElement('div');
+    descriptionCell.appendChild(innerCell);
+    innerCell.textContent = bugData.bugDescription;
+    innerCell.className = 'user-text';
     newRow.appendChild(descriptionCell);
 
     // Project element
@@ -371,8 +389,11 @@ function createRow(tableBody, bugData) {
 
     // Resolution element
     let resolutionCell = document.createElement('td');
-    resolutionCell.className = 'mdl-data-table__cell--non-numeric'
-    resolutionCell.textContent = bugData.resolution;
+    resolutionCell.className = 'mdl-data-table__cell--non-numeric';
+    innerCell = document.createElement('div');
+    resolutionCell.appendChild(innerCell);
+    innerCell.textContent = bugData.resolution;
+    innerCell.className = 'user-text';
     newRow.appendChild(resolutionCell);
 
     // Update button element
@@ -380,7 +401,7 @@ function createRow(tableBody, bugData) {
     newRow.appendChild(updateCell);
     let updateBtn = document.createElement('a');
     updateCell.appendChild(updateBtn);
-    updateBtn.text = "Update"
+    updateBtn.text = "Update";
     updateBtn.className = "update-btn";
     updateBtn.href = `/edit-bug?bugId=${bugData.bugId}`;
 

@@ -32,7 +32,7 @@ function renderHome(req, res, next) {
     const mysql = req.app.get('mysql');                 
     let context = {};
 
-    mysql.pool.query(sql_query_3, (err, rows, fields) => {
+    mysql.pool.query(sql_query_3, (err, rows) => {
         if (err) {
             next(err);
             return;
@@ -68,7 +68,7 @@ function renderHome(req, res, next) {
             }
         } 
         // Query for the list of programmers
-        mysql.pool.query(sql_query_2,  (err, rows, fields) => {
+        mysql.pool.query(sql_query_2,  (err, rows) => {
             if (err) {
                 next(err);
                 return;
@@ -82,7 +82,7 @@ function renderHome(req, res, next) {
                 });
             }
             // Query for the list of projects
-            mysql.pool.query(sql_query_1,  (err, rows, fields) => {
+            mysql.pool.query(sql_query_1,  (err, rows) => {
                 if (err) {
                     next(err);
                     return;
@@ -172,7 +172,7 @@ function deleteBug(req, res, next) {
                 next(err);
                 return;
             }
-            mysql.pool.query(sql_query_2, (err, rows, fields) => {
+            mysql.pool.query(sql_query_2, (err, rows) => {
                 if (err) {
                     next(err);
                     return;
@@ -225,7 +225,7 @@ function searchBug(req, res, next) {
 
         // console.log(bugsQuery)  // this string can be pasted in phpmyadmin for testing
 
-        mysql.pool.query(bugsQuery, (err, rows, fields) => {
+        mysql.pool.query(bugsQuery, (err, rows) => {
             if (err) {
                 next(err);
                 return;

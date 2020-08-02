@@ -18,7 +18,8 @@ function renderProjects(req, res, next) {
     const mysql = req.app.get('mysql');
     let context = {};
 
-    mysql.pool.query(sql_query_2, (err, rows, fields) => {
+    // Query projects
+    mysql.pool.query(sql_query_2, (err, rows) => {
         if (err) {
             next(err);
             return;
@@ -36,8 +37,9 @@ function renderProjects(req, res, next) {
                 inMaintenance: rows[i].inMaintenance
             });
         }
+
         // Query for the list of companies
-        mysql.pool.query(sql_query_1,  (err, rows, fields) => {
+        mysql.pool.query(sql_query_1,  (err, rows) => {
             if (err) {
                 next(err);
                 return;
@@ -49,6 +51,7 @@ function renderProjects(req, res, next) {
                     companyName: rows[i].companyName
                 });
             }
+            
             // After the 2 calls return, then populate the context array
             context.companies = companyDbData;
             context.projects = projectDbData;

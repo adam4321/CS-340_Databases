@@ -57,7 +57,7 @@ recordForm.addEventListener('submit', (e) => {
 
         // Clear the submit form
         document.getElementById('recordForm').reset();
-        setTimeout(() => { spinner.style.visibility = "hidden"; }, 800);
+        setTimeout(() => { spinner.style.visibility = "hidden"; }, 1000);
     } else {
         console.log('Database return error');
     }

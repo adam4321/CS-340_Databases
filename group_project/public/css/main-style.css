@@ -1,8 +1,8 @@
-/*************************************************************
-**  Description:  Overall css styles
-*************************************************************/
+/******************************************************************************
+**  Description:    Overall CSS styles
+******************************************************************************/
 
-/* Main container settings */
+/* Main container settings ------------------------------------------------- */
 
 #top-bar {
     background-color: rgb(45, 122, 153);
@@ -39,7 +39,7 @@
 }
 
 .mdl-layout__drawer-button {
-    padding-top: 15px;
+    padding-top: 20px;
 }
 
 .material-icons {
@@ -50,7 +50,20 @@
     padding: 0 20px;
 }
 
-/* Component Box settings*/
+
+/* Drawer settings --------------------------------------------------------- */
+
+.mdl-layout__drawer {
+    width: 300px;
+    left: -60px;
+}
+  
+.mdl-layout__drawer.is-visible {
+    left: 0;
+}
+
+
+/* Component Box settings -------------------------------------------------- */
 
 .mdl-layout__content {
     margin-top: 100px;
@@ -61,7 +74,8 @@
     margin: 2%;
 }
 
-/* Form settings */
+
+/* Form settings ----------------------------------------------------------- */
 
 #recordForm {
     width: 450px;
@@ -133,7 +147,9 @@ select {
     grid-column-gap: 15px;
 }
 
-/* Size the ADD BUG programmer checkbox container */
+
+/* Size the ADD BUG programmer checkbox container -------------------------- */
+
 .checkbox-container {
     border: 1px solid #808080;
     border-radius: 2px;
@@ -150,8 +166,17 @@ select {
     width: 10px !important;
 }
 
-/* Spacing for the submission button spinner animation */
+
+/* Spacing for the submission button spinner animation --------------------- */
+
 .mdl-spinner {
     margin-bottom: -10px;
     margin-left: 25px;
+}
+
+
+/* Submit buttons ------------------------------------------------------------- */
+
+.submitBtn {
+    cursor: pointer;
 }

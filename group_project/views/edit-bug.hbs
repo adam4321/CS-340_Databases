@@ -19,7 +19,7 @@
                 <div><textarea required name="bugDescription" id="bug-description-field">{{editBug.bugDescription}}</textarea></div>
                 <div><label for="bug-project">Project</label></div>
                 <div>
-                <select name="bugProject" id="bug-project-field">
+                <select class="submitBtn" name="bugProject" id="bug-project-field">
                     {{#with editBug}} 
                         {{#if this.projectName}}
                             <option value="{{this.project}}" selected="selected">{{this.projectName}}</option>
@@ -80,7 +80,7 @@
                 <div><label class="textarea-label" for="bug-resolution">Resolution</label></div>
                 <div><textarea name="bugResolution" id="bug-resolution-field">{{editBug.resolution}}</textarea></div>
                 <div>
-                    <input type="submit" id="save" name="{{editBug.bugId}}" value="Submit" onclick="checkBoxChecked()">
+                    <input class="submitBtn" type="submit" id="save" name="{{editBug.bugId}}" value="Submit" onclick="checkBoxChecked()">
                 </div>
             </div>
         </form>

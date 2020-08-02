@@ -29,7 +29,7 @@ function renderEditBug(req, res, next) {
     const mysql = req.app.get('mysql');
     let context = {};
 
-    mysql.pool.query(sql_query_3, [req.query.bugId], (err, rows, fields) => {
+    mysql.pool.query(sql_query_3, [req.query.bugId], (err, rows) => {
         if (err) {
             next(err);
             return;
@@ -67,7 +67,7 @@ function renderEditBug(req, res, next) {
         }
 
         // Query for the list of programmers
-        mysql.pool.query(sql_query_2,  (err, rows, fields) => {
+        mysql.pool.query(sql_query_2,  (err, rows) => {
             if (err) {
                 next(err);
                 return;
@@ -89,7 +89,7 @@ function renderEditBug(req, res, next) {
             }
 
             // Query for the list of projects
-            mysql.pool.query(sql_query_1,  (err, rows, fields) => {
+            mysql.pool.query(sql_query_1,  (err, rows) => {
                 if (err) {
                     next(err);
                     return;

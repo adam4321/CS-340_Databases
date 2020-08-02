@@ -17,7 +17,7 @@ function renderProgrammers(req, res, next) {
     const mysql = req.app.get('mysql');
     let context = {};
 
-    mysql.pool.query(sql_query, (err, rows, fields) => {
+    mysql.pool.query(sql_query, (err, rows) => {
         if (err) {
             next(err);
             return;

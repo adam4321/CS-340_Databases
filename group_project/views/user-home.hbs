@@ -18,7 +18,7 @@
                 <div><textarea required name="bugDescription" id="bug-description-field"></textarea></div>
                 <div><label for="bug-project">Project</label></div>
                 <div>
-                    <select required name="bugProject" id="bug-project-field">
+                    <select class="submitBtn" required name="bugProject" id="bug-project-field">
                         <option value="" disabled selected>Select a project</option>
                         <option value="">NULL</option>
                         {{#each projects}}
@@ -55,7 +55,7 @@
                 <div><label class="textarea-label" for="bug-resolution">Resolution</label></div>
                 <div><textarea name="bugResolution" id="bug-resolution-field"></textarea></div>
                 
-                <input type="submit" id="save" value="Add" onclick="checkBoxChecked()">
+                <input type="submit" class="submitBtn" id="save" value="Add" onclick="checkBoxChecked()">
                 <div id="spinner" class = "mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></div>
             </div>
         </form>
@@ -72,11 +72,11 @@
       <div id="search-container">
         <form id="search-form">
             <input id="search-input" type="text" placeholder="Search bug summaries, descriptions, and resolutions." name="search">
-            <button id="search-btn" type="button">
+            <button class="submitBtn" id="search-btn" type="button">
                 <i class="material-icons">search</i>
             </button>
         </form>
-        <button id="clear-search">View All</button>
+        <button class="submitBtn" id="clear-search">View All</button>
       </div>
       
         <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" id="recordTable">
@@ -97,8 +97,8 @@
             <tbody id="table-body">
                 {{#each bugs}}
                 <tr>
-                    <td class="mdl-data-table__cell--non-numeric">{{this.bugSummary}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{this.bugDescription}}</td>
+                    <td class="mdl-data-table__cell--non-numeric"><div class="user-text">{{this.bugSummary}}</div></td>
+                    <td class="mdl-data-table__cell--non-numeric"><div class="user-text">{{this.bugDescription}}</div></td>
                     <td class="mdl-data-table__cell--non-numeric">
                         {{#if this.projectName}}{{this.projectName}}{{else}}NULL{{/if}}
                     </td>
@@ -108,7 +108,7 @@
                     <td>{{this.dateStarted}}</td>
                     <td>{{this.priority}}</td>
                     <td>{{#if this.fixed}} Yes {{else}} No {{/if}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{this.resolution}}</td>
+                    <td class="mdl-data-table__cell--non-numeric"><div class="user-text">{{this.resolution}}</div></td>
                     <td><a class="update-btn" href="/edit-bug?bugId={{this.bugId}}">Update</a></td>
                     <td>
                         <input 

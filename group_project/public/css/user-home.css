@@ -1,6 +1,8 @@
-/*************************************************************
-**  Description:  User-home component css styles
-*************************************************************/
+/******************************************************************************
+**  Description:  Bug Page / User-home - component css styles
+******************************************************************************/
+
+/* Searchbar -------------------------------------------------------------- */
 
 #search-container {
     margin-bottom: 25px;
@@ -47,6 +49,7 @@
 .update-btn {
     background-color: #2d7a99;
     border: none;
+    cursor: pointer;
     border-radius: 2px;
     padding: 5px;
     text-decoration: none;
@@ -76,6 +79,17 @@ li {
     margin-left: 1px;
 }
 
+
+/* Submit bug page spinner style ------------------------------------------- */
+
 #spinner {
     margin-top: 15px;
+}
+
+
+/* Submit bug text cell max size ------------------------------------------- */
+
+.user-text {
+    max-height: 40px;
+    overflow: hidden;
 }
