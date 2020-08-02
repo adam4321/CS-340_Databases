@@ -181,6 +181,48 @@ function deleteBug(tbl, curRow, bugId) {
 } 
 
 
+// VIEW ALL BUGS CLIENT SIDE - Function call to clear search results
+let viewAllButton = document.getElementById("clear-search");
+viewAllButton.setAttribute('onclick', 'viewAllBugs()');
+
+function viewAllBugs() {
+    queryString = "/viewAllBugs";
+    let req = new XMLHttpRequest();
+
+    req.open("GET", queryString, true);   
+    req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    req.send(queryString); 
+
+    req.addEventListener("load", () => {
+        if (req.status >= 200 && req.status < 400) {
+            let bugsArray = JSON.parse(req.responseText).bugs;
+
+            // clear table before building search results
+            let tableBody = document.getElementById("table-body");
+            tableBody.innerHTML = '';
+
+            // if no existing bugs
+            if(bugsArray.length == 0) {
+                let newRow = tableBody.insertRow(-1);
+                let summaryCell = document.createElement('td');
+                summaryCell.textContent = "No current bugs!";
+                summaryCell.style.color = "#ff0000";
+                summaryCell.className = 'mdl-data-table__cell--non-numeric'; 
+                newRow.appendChild(summaryCell);
+                return;
+            }
+
+            // build rows for each bug if there is at least one result
+            bugsArray.forEach(element => {
+                createRow(tableBody, element);
+            });
+        } else {
+            console.log("View all bugs: request error.");
+        }
+    });
+}
+
+
 // SEARCH BUG CLIENT SIDE - Function call to search bug table for substring
 let searchButton = document.getElementById("search-btn");
 searchButton.onclick = searchBug;
@@ -244,6 +286,9 @@ function createRow(tableBody, bugData) {
     let projectCell = document.createElement('td');
     projectCell.className = 'mdl-data-table__cell--non-numeric'; 
     projectCell.textContent = bugData.projectName;
+    if(projectCell.textContent == "") {
+        projectCell.textContent = "NULL";
+    }
     newRow.appendChild(projectCell);
 
     // Programmers element

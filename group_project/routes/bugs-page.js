@@ -262,11 +262,73 @@ function searchBug(req, res, next) {
 };
 
 
+// BUGS MAIN PAGE VIEW ALL BUGS - Function to clear search results and display all bugs
+function viewAllBugs(req, res, next) {
+    let viewAllQuery = `SELECT p.firstName, p.lastName, b.bugId, pj.projectName, b.bugSummary, b.bugDescription, 
+                        b.dateStarted, b.resolution, b.priority, b.fixed 
+	                    FROM Programmers p 
+		                JOIN Bugs_Programmers bp ON p.programmerId = bp.programmerId
+		                JOIN Bugs b ON bp.bugId = b.bugId
+                        LEFT OUTER JOIN Projects pj ON b.projectId <=> pj.projectId
+                            ORDER BY bugId`;
+
+    const mysql = req.app.get('mysql');                 
+    let context = {};
+    
+    mysql.pool.query(viewAllQuery, (err, result) => {
+        if(err) {
+            next(err);
+            return;
+        }
+
+        // if no results were found in initial search query
+        if(result.length == 0) {
+            context.bugs = [];
+            res.send(JSON.stringify(context));
+            return;
+        }
+
+        let rows = result;
+
+        let prevEntryBugId;
+            let bugProgrammers = [];
+            let matchingBugsData = [];
+
+            for (let i in rows) {
+                if (prevEntryBugId == rows[i].bugId) {
+                    bugProgrammers.push(rows[i].firstName + ' ' + rows[i].lastName);
+                }
+                else {
+                    prevEntryBugId = rows[i].bugId;
+                    bugProgrammers = [];
+                    bugProgrammers.push(rows[i].firstName + ' ' + rows[i].lastName);
+
+                    matchingBugsData.push({
+                        bugId: rows[i].bugId,
+                        bugSummary: rows[i].bugSummary,
+                        bugDescription: rows[i].bugDescription,
+                        projectName: rows[i].projectName,
+                        programmers: bugProgrammers,
+                        dateStarted: rows[i].dateStarted,
+                        priority: rows[i].priority,
+                        fixed: rows[i].fixed,
+                        resolution: rows[i].resolution
+                    }) 
+                }
+            }
+
+            context.bugs = matchingBugsData;
+            res.send(JSON.stringify(context));
+    });
+}
+
+
 /* PROJECTS PAGE ROUTES ---------------------------------------------------- */
 
 router.get('/', renderHome);
 router.get('/insertBug', submitBug);
 router.get('/deleteBug', deleteBug);
 router.get('/searchBug', searchBug);
+router.get('/viewAllBugs', viewAllBugs);
 
 module.exports = router;
