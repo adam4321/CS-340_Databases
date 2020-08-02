@@ -136,14 +136,21 @@ LOCK TABLES `Bugs` WRITE,
     `Projects` AS p10 WRITE,
     `Projects` AS p11 WRITE,
     `Projects` AS p12 WRITE,
-    `Projects` AS p13 WRITE;
+    `Projects` AS p13 WRITE,
+    `Projects` AS p14 WRITE,
+    `Projects` AS p15 WRITE,
+    `Projects` AS p16 WRITE,
+    `Projects` AS p17 WRITE,
+    `Projects` AS p18 WRITE,
+    `Projects` AS p19 WRITE,
+    `Projects` AS p20 WRITE;
 
 INSERT INTO `Bugs` (`projectId`, `bugSummary`, `bugDescription`, `dateStarted`, `resolution`, `fixed`, `priority`) VALUES
     ((SELECT `projectId` FROM `Projects` AS p1 WHERE `projectName` = 'MicroSheets'), 'Window close error', 'Bug Description 1', '2002-09-22', '', 0, 3),
     ((SELECT `projectId` FROM `Projects` AS p2 WHERE `projectName` = '1N\-router firmware'), 'CLI error', 'Bug Description 2', '2020-05-08', '', 0, 5),
     ((SELECT `projectId` FROM `Projects` AS p3 WHERE `projectName` = 'NetDash'), 'Logging error', 'Bug Description 3', '2015-03-02', '', 0, 4),
     ((SELECT `projectId` FROM `Projects` AS p4 WHERE `projectName` = 'Force CRM'), 'Button location', 'Bug Description 4', '2018-11-05', 'Fixed sql syntax', 1, 1),
-    ((SELECT `projectId` FROM `Projects` AS p5 WHERE `projectName` = 'SY design system'), 'Color match', 'Bug Description 5', '2019-08-03', '', 0, 3),
+    ((SELECT `projectId` FROM `Projects` AS p5 WHERE `projectName` = 'SY design system'), 'Color incorrect', 'Bug Description 5', '2019-08-03', '', 0, 3),
     ((SELECT `projectId` FROM `Projects` AS p6 WHERE `projectName` = 'T-best CMS'), 'Login error', 'Bug Description 6', '2014-04-18', '', 0, 2),
     ((SELECT `projectId` FROM `Projects` AS p7 WHERE `projectName` = 'eText Editor'), 'Window error', 'Bug Description 7', '2005-09-21', '', 0, 5),
     ((SELECT `projectId` FROM `Projects` AS p8 WHERE `projectName` = '1N\-router firmware'), 'ICMP error', 'Bug Description 8', '2017-12-14', '', 0, 5),
@@ -151,7 +158,14 @@ INSERT INTO `Bugs` (`projectId`, `bugSummary`, `bugDescription`, `dateStarted`, 
     ((SELECT `projectId` FROM `Projects` AS p10 WHERE `projectName` = 'Force CRM'), 'Failed log', 'Bug Description 10', '2016-04-13', '', 0, 2),
     ((SELECT `projectId` FROM `Projects` AS p11 WHERE `projectName` = 'SY design system'), 'Import error', 'Bug Description 11', '2016-02-11', '', 0, 1),
     ((SELECT `projectId` FROM `Projects` AS p12 WHERE `projectName` = 'T-best CMS'), 'API error', 'Bug Description 12', '2015-06-21', 'Still broken!!!', 0, 5),
-    ((SELECT `projectId` FROM `Projects` AS p13 WHERE `projectName` = 'eText Editor'), 'Undo error', 'Bug Description 13', '2004-03-01', '', 0, 3);
+    ((SELECT `projectId` FROM `Projects` AS p13 WHERE `projectName` = 'eText Editor'), 'Option missing in edit', 'Bug Description 13', '2004-03-01', '', 0, 3),
+    ((SELECT `projectId` FROM `Projects` AS p14 WHERE `projectName` = 'eText Editor'), 'Extra whitespace', 'Bug Description 13', '2004-03-01', '', 0, 3),
+    ((SELECT `projectId` FROM `Projects` AS p15 WHERE `projectName` = 'Force CRM'), 'Errant % in string', 'Bug Description 13', '2004-03-01', '', 0, 3),
+    ((SELECT `projectId` FROM `Projects` AS p16 WHERE `projectName` = 'SY design system'), 'Incorrect font', 'Bug Description 13', '2004-03-01', '', 0, 3),
+    ((SELECT `projectId` FROM `Projects` AS p17 WHERE `projectName` = 'SY design system'), 'Move div 15 px', 'Bug Description 13', '2004-03-01', '', 0, 3),
+    ((SELECT `projectId` FROM `Projects` AS p18 WHERE `projectName` = 'MicroSheets'), 'Image render error', 'Bug Description 13', '2004-03-01', '', 0, 3),
+    ((SELECT `projectId` FROM `Projects` AS p19 WHERE `projectName` = 'NetDash'), 'Login error', 'Bug Description 13', '2004-03-01', '', 0, 3),
+    ((SELECT `projectId` FROM `Projects` AS p20 WHERE `projectName` = 'eText Editor'), 'Undo error', 'Bug Description 13', '2004-03-01', '', 0, 3);
 
 UNLOCK TABLES;
 
@@ -187,8 +201,18 @@ INSERT INTO `Bugs_Programmers` (`bugId`, `programmerId`) VALUES
     (11, 1),
     (12, 1),
     (13, 2),
-    (1, 5),
-    (2, 7),
-    (3, 9);
+    (14, 2),
+    (15, 2),
+    (16, 2),
+    (17, 2),
+    (18, 2),
+    (19, 2),
+    (20, 2),
+    (6, 2),
+    (9, 2),
+    (12, 2),
+    (13, 5),
+    (16, 7),
+    (19, 9);
 
 UNLOCK TABLES;

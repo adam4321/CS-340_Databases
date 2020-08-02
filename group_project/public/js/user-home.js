@@ -2,7 +2,9 @@
 **  Description: USER-HOME client-side JavaScript file
 **************************************************************/
 
-// INSERT BUG VERIFY PROGRAMMER CHECKED - Function to verify that at least 1 programmer is checked
+/* INSERT BUG VERIFY PROGRAMMER CHECKED -------------------------------------*/
+
+// Function to verify that at least 1 programmer is checked
 function checkBoxChecked() {
     const form = document.querySelector('#recordForm');
     const checkboxes = form.querySelectorAll('input[type=checkbox]');
@@ -36,7 +38,9 @@ function checkBoxChecked() {
 };
 
 
-// INSERT BUG CLIENT SIDE - Function to submit the bug's form data
+/* INSERT BUG CLIENT SIDE -------------------------------------------------- */
+
+// Function to submit the bug's form data
 let recordForm = document.getElementById('recordForm');
 let spinner = document.getElementById('spinner');
 spinner.style.visibility = "hidden";
@@ -191,7 +195,9 @@ recordForm.addEventListener('submit', (e) => {
 });
 
 
-// DELETE BUG CLIENT SIDE - Function call to delete a row from bug
+/* DELETE BUG CLIENT SIDE -------------------------------------------------- */
+
+// Function call to delete a row from bug
 function deleteBug(tbl, curRow, bugId) {
     let table = document.getElementById(tbl);
     let rowCount = table.rows.length;
@@ -219,7 +225,9 @@ function deleteBug(tbl, curRow, bugId) {
 } 
 
 
-// VIEW ALL BUGS CLIENT SIDE - Function call to clear search results
+/* VIEW ALL BUGS CLIENT SIDE ----------------------------------------------- */
+
+// Function call to clear search results
 let viewAllButton = document.getElementById("clear-search");
 viewAllButton.setAttribute('onclick', 'viewAllBugs()');
 
@@ -261,7 +269,9 @@ function viewAllBugs() {
 }
 
 
-// SEARCH BUG CLIENT SIDE - Function call to search bug table for substring
+/* SEARCH BUG CLIENT SIDE -------------------------------------------------- */
+
+// Function call to search bug table for substring
 let searchButton = document.getElementById("search-btn");
 searchButton.onclick = searchBug;
 

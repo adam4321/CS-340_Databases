@@ -4,6 +4,8 @@
 **  Contains:    /
 **               /insertBug
 **               /deleteBug
+**               /searchBug
+**               /viewAllBugs
 **************************************************************/
 
 const express = require('express');
@@ -290,36 +292,35 @@ function viewAllBugs(req, res, next) {
         }
 
         let rows = result;
-
         let prevEntryBugId;
-            let bugProgrammers = [];
-            let matchingBugsData = [];
+        let bugProgrammers = [];
+        let matchingBugsData = [];
 
-            for (let i in rows) {
-                if (prevEntryBugId == rows[i].bugId) {
-                    bugProgrammers.push(rows[i].firstName + ' ' + rows[i].lastName);
-                }
-                else {
-                    prevEntryBugId = rows[i].bugId;
-                    bugProgrammers = [];
-                    bugProgrammers.push(rows[i].firstName + ' ' + rows[i].lastName);
-
-                    matchingBugsData.push({
-                        bugId: rows[i].bugId,
-                        bugSummary: rows[i].bugSummary,
-                        bugDescription: rows[i].bugDescription,
-                        projectName: rows[i].projectName,
-                        programmers: bugProgrammers,
-                        dateStarted: rows[i].dateStarted,
-                        priority: rows[i].priority,
-                        fixed: rows[i].fixed,
-                        resolution: rows[i].resolution
-                    }) 
-                }
+        for (let i in rows) {
+            if (prevEntryBugId == rows[i].bugId) {
+                bugProgrammers.push(rows[i].firstName + ' ' + rows[i].lastName);
             }
+            else {
+                prevEntryBugId = rows[i].bugId;
+                bugProgrammers = [];
+                bugProgrammers.push(rows[i].firstName + ' ' + rows[i].lastName);
 
-            context.bugs = matchingBugsData;
-            res.send(JSON.stringify(context));
+                matchingBugsData.push({
+                    bugId: rows[i].bugId,
+                    bugSummary: rows[i].bugSummary,
+                    bugDescription: rows[i].bugDescription,
+                    projectName: rows[i].projectName,
+                    programmers: bugProgrammers,
+                    dateStarted: rows[i].dateStarted,
+                    priority: rows[i].priority,
+                    fixed: rows[i].fixed,
+                    resolution: rows[i].resolution
+                }) 
+            }
+        }
+
+        context.bugs = matchingBugsData;
+        res.send(JSON.stringify(context));
     });
 }
 

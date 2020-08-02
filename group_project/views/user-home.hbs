@@ -1,74 +1,69 @@
-{{!  Description:  This view is the component that renders the homepage. This is the  }}
-{{!                component where the bug list will be displayed.                    }}
+{{!--  Description:  This view is the component that renders the homepage. This is the  --}}
+{{!--                component where the bug list is displayed.                         --}}
 
 <title>Bug Dashboard</title>
-<link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.orange-indigo.min.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-<script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
-<link type="image/x-icon" rel="shortcut icon" href="favicon-1.ico"/>
 <link type="text/css" rel="stylesheet" href="css/user-home.css">  
       
-<!-- Container for the dashboard -->
+{{!-- Container for the dashboard --}}
 <div id="main-box" class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
   <div id="dashboard-top-bar" class="mdl-card__title mdl-color-text--white">
-    <h2 class="mdl-card__title-text">Add Bug</h2>
+        <h2 class="mdl-card__title-text">Add Bug</h2>
   </div>
   <div class="mdl-card__supporting-text mdl-color-text--grey-600">  
-    <form id="recordForm" action="/insertBug">
-      <div class="grid-container">
-        <div><label class="textarea-label" for="bug-summary">Bug Summary</label></div>
-        <div><textarea required name="bugSummary" id="bug-summary-field"></textarea></div>
-        <div><label class="textarea-label" for="bug-description">Bug Description</label></div>
-        <div><textarea required name="bugDescription" id="bug-description-field"></textarea></div>
-        <div><label for="bug-project">Project</label></div>
-        <div>
-          <select required name="bugProject" id="bug-project-field">
-            <option value="" disabled selected>Select a project</option>
-            <option value="">NULL</option>
-            {{#each projects}}
-                <option value="{{this.projectId}}">{{this.projectName}}</option>
-            {{/each}}
-          </select>          
-        </div>
-        <div><label for="bug-programmer">Programmers</label></div>
-        <div class="checkbox-container">
-            {{#each programmers}}
-                <input 
-                    class="checkbox-input" 
-                    type="checkbox" 
-                    id="{{this.programmerId}}" 
-                    name="programmerId" 
-                    value="{{this.programmerId}}"
-                >
-                <label value="{{this.firstName}} {{this.lastName}}" 
-                    for="programmer1">{{this.firstName}} {{this.lastName}}
-                </label><br>
-            {{/each}}
-        </div>
-        <div><label for="bug-start-date">Date Started</label></div>
-        <div><input required type="date" name="bugStartDate" id="bug-start-date-field"></div>
-        <div><label for="bug-priority">Priority</label></div>
-        <div><input required type="number" min="1" max="5" name="bugPriority" id="bug-priority-field"></div>
-        <div><label for="bug-fixed">Fixed</label></div>
-        <div>
-          <input class="radio-input" type="radio" name="bugFixed" value="1" id="bug-fixed-yes">
-          <label class="radio-label" for="bugFixed">Yes</label>
-          <input class="radio-input" type="radio" name="bugFixed" value="0" id="bug-fixed-no" checked>
-          <label class="radio-label" for="bugFixed">No</label>
-        </div>
-        <div><label class="textarea-label" for="bug-resolution">Resolution</label></div>
-        <div><textarea name="bugResolution" id="bug-resolution-field"></textarea></div>
-        
-          <input type="submit" id="save" value="Add" onclick="checkBoxChecked()">
-          <div id="spinner" class = "mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></div>
-        
-      </div>
-    </form>
-  </div>
+        <form id="recordForm" action="/insertBug">
+            <div class="grid-container">
+                <div><label class="textarea-label" for="bug-summary">Bug Summary</label></div>
+                <div><textarea required name="bugSummary" id="bug-summary-field"></textarea></div>
+                <div><label class="textarea-label" for="bug-description">Bug Description</label></div>
+                <div><textarea required name="bugDescription" id="bug-description-field"></textarea></div>
+                <div><label for="bug-project">Project</label></div>
+                <div>
+                    <select required name="bugProject" id="bug-project-field">
+                        <option value="" disabled selected>Select a project</option>
+                        <option value="">NULL</option>
+                        {{#each projects}}
+                            <option value="{{this.projectId}}">{{this.projectName}}</option>
+                        {{/each}}
+                    </select>          
+                </div>
+                <div><label for="bug-programmer">Programmers</label></div>
+                <div class="checkbox-container">
+                    {{#each programmers}}
+                        <input 
+                            class="checkbox-input" 
+                            type="checkbox" 
+                            id="{{this.programmerId}}" 
+                            name="programmerId" 
+                            value="{{this.programmerId}}"
+                        >
+                        <label value="{{this.firstName}} {{this.lastName}}" 
+                            for="programmer1">{{this.firstName}} {{this.lastName}}
+                        </label><br>
+                    {{/each}}
+                </div>
+                <div><label for="bug-start-date">Date Started</label></div>
+                <div><input required type="date" name="bugStartDate" id="bug-start-date-field"></div>
+                <div><label for="bug-priority">Priority</label></div>
+                <div><input required type="number" min="1" max="5" name="bugPriority" id="bug-priority-field"></div>
+                <div><label for="bug-fixed">Fixed</label></div>
+                <div>
+                    <input class="radio-input" type="radio" name="bugFixed" value="1" id="bug-fixed-yes">
+                    <label class="radio-label" for="bugFixed">Yes</label>
+                    <input class="radio-input" type="radio" name="bugFixed" value="0" id="bug-fixed-no" checked>
+                    <label class="radio-label" for="bugFixed">No</label>
+                </div>
+                <div><label class="textarea-label" for="bug-resolution">Resolution</label></div>
+                <div><textarea name="bugResolution" id="bug-resolution-field"></textarea></div>
+                
+                <input type="submit" id="save" value="Add" onclick="checkBoxChecked()">
+                <div id="spinner" class = "mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></div>
+            </div>
+        </form>
+    </div>
 </div>
 <br>
 
-<!-- Container for Bugs Table -->
+{{!-- Container for Bugs Table --}}
 <div id="main-box" class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
     <div id="dashboard-top-bar" class="mdl-card__title mdl-color-text--white">
         <h2 class="mdl-card__title-text">Current Bugs</h2>
