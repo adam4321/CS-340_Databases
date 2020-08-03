@@ -1,19 +1,14 @@
--- -------------------------------
--- CS-340 Summer 2020: Group 34
--- -------------------------------
+/******************************************************************************
+**  Description:    sql query to reset the project database
+******************************************************************************/
 
--- DROP ALL OF THE EXISTING TABLES
--- ---------------------------------------
+module.exports = `
 UNLOCK TABLES;
 DROP TABLE IF EXISTS Bugs_Programmers;
 DROP TABLE IF EXISTS Bugs;
 DROP TABLE IF EXISTS Projects;
 DROP TABLE IF EXISTS Programmers;
 DROP TABLE IF EXISTS Companies;
--- ---------------------------------------
-
-
--- Create table and insert data for Programmers -------------------------------
 
 CREATE TABLE Programmers (
     programmerId int(11) NOT NULL AUTO_INCREMENT,
@@ -24,7 +19,6 @@ CREATE TABLE Programmers (
     accessLevel int(11),
     PRIMARY KEY (programmerId)
 ) ENGINE=InnoDB;
-
 
 LOCK TABLES Programmers WRITE;
 
@@ -41,9 +35,6 @@ INSERT INTO Programmers VALUES
     (10, 'Jen', 'Thomas', 'jen_t@gmail.com', '1998-09-20', 3);
 
 UNLOCK TABLES;
-
-
--- Create table and insert data for Companies ---------------------------------
 
 CREATE TABLE Companies (
     companyId int(11) NOT NULL AUTO_INCREMENT,
@@ -64,9 +55,6 @@ INSERT INTO Companies VALUES
 
 UNLOCK TABLES;
 
-
--- Create table and insert data for Projects ----------------------------------
-
 CREATE TABLE Projects (
     projectId int(11) NOT NULL AUTO_INCREMENT,
     projectName varchar(255) NOT NULL, 
@@ -76,12 +64,12 @@ CREATE TABLE Projects (
     companyId int(11) NOT NULL,
     PRIMARY KEY (projectId),
     FOREIGN KEY (companyId) REFERENCES Companies (companyId)
-		ON UPDATE CASCADE 
+        ON UPDATE CASCADE 
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 LOCK TABLES Projects WRITE,
-	Companies AS c1 WRITE,
+    Companies AS c1 WRITE,
     Companies AS c2 WRITE,
     Companies AS c3 WRITE,
     Companies AS c4 WRITE,
@@ -104,9 +92,6 @@ INSERT INTO Projects (projectName, dateStarted, lastUpdated, inMaintenance, comp
 
 UNLOCK TABLES;
 
-
--- Create table and insert data for Bugs --------------------------------------
-
 CREATE TABLE Bugs (
     bugId int(11) NOT NULL AUTO_INCREMENT,
     projectId int(11),
@@ -118,13 +103,12 @@ CREATE TABLE Bugs (
     priority int(11),
     PRIMARY KEY (bugId),
     FOREIGN KEY (projectId) REFERENCES Projects (projectId)
-		ON UPDATE CASCADE 
+        ON UPDATE CASCADE 
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
-
 LOCK TABLES Bugs WRITE, 
-	Projects AS p1 WRITE, 
+    Projects AS p1 WRITE, 
     Projects AS p2 WRITE,
     Projects AS p3 WRITE,
     Projects AS p4 WRITE,
@@ -169,21 +153,17 @@ INSERT INTO Bugs (projectId, bugSummary, bugDescription, dateStarted, resolution
 
 UNLOCK TABLES;
 
-
--- Create table and insert data for Bugs_Programmers --------------------------
-
 CREATE TABLE Bugs_Programmers (
     bugId int(11) NOT NULL,
     programmerId int(11) NOT NULL,
     PRIMARY KEY (bugId, programmerId),
     FOREIGN KEY (bugId) REFERENCES Bugs (bugId)
-		ON UPDATE CASCADE 
+        ON UPDATE CASCADE 
         ON DELETE CASCADE,
     FOREIGN KEY (programmerId) REFERENCES Programmers (programmerId)
-		ON UPDATE CASCADE 
+        ON UPDATE CASCADE 
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
-
 
 LOCK TABLES Bugs_Programmers WRITE, Bugs AS b1 WRITE, Programmers AS p1 WRITE;
 
@@ -215,4 +195,4 @@ INSERT INTO Bugs_Programmers (bugId, programmerId) VALUES
     (16, 7),
     (19, 9);
 
-UNLOCK TABLES;
+UNLOCK TABLES;`

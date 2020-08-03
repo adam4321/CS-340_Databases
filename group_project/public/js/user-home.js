@@ -430,10 +430,13 @@ searchInput.addEventListener('keydown', function(event) {
 // Function to drop and repopulate all database tables
 let resetBtn = document.getElementById("reset-table");
 resetBtn.addEventListener('click', resetTable);
+let spinner2 = document.getElementById('spinner2');
+spinner2.style.visibility = "hidden";
 
 function resetTable() {
     let queryString = "/resetTable";
     let req = new XMLHttpRequest();
+    spinner2.style.visibility = "visible";
 
     req.open("GET", queryString, true);   
     req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -442,10 +445,13 @@ function resetTable() {
     req.addEventListener("load", () => {
         if (req.status >= 200 && req.status < 400) {
             let response = JSON.parse(req.responseText);
+            
             console.log(response);
 
             // alert confirmation. if yes, refresh page. otherwise, return.
 
+
+            setTimeout(() => { spinner2.style.visibility = "hidden"; }, 1000);
         } else {
             console.log("Reset table request error.");
         }

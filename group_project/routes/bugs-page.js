@@ -327,14 +327,11 @@ function viewAllBugs(req, res, next) {
 
 // BUGS MAIN PAGE RESET TABLES - Function to drop and repopulate database
 function resetTable(req, res, next) {
-    let resetQuery = fs.readFileSync('./sql/group34_db_definition.sql').toString();
-    resetQuery = resetQuery.replace(/`/g, '');
-    // resetQuery = '`\n' + resetQuery + '\n`';
-    console.log(resetQuery);
+    let recreate_query = require('../sql/reset_database.js');
     const mysql = req.app.get('mysql');                 
     let context = {};
     
-    mysql.pool.query(resetQuery, (err, result) => {
+    mysql.pool.query(recreate_query, (err, result) => {
         if(err) {
             next(err);
             return;

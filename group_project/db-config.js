@@ -14,6 +14,7 @@ const config = {
     database        :  credentials.DB,
     port            :  3306,
     dateStrings     :  'true',
+    multipleStatements: true
 };
 
 let pool = mysql.createPool(config);
