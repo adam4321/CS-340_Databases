@@ -6,6 +6,7 @@
 **               /deleteBug
 **               /searchBug
 **               /viewAllBugs
+**               /resetTable
 **************************************************************/
 
 const express = require('express');
