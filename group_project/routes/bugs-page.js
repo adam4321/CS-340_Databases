@@ -10,7 +10,7 @@
 
 const express = require('express');
 const router = express.Router();
-
+const fs = require('fs');
 
 // RENDER BUGS MAIN PAGE - Function to render the bugs page
 function renderHome(req, res, next) {
@@ -262,7 +262,7 @@ function searchBug(req, res, next) {
             res.send(JSON.stringify(context));
         });
     });
-};
+}
 
 
 // BUGS MAIN PAGE VIEW ALL BUGS - Function to clear search results and display all bugs
@@ -325,6 +325,26 @@ function viewAllBugs(req, res, next) {
 }
 
 
+// BUGS MAIN PAGE RESET TABLES - Function to drop and repopulate database
+function resetTable(req, res, next) {
+    let resetQuery = fs.readFileSync('./sql/group34_db_definition.sql').toString();
+    console.log(resetQuery);
+    const mysql = req.app.get('mysql');                 
+    let context = {};
+    
+    mysql.pool.query(resetQuery, (err, result) => {
+        if(err) {
+            next(err);
+            return;
+        }
+
+        context.result = "Reset table success.";
+        console.log(context);
+        res.send(JSON.stringify(context));
+    })
+}
+
+
 /* PROJECTS PAGE ROUTES ---------------------------------------------------- */
 
 router.get('/', renderHome);
@@ -332,5 +352,6 @@ router.get('/insertBug', submitBug);
 router.get('/deleteBug', deleteBug);
 router.get('/searchBug', searchBug);
 router.get('/viewAllBugs', viewAllBugs);
+router.get('/resetTable', resetTable);
 
 module.exports = router;

@@ -283,7 +283,7 @@ function viewAllBugs() {
 
 // Function call to search bug table for substring
 let searchButton = document.getElementById("search-btn");
-searchButton.onclick = searchBug;
+searchButton.addEventListener('click', searchBug);
 
 function searchBug() {
     let searchString = document.getElementById("search-input").value;
@@ -425,3 +425,29 @@ searchInput.addEventListener('keydown', function(event) {
         document.getElementById('search-btn').click();
     }
 });
+
+
+// Function to drop and repopulate all database tables
+let resetBtn = document.getElementById("reset-table");
+resetBtn.addEventListener('click', resetTable);
+
+function resetTable() {
+    let queryString = "/resetTable";
+    let req = new XMLHttpRequest();
+
+    req.open("GET", queryString, true);   
+    req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    req.send(queryString); 
+
+    req.addEventListener("load", () => {
+        if (req.status >= 200 && req.status < 400) {
+            let response = JSON.parse(req.responseText);
+            console.log(response);
+
+            // alert confirmation. if yes, refresh page. otherwise, return.
+
+        } else {
+            console.log("Reset table request error.");
+        }
+    });
+}
