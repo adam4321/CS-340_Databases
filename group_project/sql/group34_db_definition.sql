@@ -113,7 +113,7 @@ CREATE TABLE `Bugs` (
     `bugSummary` text NOT NULL,
     `bugDescription` text,
     `dateStarted` date NOT NULL,
-    `resolution`text,
+    `resolution` text,
     `fixed` BOOLEAN DEFAULT FALSE,
     `priority` int(11),
     PRIMARY KEY (`bugId`),
