@@ -427,6 +427,8 @@ searchInput.addEventListener('keydown', function(event) {
 });
 
 
+/* RESET DATABASE CLIENT SIDE ---------------------------------------------- */
+
 // Function to drop and repopulate all database tables
 let resetBtn = document.getElementById("reset-table");
 resetBtn.addEventListener('click', resetTable);
@@ -436,24 +438,33 @@ spinner2.style.visibility = "hidden";
 function resetTable() {
     let queryString = "/resetTable";
     let req = new XMLHttpRequest();
-    spinner2.style.visibility = "visible";
 
-    req.open("GET", queryString, true);   
-    req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    req.send(queryString); 
+    // Prompt the user for a confirmation before resetting the db
+    let confirmVal;
+    confirmVal = confirm("This button RESETS the database!\n\nPress cancel to abort.");
+    if (!confirmVal) {
+        return;
+    } else {
+        // Display the spinner
+        spinner2.style.visibility = "visible";
 
-    req.addEventListener("load", () => {
-        if (req.status >= 200 && req.status < 400) {
-            let response = JSON.parse(req.responseText);
-            
-            console.log(response);
+        // Make the ajax request
+        req.open("GET", queryString, true);   
+        req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        req.send(queryString); 
 
-            // alert confirmation. if yes, refresh page. otherwise, return.
+        req.addEventListener("load", () => {
+            if (req.status >= 200 && req.status < 400) {
+                let response = JSON.parse(req.responseText);
+
+                console.log(response);
 
 
-            setTimeout(() => { spinner2.style.visibility = "hidden"; }, 1000);
-        } else {
-            console.log("Reset table request error.");
-        }
-    });
+
+                setTimeout(() => { spinner2.style.visibility = "hidden"; }, 1000);
+            } else {
+                console.log("Reset table request error.");
+            }
+        });
+    }
 }
