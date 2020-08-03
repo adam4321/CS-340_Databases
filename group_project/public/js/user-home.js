@@ -458,7 +458,16 @@ function resetTable() {
                 let response = JSON.parse(req.responseText);
 
                 console.log(response);
+                let bugsArray = JSON.parse(req.responseText).bugs;
 
+                // Clear table before building search results
+                let tableBody = document.getElementById("table-body");
+                tableBody.innerHTML = '';
+
+                // Build rows for each bug if there is at least one result
+                bugsArray.forEach(element => {
+                    createRow(tableBody, element);
+                });
 
 
                 setTimeout(() => { spinner2.style.visibility = "hidden"; }, 1000);
