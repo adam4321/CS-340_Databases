@@ -158,7 +158,7 @@ function submitBugEdit(req, res, next) {
                     [
                         req.query.bugId,
                         req.query.programmer[i]
-                    ], (err, result, ) => {
+                    ], (err, result) => {
                         if (err) {
                             next(err);
                             return;
