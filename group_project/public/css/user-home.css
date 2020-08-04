@@ -69,6 +69,10 @@
     white-space: normal;
 }
 
+th {
+    padding-top: 8px !important;
+}
+
 td {
     max-width: 200px;
 }
@@ -97,6 +101,6 @@ li {
 /* Submit bug text cell max size ------------------------------------------- */
 
 .user-text {
-    max-height: 40px;
+    max-height: 37px;
     overflow: hidden;
 }
