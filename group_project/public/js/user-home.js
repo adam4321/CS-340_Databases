@@ -441,7 +441,7 @@ function resetTable() {
 
     // Prompt the user for a confirmation before resetting the db
     let confirmVal;
-    confirmVal = confirm("This button RESETS the database!\n\nPress cancel to abort.");
+    confirmVal = confirm("This button RESETS the database and repopulates it with sample data!\n\nPress cancel to abort.");
     if (!confirmVal) {
         return;
     } else {

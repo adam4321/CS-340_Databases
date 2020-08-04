@@ -30,7 +30,7 @@
     height: 36px !important;
 }
 
-#search-form button:hover, #clear-search:hover, .update-btn:hover {
+#search-form button:hover, #clear-search:hover, .update-btn:hover, #reset-table:hover{
     background-color: #226078;
 } 
 
@@ -44,7 +44,7 @@
 #reset-table {
     margin-left: 16px;
     padding: 9px;
-    width: 120px;
+    width: 130px;
     border-radius: 2px;
 }
 
