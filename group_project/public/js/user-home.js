@@ -58,7 +58,7 @@ recordForm.addEventListener('submit', (e) => {
             if (recordForm.elements.programmerId[i].checked) {
                 programmerStr += `&programmer=${recordForm.elements.programmerId[i].value}`;
             }
-        } catch {
+        } catch(e) {
             continue;
         }
     }
@@ -72,7 +72,7 @@ recordForm.addEventListener('submit', (e) => {
                 programmerCount++;
                 programmerList.push(recordForm.elements.programmerId[i].nextElementSibling.innerHTML);
             }
-        } catch {
+        } catch(e) {
             continue;
         }
     }
