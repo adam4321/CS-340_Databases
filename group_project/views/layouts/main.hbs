@@ -18,42 +18,45 @@
     </head>
 
     <body>
-        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-            <header id="top-bar" class="mdl-layout__header mdl-color-text--white">
-                <div class="mdl-layout__header-row">
-                <span class="mdl-layout-title">
-                    <h3>
-                    <a id="page-title" href="/"><img  id="bug-logo" src="bug-2-128.png" alt="White bug icon">
-                        Software Bug Tracker
-                    </a>
-                    </h3>
-                </span>
-                <div class="mdl-layout-spacer"></div>
-                    <nav class="mdl-navigation mdl-layout--large-screen-only">
-                        <a class="page-links" href="/">Bugs</a>
-                        <a class="page-links" href="/programmers">Programmers</a>
-                        <a class="page-links" href="/projects">Projects</a>
-                        <a class="page-links" href="/companies">Companies</a>
-                    </nav>
-                </div>
-            </header>
+        <div style="height: 100px">
+            <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+                <header id="top-bar" class="mdl-layout__header mdl-color-text--white">
+                    <div class="mdl-layout__header-row">
+                    <span class="mdl-layout-title">
+                        <h3>
+                        <a id="page-title" href="/"><img  id="bug-logo" src="bug-2-128.png" alt="White bug icon">
+                            Software Bug Tracker
+                        </a>
+                        </h3>
+                    </span>
+                    <div class="mdl-layout-spacer"></div>
+                        <nav class="mdl-navigation mdl-layout--large-screen-only">
+                            <a class="page-links" href="/">Bugs</a>
+                            <a class="page-links" href="/programmers">Programmers</a>
+                            <a class="page-links" href="/projects">Projects</a>
+                            <a class="page-links" href="/companies">Companies</a>
+                        </nav>
+                    </div>
+                </header>
 
-            <div class="mdl-layout__drawer">
-                <span class="mdl-layout-title">Software Bug Tracker</span>
-                <nav class="mdl-navigation">
-                <a class="mdl-navigation__link" href="/">Bugs</a>
-                <a class="mdl-navigation__link" href="/programmers">Programmers</a>
-                <a class="mdl-navigation__link" href="/projects">Projects</a>
-                <a class="mdl-navigation__link" href="/companies">Companies</a>
-                </nav>        
+                <div class="mdl-layout__drawer">
+                    <span class="mdl-layout-title">Software Bug Tracker</span>
+                    <nav class="mdl-navigation">
+                    <a class="mdl-navigation__link" href="/">Bugs</a>
+                    <a class="mdl-navigation__link" href="/programmers">Programmers</a>
+                    <a class="mdl-navigation__link" href="/projects">Projects</a>
+                    <a class="mdl-navigation__link" href="/companies">Companies</a>
+                    </nav>        
+                </div>
             </div>
         </div>
-
-        {{!-- Content Box for the page --}}
-        <main class="mdl-layout__content">
-            <div class="page-content">
-                {{{body}}}
-            </div>
-        </main>
+        <div>
+            {{!-- Content Box for the page --}}
+            <main class="mdl-layout__content">
+                <div class="page-content">
+                    {{{body}}}
+                </div>
+            </main>
+        </div>
     </body>
 </html>
