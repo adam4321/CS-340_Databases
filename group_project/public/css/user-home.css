@@ -116,9 +116,10 @@ li {
 
 #chart{
     position: relative;
+    border-radius: 3px;
     padding-top: 5px;
     margin-left: 725px;
-    margin-top: 45px;
+    margin-top: 40px;
     width: 360px;
     height: 450px;
     background-color: #d8e9e962;
@@ -132,4 +133,5 @@ li {
 #chartLabel {
     margin-left: 32px;
     margin-top: 48px;
+    color: rgb(141, 141, 141);
 }

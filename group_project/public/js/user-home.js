@@ -537,8 +537,8 @@ function printChart() {
     var centralText = svg.append("text")
         .attr("text-anchor", "middle")
         .attr('font-size', '55px')
-        .attr('y', 17)
-        .style("opacity", 0.5);
+        .attr('y', 19)
+        .style("opacity", 0.45);
 
     // Create the central percentage
     centralText.text(d3.format(".0%")(fixedCount / count));
@@ -565,7 +565,7 @@ function printChart() {
         )
         .attr('fill', function(d){ return(color(d.data.key)) })
         .attr("stroke", "black")
-        .style("stroke-width", "3px")
+        .style("stroke-width", "2px")
         .style("opacity", 0.58)
 }
 
