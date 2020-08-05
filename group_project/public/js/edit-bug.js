@@ -92,7 +92,7 @@ recordForm.addEventListener('submit', (e) => {
 
     reqBody = JSON.stringify(reqBody);
 
-    console.log(parameterString)
+    console.log(reqBody)
 
     // Ajax request
     req.open('POST', path, true);
