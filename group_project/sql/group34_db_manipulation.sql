@@ -19,10 +19,10 @@ INSERT INTO Companies (companyName, dateJoined)
 
 -- View all existing Projects --
 SELECT * FROM Projects AS p
-JOIN Companies AS c ON p.companyId = c.companyId;
+	JOIN Companies AS c ON p.companyId = c.companyId;
 
 -- View all existing company names --
-SELECT companyName FROM Companies;
+SELECT companyId, companyName FROM Companies;
 
 -- Add new project --
 INSERT INTO Projects (projectName, companyId, dateStarted, lastUpdated, inMaintenance)
@@ -55,7 +55,7 @@ b.bugDescription, b.dateStarted, b.resolution, b.priority, b.fixed
 		JOIN Bugs_Programmers bp ON p.programmerId = bp.programmerId
 		JOIN Bugs b ON bp.bugId = b.bugId
 		LEFT OUTER JOIN Projects pj ON b.projectId <=> pj.projectId
-                            ORDER BY bugId;
+            ORDER BY bugId;
 
 -- Add new bug --
 INSERT INTO Bugs (bugSummary, bugDescription, projectId, dateStarted, priority, fixed, resolution) 
@@ -68,6 +68,19 @@ INSERT INTO Bugs_Programmers (bugId, programmerId) VALUES (:result.insertId, :re
 -- Delete bug --
 DELETE FROM Bugs WHERE bugId = :req.query.bugId;
 
+-- Search bugs --
+SELECT bugId FROM Bugs WHERE CONCAT(bugSummary, bugDescription, resolution) LIKE %:req.query.searchString%;
+
+-- Get data from all bugs that match search --
+SELECT p.firstName, p.lastName, b.bugId, pj.projectName, b.bugSummary, b.bugDescription,  
+b.dateStarted, b.resolution, b.priority, b.fixed 
+	FROM Programmers p 
+        JOIN Bugs_Programmers bp ON p.programmerId = bp.programmerId 
+        JOIN Bugs b ON bp.bugId = b.bugId  
+        LEFT OUTER JOIN Projects pj ON b.projectId = pj.projectId 
+            WHERE b.bugId IN (:bugIdList) 
+            ORDER BY b.bugId;
+
 
 -- Update bug -----------------------------------------------------------------
 
@@ -75,7 +88,7 @@ DELETE FROM Bugs WHERE bugId = :req.query.bugId;
 SELECT projectName FROM projects;
 
 -- Display the Programmers in the scrolling checkbox list --
-SELECT firstName, lastName FROM PROGRAMMERS;
+SELECT programmerId, firstName, lastName FROM PROGRAMMERS;
 
 -- View all existing Bugs with their programmers --
 SELECT p.firstName, p.lastName, b.bugId, pj.projectName, b.bugSummary,
