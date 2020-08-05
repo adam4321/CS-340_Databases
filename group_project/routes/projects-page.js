@@ -71,26 +71,26 @@ function submitProject(req, res, next) {
     let context = {};
 
     mysql.pool.query(sql_query, [
-            req.query.projectName,
-            req.query.companyName,
-            req.query.dateStarted,
-            req.query.lastUpdated,
-            req.query.inMaintenance
-        ], 
-        (err, result) => {
-        if (err) {
-            next(err);
-            return;
-        }
-        context.projects = result.insertId;
-        res.send(JSON.stringify(context));
-    });
+            req.body.projectName,
+            req.body.companyName,
+            req.body.dateStarted,
+            req.body.lastUpdated,
+            req.body.inMaintenance
+        ], (err, result) => {
+            if (err) {
+                next(err);
+                return;
+            }
+            
+            context.projects = result.insertId;
+            res.send(JSON.stringify(context));
+        });
 }
 
 
 /* PROJECTS PAGE ROUTES ---------------------------------------------------- */
 
 router.get('/', renderProjects);
-router.get('/insertProject', submitProject);
+router.post('/insertProject', submitProject);
 
 module.exports = router;

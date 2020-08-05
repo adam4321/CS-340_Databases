@@ -144,7 +144,7 @@ INSERT INTO Bugs (projectId, bugSummary, bugDescription, dateStarted, resolution
     ((SELECT projectId FROM Projects AS p12 WHERE projectName = 'T-best CMS'), 'API error', 'WooCommerce not completing sales', '2015-06-21', 'Still broken!!!', 0, 5),
     ((SELECT projectId FROM Projects AS p13 WHERE projectName = 'eText Editor'), 'Option missing in edit', 'No option listed in edit dropdown for find in this page', '2004-03-01', '', 0, 3),
     ((SELECT projectId FROM Projects AS p14 WHERE projectName = 'eText Editor'), 'Extra whitespace', 'Extra whitespace added to the end of each paragraph', '2004-03-01', '', 0, 3),
-    ((SELECT projectId FROM Projects AS p15 WHERE projectName = 'Force CRM'), 'Errant % in string', 'Unexplained % showing up in strings', '2004-03-01', '', 0, 3),
+    ((SELECT projectId FROM Projects AS p15 WHERE projectName = 'Force CRM'), 'Errant % in string', 'Unexplained % symbol showing up in strings', '2004-03-01', '', 0, 3),
     ((SELECT projectId FROM Projects AS p16 WHERE projectName = 'SY design system'), 'Incorrect font', 'Font should be set to Roboto', '2004-03-01', '', 0, 3),
     ((SELECT projectId FROM Projects AS p17 WHERE projectName = 'SY design system'), 'Move div 15 px', 'div_main_box should be 25 px higher', '2004-03-01', '', 0, 3),
     ((SELECT projectId FROM Projects AS p18 WHERE projectName = 'MicroSheets'), 'Image render error', 'Images not rendering when dragged and dropped onto the page', '2004-03-01', '', 0, 3),

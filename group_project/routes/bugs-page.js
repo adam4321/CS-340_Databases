@@ -11,7 +11,7 @@
 
 const express = require('express');
 const router = express.Router();
-const fs = require('fs');
+
 
 // RENDER BUGS MAIN PAGE - Function to render the bugs page
 function renderHome(req, res, next) {
@@ -67,13 +67,15 @@ function renderHome(req, res, next) {
                     resolution: rows[i].resolution
                 });
             }
-        } 
+        }
+
         // Query for the list of programmers
         mysql.pool.query(sql_query_2,  (err, rows) => {
             if (err) {
                 next(err);
                 return;
             }
+
             let programmersDbData = [];
             for (let i in rows) {
                 programmersDbData.push({
@@ -82,12 +84,15 @@ function renderHome(req, res, next) {
                     lastName: rows[i].lastName
                 });
             }
+
             // Query for the list of projects
             mysql.pool.query(sql_query_1,  (err, rows) => {
                 if (err) {
                     next(err);
                     return;
                 }
+
+                
                 let projectDbData = [];
                 for (let i in rows) {
                     projectDbData.push({
@@ -95,11 +100,11 @@ function renderHome(req, res, next) {
                         projectId: rows[i].projectId
                     });
                 }
+
                 // After the 3 calls return, then populate the context array
                 context.bugs = bugsDbData;
                 context.programmers = programmersDbData;
                 context.projects = projectDbData;
-                // console.log(context);
                 res.render('user-home', context);
             });
         });
@@ -121,35 +126,33 @@ function submitBug(req, res, next) {
     let bugId;
 
     // Insert new bug data
-    mysql.pool.query(sql_query_1,
-        [
-            req.query.bugSummary,
-            req.query.bugDescription,
-            req.query.bugProject,
-            req.query.bugStartDate,
-            req.query.bugPriority,
-            req.query.bugFixed,
-            req.query.bugResolution
-        ], (err, result) => {
+    mysql.pool.query(sql_query_1, [
+        req.body.bugSummary,
+        req.body.bugDescription,
+        req.body.bugProject,
+        req.body.bugStartDate,
+        req.body.bugPriority,
+        req.body.bugFixed,
+        req.body.bugResolution
+    ], (err, result) => {
         if (err) {
             next(err);
             return;
         }
+
+        // Retrieve the bugId from the previous query's result
         bugId = result.insertId;
+
         // Run the Bugs_Programmers insertion for each programmer
-        for (let i in req.query.programmer) {
-            mysql.pool.query(sql_query_2,
-                [
-                    result.insertId,
-                    req.query.programmer[i]
-                ], (err, result) => {
-                    if (err) {
-                        next(err);
-                        return;
-                    }
+        for (let i in req.body.programmerArr) {
+            mysql.pool.query(sql_query_2, [result.insertId, req.body.programmerArr[i]], (err, result) => {
+                if (err) {
+                    next(err);
+                    return;
                 }
-            )
+            });
         }
+
         context.id = bugId;
         context.bugs = result.insertId;
         res.send(JSON.stringify(context));
@@ -166,23 +169,21 @@ function deleteBug(req, res, next) {
     const mysql = req.app.get('mysql');
     var context = {};
 
-    mysql.pool.query(
-        sql_query_1, [req.query.bugId],
-        function(err, result) {
+    mysql.pool.query(sql_query_1, [req.body.bugId], (err, result) => {
+        if (err) {
+            next(err);
+            return;
+        }
+
+        mysql.pool.query(sql_query_2, (err, rows) => {
             if (err) {
                 next(err);
                 return;
             }
-            mysql.pool.query(sql_query_2, (err, rows) => {
-                if (err) {
-                    next(err);
-                    return;
-                }
-                context.results = JSON.stringify(rows);
-                res.render('user-home', context);
-            });
-        }
-    );
+            context.results = JSON.stringify(rows);
+            res.render('user-home', context);
+        });
+    });
 }
 
 
@@ -190,19 +191,19 @@ function deleteBug(req, res, next) {
 function searchBug(req, res, next) {
     // query to find bug entries that contain substring
     let searchQuery = 'SELECT bugId FROM Bugs WHERE CONCAT(bugSummary, bugDescription, resolution) LIKE "%' + 
-                        req.query.searchString + '%"';
+                        req.body.searchString + '%"';
 
     const mysql = req.app.get('mysql');                 
     let context = {};
     
     mysql.pool.query(searchQuery, (err, result) => {
-        if(err) {
+        if (err) {
             next(err);
             return;
         }
 
         // if no results were found in initial search query
-        if(result.length == 0) {
+        if (result.length == 0) {
             context.bugs = [];
             res.send(JSON.stringify(context));
             return;
@@ -280,13 +281,13 @@ function viewAllBugs(req, res, next) {
     let context = {};
     
     mysql.pool.query(viewAllQuery, (err, result) => {
-        if(err) {
+        if (err) {
             next(err);
             return;
         }
 
         // if no results were found in initial search query
-        if(result.length == 0) {
+        if (result.length == 0) {
             context.bugs = [];
             res.send(JSON.stringify(context));
             return;
@@ -337,17 +338,14 @@ function resetTable(req, res, next) {
                         LEFT OUTER JOIN Projects pj ON b.projectId <=> pj.projectId
                             ORDER BY bugId`;
 
-    let recreate_query = require('../sql/reset_database.js');
+    let recreateQuery = require('../sql/reset_database.js');
     const mysql = req.app.get('mysql');                 
-    let context = {};
     
-    mysql.pool.query(recreate_query, (err, result) => {
+    mysql.pool.query(recreateQuery, (err, result) => {
         if(err) {
             next(err);
             return;
         }
-
-        console.log("Reset table success");
 
         const mysql = req.app.get('mysql');                 
         let context = {};
@@ -396,10 +394,10 @@ function resetTable(req, res, next) {
 /* PROJECTS PAGE ROUTES ---------------------------------------------------- */
 
 router.get('/', renderHome);
-router.get('/insertBug', submitBug);
-router.get('/deleteBug', deleteBug);
-router.get('/searchBug', searchBug);
-router.get('/viewAllBugs', viewAllBugs);
-router.get('/resetTable', resetTable);
+router.post('/insertBug', submitBug);
+router.post('/deleteBug', deleteBug);
+router.post('/searchBug', searchBug);
+router.post('/viewAllBugs', viewAllBugs);
+router.post('/resetTable', resetTable);
 
 module.exports = router;

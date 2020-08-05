@@ -43,11 +43,12 @@ function submitCompany(req, res, next) {
     let sql_query = `INSERT INTO Companies (companyName, dateJoined) VALUES (?, ?)`;
     let context = {};
 
-    mysql.pool.query(sql_query, [req.query.companyName, req.query.dateJoined], (err, result) => {
+    mysql.pool.query(sql_query, [req.body.companyName, req.body.dateJoined], (err, result) => {
         if (err) {
             next(err);
             return;
         }
+        
         context.companies = result.insertId;
         res.send(JSON.stringify(context));
     });
@@ -57,6 +58,6 @@ function submitCompany(req, res, next) {
 /* COMPANIES PAGE ROUTES ----------------------------------------------------- */
 
 router.get('/', displayCompanyPage);
-router.get('/insertCompany', submitCompany);
+router.post('/insertCompany', submitCompany);
 
 module.exports = router;

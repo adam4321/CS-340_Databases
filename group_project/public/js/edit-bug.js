@@ -43,14 +43,14 @@ bugId = document.getElementById("save");
 recordForm.addEventListener('submit', (e) => {
     e.preventDefault();
     let req = new XMLHttpRequest();
-    let queryString = '/edit-bug/updateBug';
+    let path = '/edit-bug/updateBug';
 
     // Iterate over the checked programmers to create http query sub-string
-    let programmerStr = '';
+    let programmerArr = [];
     for (let i = 0; i < recordForm.elements.length; i++) {
         try {
             if (recordForm.elements.programmerId[i].checked) {
-                programmerStr += `&programmer=${recordForm.elements.programmerId[i].value}`;
+                programmerArr.push(recordForm.elements.programmerId[i].value);
             }
         } catch(e) {
             continue;
@@ -72,36 +72,40 @@ recordForm.addEventListener('submit', (e) => {
     }
 
     // Fill the project, if it has a value
-    let projectStr = '';
+    let project;
     if (recordForm.elements.bugProject.value) {
-        projectStr += `&bugProject=${recordForm.elements.bugProject.value}`
+        project = recordForm.elements.bugProject.value;
     }
 
     // String that holds the form data
-    let parameterString =
-    'bugSummary=' + recordForm.elements.bugSummary.value +
-    '&bugDescription=' + recordForm.elements.bugDescription.value +
-    projectStr                                                   +
-    programmerStr                                               +
-    '&bugStartDate=' + recordForm.elements.bugStartDate.value +
-    '&bugPriority=' + recordForm.elements.bugPriority.value +
-    '&bugFixed=' + recordForm.elements.bugFixed.value +
-    '&bugResolution=' + recordForm.elements.bugResolution.value +
-    '&bugId=' + bugId.name
+    let reqBody = {
+        bugSummary: recordForm.elements.bugSummary.value,
+        bugDescription: recordForm.elements.bugDescription.value,
+        bugProject: project,
+        programmerArr: programmerArr,
+        bugStartDate: recordForm.elements.bugStartDate.value,
+        bugPriority: recordForm.elements.bugPriority.value,
+        bugFixed: recordForm.elements.bugFixed.value,
+        bugResolution: recordForm.elements.bugResolution.value,
+        bugId: bugId.name
+    };
+
+    reqBody = JSON.stringify(reqBody);
 
     console.log(parameterString)
 
     // Ajax request
-    req.open('GET', queryString + '?' + parameterString, true);
-    req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    req.open('POST', path, true);
+    req.setRequestHeader('Content-Type', 'application/json');
     req.addEventListener('load', () => {
-    if (req.status >= 200 && req.status < 400) {
-        // Return the user to the bugs page
-        window.location.href = "/";
-  
-    } else {
-        console.log('Database return error');
-    }
+        if (req.status >= 200 && req.status < 400) {
+            // Return the user to the bugs page
+            window.location.href = "/";
+    
+        } else {
+            console.error('Database return error');
+        }
     });
-    req.send(queryString + '?' + parameterString);
+
+    req.send(reqBody);
 });
