@@ -12,7 +12,7 @@ SELECT * FROM Companies;
 
 --Add new company --
 INSERT INTO Companies (companyName, dateJoined) 
-    VALUES (:req.query.companyName, :req.query.dateJoined);
+    VALUES (:req.body.companyName, :req.body.dateJoined);
 
 
 -- Projects Page --------------------------------------------------------------
@@ -26,8 +26,8 @@ SELECT companyId, companyName FROM Companies;
 
 -- Add new project --
 INSERT INTO Projects (projectName, companyId, dateStarted, lastUpdated, inMaintenance)
-    VALUES (:req.query.projectName, (SELECT companyId FROM Companies WHERE companyName = :req.query.companyName),
-            :req.query.dateStarted, :req.query.lastUpdated, :req.query.inMaintenance);
+    VALUES (:req.body.projectName, (SELECT companyId FROM Companies WHERE companyName = :req.body.companyName),
+            :req.body.dateStarted, :req.body.lastUpdated, :req.body.inMaintenance);
 
 
 -- Programmers Page -----------------------------------------------------------
@@ -37,7 +37,7 @@ SELECT * FROM Programmers;
 
 -- Add new programmer --
 INSERT INTO Programmers (firstName, lastName, email, dateStarted, accessLevel) 
-    VALUES (:req.query.firstName, :req.query.lastName, :req.query.email, :req.query.dateStarted, :req.query.accessLevel);
+    VALUES (:req.body.firstName, :req.body.lastName, :req.body.email, :req.body.dateStarted, :req.body.accessLevel);
 
 
 -- Bugs Page ------------------------------------------------------------------
@@ -59,17 +59,17 @@ b.bugDescription, b.dateStarted, b.resolution, b.priority, b.fixed
 
 -- Add new bug --
 INSERT INTO Bugs (bugSummary, bugDescription, projectId, dateStarted, priority, fixed, resolution) 
-    VALUES (:req.query.bugSummary, :req.query.bugDescription,:req.query.bugProject,
-             :req.query.bugStartDate, :req.query.bugPriority, :req.query.bugFixed, :req.query.bugResolution);
+    VALUES (:req.body.bugSummary, :req.body.bugDescription,:req.body.bugProject,
+             :req.body.bugStartDate, :req.body.bugPriority, :req.body.bugFixed, :req.body.bugResolution);
 
 -- Run in a loop to insert a Bugs_Programmers row for each programmer --
-INSERT INTO Bugs_Programmers (bugId, programmerId) VALUES (:result.insertId, :req.query.programmer[i]);
+INSERT INTO Bugs_Programmers (bugId, programmerId) VALUES (:result.insertId, :req.body.programmer[i]);
 
 -- Delete bug --
-DELETE FROM Bugs WHERE bugId = :req.query.bugId;
+DELETE FROM Bugs WHERE bugId = :req.body.bugId;
 
 -- Search bugs --
-SELECT bugId FROM Bugs WHERE CONCAT(bugSummary, bugDescription, resolution) LIKE %:req.query.searchString%;
+SELECT bugId FROM Bugs WHERE CONCAT(bugSummary, bugDescription, resolution) LIKE %:req.body.searchString%;
 
 -- Get data from all bugs that match search --
 SELECT p.firstName, p.lastName, b.bugId, pj.projectName, b.bugSummary, b.bugDescription,  
@@ -106,7 +106,7 @@ priority = :priorityInput, resolution = :resolutionInput, fixed = :fixedInput
     WHERE bugId = :bugIdInput;
 
  -- Delete the previous Bugs_Programmers rows --
-DELETE FROM Bugs_Programmers WHERE bugId = :req.query.bugId;
+DELETE FROM Bugs_Programmers WHERE bugId = :req.body.bugId;
 
 -- Run in a loop to insert a Bugs_Programmers row for each programmer --
-INSERT INTO Bugs_Programmers (bugId, programmerId) VALUES (:req.query.bugId, :req.query.programmer[i]);
+INSERT INTO Bugs_Programmers (bugId, programmerId) VALUES (:req.body.bugId, :req.body.programmer[i]);
