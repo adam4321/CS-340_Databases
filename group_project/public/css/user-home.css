@@ -116,19 +116,20 @@ li {
 
 #chart{
     position: relative;
-    border: 1px solid rgba(36, 35, 35, 0.301);
-    margin-left: 680px;
-    margin-top: 40px;
-    width: 390px;
+    padding-top: 5px;
+    margin-left: 725px;
+    margin-top: 45px;
+    width: 360px;
     height: 450px;
+    background-color: #d8e9e962;
 }
 
 #my_dataviz {
-    margin-top: 43px;
-    margin-left: 45px;
+    margin-top: 38px;
+    margin-left: 30px;
 }
 
 #chartLabel {
-    margin-left: 47px;
+    margin-left: 32px;
     margin-top: 48px;
 }

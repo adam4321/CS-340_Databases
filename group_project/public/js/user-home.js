@@ -231,6 +231,7 @@ function deleteBug(tbl, curRow, bugId) {
                     table.deleteRow(i);
                 }
             }
+            updateChart();
         } 
         else {
             console.error("Delete request error");
