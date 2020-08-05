@@ -11,43 +11,47 @@ recordForm.addEventListener('submit', (e) => {
     e.preventDefault();
     spinner.style.visibility = "visible"; 
     let req = new XMLHttpRequest();
-    let queryString = '/companies/insertCompany';
+    let path = '/companies/insertCompany';
 
     // String that holds the form data
-    let parameterString =
-    'companyName=' + encodeURIComponent(recordForm.elements.companyName.value) +
-    '&dateJoined=' + recordForm.elements.dateJoined.value
+    let reqBody = {
+        companyName: recordForm.elements.companyName.value,
+        dateJoined: recordForm.elements.dateJoined.value
+    };
+
+    reqBody = JSON.stringify(reqBody);
 
     // Ajax request
-    req.open('GET', queryString + '?' + parameterString, true);
-    req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    req.open('POST', path, true);
+    req.setRequestHeader('Content-Type', 'application/json');
     req.addEventListener('load', () => {
-    if (req.status >= 200 && req.status < 400) {
-        let response = JSON.parse(req.responseText);
-        let id = response.companies;
+        if (req.status >= 200 && req.status < 400) {
+            let response = JSON.parse(req.responseText);
+            let id = response.companies;
 
-        // Table of database records for the added companies
-        let tbl = document.getElementById('recordTable');
-        let newRow = tbl.insertRow(-1);
+            // Table of database records for the added companies
+            let tbl = document.getElementById('recordTable');
+            let newRow = tbl.insertRow(-1);
 
-        // Company Name element
-        let nameCell = document.createElement('td');
-        nameCell.textContent = recordForm.elements.companyName.value;
-        nameCell.className = 'mdl-data-table__cell--non-numeric'; 
-        newRow.appendChild(nameCell);
-       
-        // Date Joined element
-        let dateCell = document.createElement('td');
-        dateCell.textContent = recordForm.elements.dateJoined.value;
-        newRow.appendChild(dateCell);
-
-        // Clear the submit form and stop spinner
-        document.getElementById('recordForm').reset();
-        setTimeout(() => { spinner.style.visibility = "hidden"; }, 1000);
+            // Company Name element
+            let nameCell = document.createElement('td');
+            nameCell.textContent = recordForm.elements.companyName.value;
+            nameCell.className = 'mdl-data-table__cell--non-numeric'; 
+            newRow.appendChild(nameCell);
         
-    } else {
-        console.log('Database return error');
-    }
+            // Date Joined element
+            let dateCell = document.createElement('td');
+            dateCell.textContent = recordForm.elements.dateJoined.value;
+            newRow.appendChild(dateCell);
+
+            // Clear the submit form and stop spinner
+            document.getElementById('recordForm').reset();
+            setTimeout(() => { spinner.style.visibility = "hidden"; }, 1000);
+            
+        } else {
+            console.error('Database return error');
+        }
     });
-    req.send(queryString + '?' + parameterString);
+
+    req.send(reqBody);
 });

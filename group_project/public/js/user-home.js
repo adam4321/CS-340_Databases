@@ -49,14 +49,14 @@ recordForm.addEventListener('submit', (e) => {
     e.preventDefault();
     spinner.style.visibility = "visible"; 
     let req = new XMLHttpRequest();
-    let queryString = '/insertBug';
+    let path = '/insertBug';
 
     // Iterate over the checked programmers to create http query sub-string
-    let programmerStr = '';
+    let programmerArr = [];
     for (let i = 0; i < recordForm.elements.length; i++) {
         try {
             if (recordForm.elements.programmerId[i].checked) {
-                programmerStr += `&programmer=${encodeURIComponent(recordForm.elements.programmerId[i].value)}`;
+                programmerArr.push(recordForm.elements.programmerId[i].value);
             }
         } catch(e) {
             continue;
@@ -78,130 +78,134 @@ recordForm.addEventListener('submit', (e) => {
     }
 
     // Fill the project, if it has a value
-    let projectStr = '';
+    let project;
     if (recordForm.elements.bugProject.value) {
-        projectStr += `&bugProject=${encodeURIComponent(recordForm.elements.bugProject.value)}`
+        project = recordForm.elements.bugProject.value;
     }
 
     // String that holds the form data
-    let parameterString =
-    'bugSummary=' + encodeURIComponent(recordForm.elements.bugSummary.value) +
-    '&bugDescription=' + encodeURIComponent(recordForm.elements.bugDescription.value) +
-    projectStr                                                   +
-    programmerStr                                               +
-    '&bugStartDate=' + recordForm.elements.bugStartDate.value +
-    '&bugPriority=' + recordForm.elements.bugPriority.value +
-    '&bugFixed=' + recordForm.elements.bugFixed.value +
-    '&bugResolution=' + encodeURIComponent(recordForm.elements.bugResolution.value)
+    let reqBody = {
+        bugSummary: recordForm.elements.bugSummary.value,
+        bugDescription: recordForm.elements.bugDescription.value,
+        bugProject: project,
+        programmerArr: programmerArr,
+        bugStartDate: recordForm.elements.bugStartDate.value,
+        bugPriority: recordForm.elements.bugPriority.value,
+        bugFixed: recordForm.elements.bugFixed.value,
+        bugResolution: recordForm.elements.bugResolution.value
+    };
+
+    reqBody = JSON.stringify(reqBody);
 
     // Ajax request
-    req.open('GET', queryString + '?' + parameterString, true);
-    req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    req.open('POST', path, true);
+    req.setRequestHeader('Content-Type', 'application/json');
     req.addEventListener('load', () => {
-    if (req.status >= 200 && req.status < 400) {
-        let response = JSON.parse(req.responseText);
+        if (req.status >= 200 && req.status < 400) {
+            let response = JSON.parse(req.responseText);
 
-        // Table of database records for the added companies
-        let tbl = document.getElementById('recordTable');
-        let newRow = tbl.insertRow(-1);
+            // Table of database records for the added companies
+            let tbl = document.getElementById('recordTable');
+            let newRow = tbl.insertRow(-1);
 
-        // Bug Summary element
-        let summaryCell = document.createElement('td');
-        summaryCell.className = 'mdl-data-table__cell--non-numeric'; 
-        let innerCell = document.createElement('div');
-        summaryCell.appendChild(innerCell);
-        innerCell.className = 'user-text';
-        innerCell.textContent = recordForm.elements.bugSummary.value;
-        newRow.appendChild(summaryCell);
+            // Bug Summary element
+            let summaryCell = document.createElement('td');
+            summaryCell.className = 'mdl-data-table__cell--non-numeric'; 
+            let innerCell = document.createElement('div');
+            summaryCell.appendChild(innerCell);
+            innerCell.className = 'user-text';
+            innerCell.textContent = recordForm.elements.bugSummary.value;
+            newRow.appendChild(summaryCell);
 
-        // Bug Description element
-        let descriptionCell = document.createElement('td');
-        descriptionCell.className = 'mdl-data-table__cell--non-numeric'; 
-        innerCell = document.createElement('div');
-        descriptionCell.appendChild(innerCell);
-        innerCell.className = 'user-text';
-        innerCell.textContent = recordForm.elements.bugDescription.value;
-        newRow.appendChild(descriptionCell);
+            // Bug Description element
+            let descriptionCell = document.createElement('td');
+            descriptionCell.className = 'mdl-data-table__cell--non-numeric'; 
+            innerCell = document.createElement('div');
+            descriptionCell.appendChild(innerCell);
+            innerCell.className = 'user-text';
+            innerCell.textContent = recordForm.elements.bugDescription.value;
+            newRow.appendChild(descriptionCell);
 
-        // Project element
-        let projectCell = document.createElement('td');
-        let dropdown = document.getElementById("bug-project-field");
-        projectCell.className = 'mdl-data-table__cell--non-numeric'; 
-        projectCell.textContent = dropdown.options[dropdown.selectedIndex].text;
-        newRow.appendChild(projectCell);
+            // Project element
+            let projectCell = document.createElement('td');
+            let dropdown = document.getElementById("bug-project-field");
+            projectCell.className = 'mdl-data-table__cell--non-numeric'; 
+            projectCell.textContent = dropdown.options[dropdown.selectedIndex].text;
+            newRow.appendChild(projectCell);
 
-        // Programmers element
-        let programmerCell = document.createElement('td');
-        programmerCell.className = 'mdl-data-table__cell--non-numeric';
-        newRow.appendChild(programmerCell);
-        let progList = document.createElement('ul');
-        let progElem = document.createElement('li')
-        programmerCell.appendChild(progList);
-        progList.appendChild(progElem);
-
-        for (let i = 0; i < programmerCount; i++) {
-            progElem.textContent = programmerList[i];
-            progElem = document.createElement('li');
+            // Programmers element
+            let programmerCell = document.createElement('td');
+            programmerCell.className = 'mdl-data-table__cell--non-numeric';
+            newRow.appendChild(programmerCell);
+            let progList = document.createElement('ul');
+            let progElem = document.createElement('li')
+            programmerCell.appendChild(progList);
             progList.appendChild(progElem);
-        }
-        
-        // Date started element
-        let dateCell = document.createElement('td');
-        dateCell.textContent = recordForm.elements.bugStartDate.value;
-        newRow.appendChild(dateCell);
 
-        // Priority element
-        let priorityCell = document.createElement('td');
-        priorityCell.textContent = recordForm.elements.bugPriority.value;
-        newRow.appendChild(priorityCell);
+            for (let i = 0; i < programmerCount; i++) {
+                progElem.textContent = programmerList[i];
+                progElem = document.createElement('li');
+                progList.appendChild(progElem);
+            }
+            
+            // Date started element
+            let dateCell = document.createElement('td');
+            dateCell.textContent = recordForm.elements.bugStartDate.value;
+            newRow.appendChild(dateCell);
 
-        // Fixed element
-        let fixedCell = document.createElement('td');
-        if (recordForm.elements.bugFixed.value == 0) {
-            fixedCell.textContent = "No"
+            // Priority element
+            let priorityCell = document.createElement('td');
+            priorityCell.textContent = recordForm.elements.bugPriority.value;
+            newRow.appendChild(priorityCell);
+
+            // Fixed element
+            let fixedCell = document.createElement('td');
+            if (recordForm.elements.bugFixed.value == 0) {
+                fixedCell.textContent = "No"
+            } else {
+                fixedCell.textContent = "Yes";
+            }
+            newRow.appendChild(fixedCell);
+
+            // Resolution element
+            let resolutionCell = document.createElement('td');
+            resolutionCell.className = 'mdl-data-table__cell--non-numeric'
+            innerCell = document.createElement('div');
+            resolutionCell.appendChild(innerCell);
+            innerCell.textContent = recordForm.elements.bugResolution.value;
+            innerCell.className = 'user-text';
+            newRow.appendChild(resolutionCell);
+
+            // Update button element
+            let updateCell = document.createElement('td');
+            newRow.appendChild(updateCell);
+            let updateBtn = document.createElement('a');
+            updateCell.appendChild(updateBtn);
+            updateBtn.text = "Update"
+            updateBtn.className = "update-btn";
+            updateBtn.href = `/edit-bug?bugId=${response.id}`;
+            
+
+            // Delete button element
+            let deleteCell = document.createElement('td');
+            newRow.appendChild(deleteCell);
+            let deleteBtn = document.createElement('a');
+            deleteCell.appendChild(deleteBtn);
+            deleteBtn.type = "button";
+            deleteBtn.text = "Delete";
+            deleteBtn.className = "update-btn";
+            deleteBtn.setAttribute('onclick', `deleteBug('recordTable', this, ${response.id})`);
+            
+            // Clear the submit form and reset the spinner
+            document.getElementById('recordForm').reset();
+            setTimeout(() => { spinner.style.visibility = "hidden"; }, 1000);
+
         } else {
-            fixedCell.textContent = "Yes";
+            console.error('Database return error');
         }
-        newRow.appendChild(fixedCell);
-
-        // Resolution element
-        let resolutionCell = document.createElement('td');
-        resolutionCell.className = 'mdl-data-table__cell--non-numeric'
-        innerCell = document.createElement('div');
-        resolutionCell.appendChild(innerCell);
-        innerCell.textContent = recordForm.elements.bugResolution.value;
-        innerCell.className = 'user-text';
-        newRow.appendChild(resolutionCell);
-
-        // Update button element
-        let updateCell = document.createElement('td');
-        newRow.appendChild(updateCell);
-        let updateBtn = document.createElement('a');
-        updateCell.appendChild(updateBtn);
-        updateBtn.text = "Update"
-        updateBtn.className = "update-btn";
-        updateBtn.href = `/edit-bug?bugId=${response.id}`;
-        
-
-        // Delete button element
-        let deleteCell = document.createElement('td');
-        newRow.appendChild(deleteCell);
-        let deleteBtn = document.createElement('a');
-        deleteCell.appendChild(deleteBtn);
-        deleteBtn.type = "button";
-        deleteBtn.text = "Delete";
-        deleteBtn.className = "update-btn";
-        deleteBtn.setAttribute('onclick', `deleteBug('recordTable', this, ${response.id})`);
-        
-        // Clear the submit form
-        document.getElementById('recordForm').reset();
-        setTimeout(() => { spinner.style.visibility = "hidden"; }, 1000);
-
-    } else {
-        console.log('Database return error');
-    }
     });
-    req.send(queryString + '?' + parameterString);
+
+    req.send(reqBody);
 });
 
 
@@ -212,26 +216,28 @@ function deleteBug(tbl, curRow, bugId) {
     let table = document.getElementById(tbl);
     let rowCount = table.rows.length;
     let req = new XMLHttpRequest();
-    let queryString = "/deleteBug";
+    let path = "/deleteBug";
 
-    req.open("GET", queryString + "?bugId=" + bugId, true);
-    req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    reqBody = JSON.stringify({bugId: bugId});
+
+    req.open("POST", path, true);
+    req.setRequestHeader("Content-Type", "application/json");
     req.addEventListener("load", () => {
         if (req.status >= 200 && req.status < 400) {
-        } else {
-        console.log("Delete request error");
+            for (let i = 0; i < rowCount; i++) {
+                let row = table.rows[i];
+        
+                if (row == curRow.parentNode.parentNode) {
+                    table.deleteRow(i);
+                }
+            }
+        } 
+        else {
+            console.error("Delete request error");
         }
     });
 
-    req.send(queryString + "?bugId=" + bugId);
-
-    for (let i = 0; i < rowCount; i++) {
-        let row = table.rows[i];
-
-        if (row == curRow.parentNode.parentNode) {
-            table.deleteRow(i);
-        }
-    }
+    req.send(reqBody);
 } 
 
 
@@ -242,12 +248,12 @@ let viewAllButton = document.getElementById("clear-search");
 viewAllButton.setAttribute('onclick', 'viewAllBugs()');
 
 function viewAllBugs() {
-    queryString = "/viewAllBugs";
+    path = "/viewAllBugs";
     let req = new XMLHttpRequest();
 
-    req.open("GET", queryString, true);   
-    req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    req.send(queryString); 
+    req.open("POST", path, true);   
+    req.setRequestHeader("Content-Type", "application/json");
+    req.send();
 
     req.addEventListener("load", () => {
         if (req.status >= 200 && req.status < 400) {
@@ -273,7 +279,7 @@ function viewAllBugs() {
                 createRow(tableBody, element);
             });
         } else {
-            console.log("View all bugs: request error.");
+            console.error("View all bugs: request error.");
         }
     });
 }
@@ -287,12 +293,13 @@ searchButton.addEventListener('click', searchBug);
 
 function searchBug() {
     let searchString = document.getElementById("search-input").value;
-    let queryString = "/searchBug";
+    let path = "/searchBug";
     let req = new XMLHttpRequest();
+    let reqBody = JSON.stringify({searchString: searchString});
 
-    req.open("GET", queryString + "?searchString=" + searchString, true);   
-    req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    req.send(queryString + "?searchString=" + searchString); 
+    req.open("POST", path, true);   
+    req.setRequestHeader("Content-Type", "application/json");
+    req.send(reqBody); 
 
     req.addEventListener("load", () => {
         if (req.status >= 200 && req.status < 400) {
@@ -320,8 +327,9 @@ function searchBug() {
 
             // Clear the searchbar
             document.getElementById('search-form').reset()
+
         } else {
-            console.log("Search request error.");
+            console.error("Search request error.");
         }
     });
 };
@@ -436,7 +444,7 @@ let spinner2 = document.getElementById('spinner2');
 spinner2.style.visibility = "hidden";
 
 function resetTable() {
-    let queryString = "/resetTable";
+    let path = "/resetTable";
     let req = new XMLHttpRequest();
 
     // Prompt the user for a confirmation before resetting the db
@@ -449,15 +457,13 @@ function resetTable() {
         spinner2.style.visibility = "visible";
 
         // Make the ajax request
-        req.open("GET", queryString, true);   
-        req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        req.send(queryString); 
+        req.open("POST", path, true);   
+        req.setRequestHeader("Content-Type", "application/json");
+        req.send(); 
 
         req.addEventListener("load", () => {
             if (req.status >= 200 && req.status < 400) {
                 let response = JSON.parse(req.responseText);
-
-                console.log(response);
                 let bugsArray = JSON.parse(req.responseText).bugs;
 
                 // Clear table before building search results
@@ -469,10 +475,12 @@ function resetTable() {
                     createRow(tableBody, element);
                 });
 
-
+                // Rehide the spinner
                 setTimeout(() => { spinner2.style.visibility = "hidden"; }, 1000);
-            } else {
-                console.log("Reset table request error.");
+
+            } 
+            else {
+                console.error("Reset table request error.");
             }
         });
     }

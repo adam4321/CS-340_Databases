@@ -53,26 +53,28 @@ function renderEditBug(req, res, next) {
                 // Push a single entry
                 editBugDbData.push({
                     bugId: rows[i].bugId,
-                    bugSummary: decodeURIComponent(rows[i].bugSummary),
-                    bugDescription: decodeURIComponent(rows[i].bugDescription),
+                    bugSummary: rows[i].bugSummary,
+                    bugDescription: rows[i].bugDescription,
                     projectName: rows[i].projectName,
                     programmers: bugProgrammers,
                     dateStarted: rows[i].dateStarted,
                     priority: rows[i].priority,
                     fixed: rows[i].fixed,
-                    resolution: decodeURIComponent(rows[i].resolution),
+                    resolution: rows[i].resolution,
                     project: rows[i].projectId
                 });
             }
         }
 
         // Query for the list of programmers
-        mysql.pool.query(sql_query_2,  (err, rows) => {
+        mysql.pool.query(sql_query_2, (err, rows) => {
             if (err) {
                 next(err);
                 return;
             }
+
             let programmersDbData = [];
+
             for (let i in rows) {
                 programmersDbData.push({
                     programmerId: rows[i].programmerId,
@@ -80,6 +82,7 @@ function renderEditBug(req, res, next) {
                     lastName: rows[i].lastName,
                     checked: false
                 });
+
                 // If the programmer's Id is set in the bug then checked becomes true
                 for (let j in editBugDbData[0].programmers) {
                     if (editBugDbData[0].programmers[j] == rows[i].programmerId) {
@@ -89,18 +92,21 @@ function renderEditBug(req, res, next) {
             }
 
             // Query for the list of projects
-            mysql.pool.query(sql_query_1,  (err, rows) => {
+            mysql.pool.query(sql_query_1, (err, rows) => {
                 if (err) {
                     next(err);
                     return;
                 }
+
                 let projectDbData = [];
+
                 for (let i in rows) {
                     projectDbData.push({
                         projectName: rows[i].projectName,
                         projectId: rows[i].projectId
                     });
                 }
+
                 // After the 3 calls return, then populate the context array
                 context.editBug = editBugDbData[0];
                 context.programmers = programmersDbData;
@@ -128,45 +134,41 @@ function submitBugEdit(req, res, next) {
     const mysql = req.app.get('mysql');
     let context = {};
 
-    // Insert new bug data
-    mysql.pool.query(sql_query_1,
-        [
-            req.query.bugSummary,
-            req.query.bugDescription,
-            req.query.bugProject,
-            req.query.bugStartDate,
-            req.query.bugPriority,
-            req.query.bugFixed,
-            req.query.bugResolution,
-            req.query.bugId
-        ], (err, result) => {
+    // Insert updated bug data
+    mysql.pool.query(sql_query_1, [
+        req.body.bugSummary,
+        req.body.bugDescription,
+        req.body.bugProject,
+        req.body.bugStartDate,
+        req.body.bugPriority,
+        req.body.bugFixed,
+        req.body.bugResolution,
+        req.body.bugId
+    ], (err, result) => {
         if (err) {
             next(err);
             return;
         }
 
         // Delete all existing Bugs_Programmers rows
-        mysql.pool.query(sql_query_2, [req.query.bugId], (err, result) => {
+        mysql.pool.query(sql_query_2, [req.body.bugId], (err, result) => {
             if (err) {
                 next(err);
                 return;
             }
 
             // Run the Bugs_Programmers insertion for each programmer
-            for (let i in req.query.programmer) {
-                mysql.pool.query(sql_query_3,
-                    [
-                        req.query.bugId,
-                        req.query.programmer[i]
-                    ], (err, result) => {
-                        if (err) {
-                            next(err);
-                            return;
-                        }
+            for (let i in req.body.programmerArr) {
+                mysql.pool.query(sql_query_3, [req.body.bugId, req.body.programmerArr[i]], (err, result) => {
+                    if (err) {
+                        next(err);
+                        return;
                     }
-                )
+                    
+                })
             }
-            context.id = req.query.bugId;
+
+            context.id = req.body.bugId;
             context.bugs = result.insertId;
             res.send(JSON.stringify(context));
         });
@@ -177,6 +179,6 @@ function submitBugEdit(req, res, next) {
 /* EDIT BUG PAGE ROUTES ---------------------------------------------------- */
 
 router.get('/', renderEditBug);
-router.get('/updateBug', submitBugEdit);
+router.post('/updateBug', submitBugEdit);
 
 module.exports = router;
