@@ -59,6 +59,11 @@
                 <div id="spinner" class = "mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></div>
             </div>
         </form>
+        {{!-- Doughnut chart  --}}
+        <div id="chart">
+            <h3 id="chartLabel">Current Fixed Bugs</h3>
+            <div id="my_dataviz"></div>
+        </div>
     </div>
 </div>
 <br>
@@ -109,7 +114,7 @@
                     </td>
                     <td>{{this.dateStarted}}</td>
                     <td>{{this.priority}}</td>
-                    <td>{{#if this.fixed}} Yes {{else}} No {{/if}}</td>
+                    <td class="bugFixed">{{#if this.fixed}} Yes {{else}} No {{/if}}</td>
                     <td class="mdl-data-table__cell--non-numeric"><div class="user-text">{{this.resolution}}</div></td>
                     <td><a class="update-btn" href="/edit-bug?bugId={{this.bugId}}">Update</a></td>
                     <td>

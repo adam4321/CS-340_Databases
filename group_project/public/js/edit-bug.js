@@ -76,8 +76,6 @@ recordForm.addEventListener('submit', (e) => {
     if (recordForm.elements.bugProject.value) {
         projectStr += `&bugProject=${recordForm.elements.bugProject.value}`
     }
-    console.log(recordForm.elements.bugProject)
-    console.log(projectStr)
 
     // String that holds the form data
     let parameterString =
@@ -90,6 +88,8 @@ recordForm.addEventListener('submit', (e) => {
     '&bugFixed=' + recordForm.elements.bugFixed.value +
     '&bugResolution=' + recordForm.elements.bugResolution.value +
     '&bugId=' + bugId.name
+
+    console.log(parameterString)
 
     // Ajax request
     req.open('GET', queryString + '?' + parameterString, true);

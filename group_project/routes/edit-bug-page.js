@@ -127,7 +127,7 @@ function submitBugEdit(req, res, next) {
 
     const mysql = req.app.get('mysql');
     let context = {};
-
+    console.log(req.query)
     // Insert new bug data
     mysql.pool.query(sql_query_1,
         [

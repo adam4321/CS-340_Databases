@@ -195,6 +195,7 @@ recordForm.addEventListener('submit', (e) => {
         
         // Clear the submit form
         document.getElementById('recordForm').reset();
+
         setTimeout(() => { spinner.style.visibility = "hidden"; }, 1000);
 
     } else {
@@ -202,6 +203,9 @@ recordForm.addEventListener('submit', (e) => {
     }
     });
     req.send(queryString + '?' + parameterString);
+
+    // Print the doughnut chart
+    updateChart();
 });
 
 
@@ -232,6 +236,9 @@ function deleteBug(tbl, curRow, bugId) {
             table.deleteRow(i);
         }
     }
+
+    // Print the doughnut chart
+    updateChart();
 } 
 
 
@@ -272,6 +279,7 @@ function viewAllBugs() {
             bugsArray.forEach(element => {
                 createRow(tableBody, element);
             });
+
         } else {
             console.log("View all bugs: request error.");
         }
@@ -469,11 +477,106 @@ function resetTable() {
                     createRow(tableBody, element);
                 });
 
-
                 setTimeout(() => { spinner2.style.visibility = "hidden"; }, 1000);
+
             } else {
                 console.log("Reset table request error.");
             }
-        });
+        })
     }
 }
+
+
+/* Doughnut Chart in D3.js ------------------------------------------------- */
+
+// Function to calculate the a new doughnut chart
+function printChart() {
+    let recordTable = document.getElementById('recordTable');
+    let cells = document.getElementsByClassName('bugFixed')
+    let count = recordTable.rows.length - 1;
+    let fixedCount = 0;
+
+    // Gather the number of fixed bugs
+    for (let i = 0; i < cells.length; i++) {
+        try {
+            if (cells[i].firstChild.textContent == ' Yes ') {
+                fixedCount++;
+            }
+        } catch(e) {
+            console.log(e);
+        }
+    }
+
+    // Calculate the number of broken bugs
+    let brokenCount = count - fixedCount;
+    // console.log(brokenCount)
+    // console.log(fixedCount);
+
+    // Set the dimensions and margins of the graph
+    let width = 300
+        height = 300
+        margin = 10
+
+    // The radius of the pieplot is half the width or half the height (smallest one). I subtract a bit of margin.
+    let radius = Math.min(width, height) / 2 - margin
+
+    // Append the svg object to the div called 'my_dataviz'
+    let svg = d3.select("#my_dataviz")
+        .append("svg")
+            .attr("width", width)
+            .attr("height", height)
+        .append("g")
+            .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+    // Enter bug data
+    let data = {a: fixedCount, b: brokenCount}
+
+    // Set up graph text percentage in center
+    var centralText = svg.append("text")
+        .attr("text-anchor", "middle")
+        .attr('font-size', '55px')
+        .attr('y', 17)
+        .style("opacity", 0.5);
+
+    // Create the central percentage
+    centralText.text(d3.format(".0%")(fixedCount / count));
+
+    // Set the graph color scale
+    let color = d3.scaleOrdinal()
+        .domain(data)
+        .range(["#004020", "#a50020"])      // Set colors for chart
+
+    // Compute the position of each group on the pie:
+    let pie = d3.pie()
+        .value(function(d) {return d.value; })
+    let data_ready = pie(d3.entries(data))
+
+    // Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
+    svg
+        .selectAll('whatever')
+        .data(data_ready)
+        .enter()
+        .append('path')
+        .attr('d', d3.arc()
+            .innerRadius(100)         // This is the size of the donut hole
+            .outerRadius(radius)
+        )
+        .attr('fill', function(d){ return(color(d.data.key)) })
+        .attr("stroke", "black")
+        .style("stroke-width", "3px")
+        .style("opacity", 0.58)
+}
+
+
+// Function to reset the doughnut chart and print the newly calculated one
+function updateChart() {
+    let chartDiv = document.getElementById('my_dataviz');
+
+    // Clear the chart and then print it
+    chartDiv.innerHTML = '';
+    printChart()
+}
+
+
+// Initial call to create the chart
+updateChart()
