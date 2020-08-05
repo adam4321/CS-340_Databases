@@ -160,10 +160,11 @@ recordForm.addEventListener('submit', (e) => {
 
             // Fixed element
             let fixedCell = document.createElement('td');
+            fixedCell.className = 'bugFixed';
             if (recordForm.elements.bugFixed.value == 0) {
-                fixedCell.textContent = "No"
+                fixedCell.textContent = " No ";
             } else {
-                fixedCell.textContent = "Yes";
+                fixedCell.textContent = " Yes ";
             }
             newRow.appendChild(fixedCell);
 
@@ -197,6 +198,7 @@ recordForm.addEventListener('submit', (e) => {
             deleteBtn.setAttribute('onclick', `deleteBug('recordTable', this, ${response.id})`);
             
             // Clear the submit form and reset the spinner
+            updateChart(parseInt(recordForm.elements.bugFixed.value));
             document.getElementById('recordForm').reset();
             setTimeout(() => { spinner.style.visibility = "hidden"; }, 1000);
 
@@ -231,7 +233,7 @@ function deleteBug(tbl, curRow, bugId) {
                     table.deleteRow(i);
                 }
             }
-            updateChart();
+            updateChart(-1);
         } 
         else {
             console.error("Delete request error");
@@ -390,10 +392,11 @@ function createRow(tableBody, bugData) {
 
     // Fixed element
     let fixedCell = document.createElement('td');
+    fixedCell.className = 'bugFixed';
     if (bugData.fixed == 0) {
-        fixedCell.textContent = "No"
+        fixedCell.textContent = " No "
     } else {
-        fixedCell.textContent = "Yes";
+        fixedCell.textContent = " Yes ";
     }
     newRow.appendChild(fixedCell);
 
@@ -479,7 +482,7 @@ function resetTable() {
 
                 // Rehide the spinner
                 setTimeout(() => { spinner2.style.visibility = "hidden"; }, 1000);
-
+                updateChart(20);
             } 
             else {
                 console.error("Reset table request error.");
@@ -492,27 +495,40 @@ function resetTable() {
 /* Doughnut Chart in D3.js ------------------------------------------------- */
 
 // Function to calculate the a new doughnut chart
-function printChart() {
+function printChart(val=0) {
+    RESET_VALUE = 20;
+    let fixedCount = 0;
+    let brokenCount = 0;
+
     let recordTable = document.getElementById('recordTable');
     let cells = document.getElementsByClassName('bugFixed')
     let count = recordTable.rows.length - 1;
-    let fixedCount = 0;
-
+    
     // Gather the number of fixed bugs
     for (let i = 0; i < cells.length; i++) {
         try {
             if (cells[i].firstChild.textContent == ' Yes ') {
                 fixedCount++;
+            } else if (cells[i].firstChild.textContent == ' No '){
+                brokenCount++;
             }
         } catch(e) {
-            console.log(e);
+            console.error(e);
         }
     }
 
-    // Calculate the number of broken bugs
-    let brokenCount = count - fixedCount;
-    // console.log(brokenCount)
-    // console.log(fixedCount);
+    // If the table is reset, then val is passed as 20
+    if (val == RESET_VALUE) {
+        fixedCount = 2;
+        brokenCount = 18;
+    } else if (val == 1) {
+        fixedCount++;
+    } else if (val == -1) {
+        brokenCount++;
+    }
+
+    console.log(brokenCount)
+    console.log(fixedCount);
 
     // Set the dimensions and margins of the graph
     let width = 300
@@ -570,15 +586,15 @@ function printChart() {
 }
 
 
-// Function to reset the doughnut chart and print the newly calculated one
-function updateChart() {
+// Function to update the doughnut chart
+function updateChart(val=0) {
     let chartDiv = document.getElementById('my_dataviz');
 
     // Clear the chart and then print it
     chartDiv.innerHTML = '';
-    printChart()
+    printChart(val);
 }
 
 
-// Initial call to create the chart
+// Initial call to create and print the chart
 updateChart()
