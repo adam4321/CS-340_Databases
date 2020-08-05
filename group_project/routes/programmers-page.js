@@ -49,18 +49,18 @@ function submitProgrammer(req, res, next) {
     const mysql = req.app.get('mysql');
     let context = {};
 
-    mysql.pool.query(sql_query,
-        [
-            req.query.firstName,
-            req.query.lastName, 
-            req.query.email, 
-            req.query.dateStarted, 
-            req.query.accessLevel
-        ], (err, result) => {
+    mysql.pool.query(sql_query, [
+        req.body.firstName,
+        req.body.lastName, 
+        req.body.email, 
+        req.body.dateStarted, 
+        req.body.accessLevel
+    ], (err, result) => {
         if (err) {
             next(err);
             return;
         }
+
         context.programmers = result.insertId;
         res.send(JSON.stringify(context));
     });
@@ -70,6 +70,6 @@ function submitProgrammer(req, res, next) {
 /* PROGRAMMERS PAGE ROUTES ---------------------------------------------------- */
 
 router.get('/', renderProgrammers);
-router.get('/insertProgrammer', submitProgrammer);
+router.post('/insertProgrammer', submitProgrammer);
 
 module.exports = router;
