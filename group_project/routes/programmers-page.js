@@ -27,9 +27,9 @@ function renderProgrammers(req, res, next) {
         let programmersDbData = [];
         for (let i in rows) {
             programmersDbData.push({
-                firstName: rows[i].firstName,
-                lastName: rows[i].lastName,
-                email: rows[i].email,
+                firstName: decodeURIComponent(rows[i].firstName),
+                lastName: decodeURIComponent(rows[i].lastName),
+                email: decodeURIComponent(rows[i].email),
                 dateStarted: rows[i].dateStarted,
                 accessLevel: rows[i].accessLevel
             });

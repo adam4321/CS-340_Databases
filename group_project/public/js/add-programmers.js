@@ -15,9 +15,9 @@ recordForm.addEventListener('submit', (e) => {
 
     // String that holds the form data
     let parameterString =
-    'firstName=' + recordForm.elements.programmerFName.value +
-    '&lastName=' + recordForm.elements.programmerLName.value +
-    '&email=' + recordForm.elements.userEmail.value +
+    'firstName=' + encodeURIComponent(recordForm.elements.programmerFName.value) +
+    '&lastName=' + encodeURIComponent(recordForm.elements.programmerLName.value) +
+    '&email=' + encodeURIComponent(recordForm.elements.userEmail.value) +
     '&dateStarted=' + recordForm.elements.startedDate.value +
     '&accessLevel=' + recordForm.elements.programmerAccess.value
 

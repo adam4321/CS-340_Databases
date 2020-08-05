@@ -71,8 +71,8 @@ function submitProject(req, res, next) {
     let context = {};
 
     mysql.pool.query(sql_query, [
-            req.query.projectName,
-            req.query.companyName,
+            decodeURIComponent(req.query.projectName),
+            decodeURIComponent(req.query.companyName),
             req.query.dateStarted,
             req.query.lastUpdated,
             req.query.inMaintenance

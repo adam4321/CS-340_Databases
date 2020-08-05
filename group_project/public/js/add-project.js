@@ -15,8 +15,8 @@ recordForm.addEventListener('submit', (e) => {
 
     // String that holds the form data
     let parameterString =
-    'projectName=' + recordForm.elements.projectName.value +
-    '&companyName=' + recordForm.elements.projectCompany.value +
+    'projectName=' + encodeURIComponent(recordForm.elements.projectName.value) +
+    '&companyName=' + encodeURIComponent(recordForm.elements.projectCompany.value) +
     '&dateStarted=' + recordForm.elements.startedDate.value +
     '&lastUpdated=' + recordForm.elements.updatedDate.value +
     '&inMaintenance=' + recordForm.elements.maintenance.value

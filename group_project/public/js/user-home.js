@@ -56,7 +56,7 @@ recordForm.addEventListener('submit', (e) => {
     for (let i = 0; i < recordForm.elements.length; i++) {
         try {
             if (recordForm.elements.programmerId[i].checked) {
-                programmerStr += `&programmer=${recordForm.elements.programmerId[i].value}`;
+                programmerStr += `&programmer=${encodeURIComponent(recordForm.elements.programmerId[i].value)}`;
             }
         } catch(e) {
             continue;
@@ -80,19 +80,19 @@ recordForm.addEventListener('submit', (e) => {
     // Fill the project, if it has a value
     let projectStr = '';
     if (recordForm.elements.bugProject.value) {
-        projectStr += `&bugProject=${recordForm.elements.bugProject.value}`
+        projectStr += `&bugProject=${encodeURIComponent(recordForm.elements.bugProject.value)}`
     }
 
     // String that holds the form data
     let parameterString =
-    'bugSummary=' + recordForm.elements.bugSummary.value +
-    '&bugDescription=' + recordForm.elements.bugDescription.value +
+    'bugSummary=' + encodeURIComponent(recordForm.elements.bugSummary.value) +
+    '&bugDescription=' + encodeURIComponent(recordForm.elements.bugDescription.value) +
     projectStr                                                   +
     programmerStr                                               +
     '&bugStartDate=' + recordForm.elements.bugStartDate.value +
     '&bugPriority=' + recordForm.elements.bugPriority.value +
     '&bugFixed=' + recordForm.elements.bugFixed.value +
-    '&bugResolution=' + recordForm.elements.bugResolution.value
+    '&bugResolution=' + encodeURIComponent(recordForm.elements.bugResolution.value)
 
     // Ajax request
     req.open('GET', queryString + '?' + parameterString, true);

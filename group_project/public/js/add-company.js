@@ -15,7 +15,7 @@ recordForm.addEventListener('submit', (e) => {
 
     // String that holds the form data
     let parameterString =
-    'companyName=' + recordForm.elements.companyName.value +
+    'companyName=' + encodeURIComponent(recordForm.elements.companyName.value) +
     '&dateJoined=' + recordForm.elements.dateJoined.value
 
     // Ajax request

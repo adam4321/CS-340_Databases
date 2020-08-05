@@ -53,14 +53,14 @@ function renderEditBug(req, res, next) {
                 // Push a single entry
                 editBugDbData.push({
                     bugId: rows[i].bugId,
-                    bugSummary: rows[i].bugSummary,
-                    bugDescription: rows[i].bugDescription,
+                    bugSummary: decodeURIComponent(rows[i].bugSummary),
+                    bugDescription: decodeURIComponent(rows[i].bugDescription),
                     projectName: rows[i].projectName,
                     programmers: bugProgrammers,
                     dateStarted: rows[i].dateStarted,
                     priority: rows[i].priority,
                     fixed: rows[i].fixed,
-                    resolution: rows[i].resolution,
+                    resolution: decodeURIComponent(rows[i].resolution),
                     project: rows[i].projectId
                 });
             }

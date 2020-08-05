@@ -123,13 +123,13 @@ function submitBug(req, res, next) {
     // Insert new bug data
     mysql.pool.query(sql_query_1,
         [
-            req.query.bugSummary,
-            req.query.bugDescription,
-            req.query.bugProject,
+            decodeURIComponent(req.query.bugSummary),
+            decodeURIComponent(req.query.bugDescription),
+            decodeURIComponent(req.query.bugProject),
             req.query.bugStartDate,
             req.query.bugPriority,
             req.query.bugFixed,
-            req.query.bugResolution
+            decodeURIComponent(req.query.bugResolution)
         ], (err, result) => {
         if (err) {
             next(err);
@@ -141,7 +141,7 @@ function submitBug(req, res, next) {
             mysql.pool.query(sql_query_2,
                 [
                     result.insertId,
-                    req.query.programmer[i]
+                    decodeURIComponent(req.query.programmer[i])
                 ], (err, result) => {
                     if (err) {
                         next(err);

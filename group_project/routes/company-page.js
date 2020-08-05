@@ -43,7 +43,7 @@ function submitCompany(req, res, next) {
     let sql_query = `INSERT INTO Companies (companyName, dateJoined) VALUES (?, ?)`;
     let context = {};
 
-    mysql.pool.query(sql_query, [req.query.companyName, req.query.dateJoined], (err, result) => {
+    mysql.pool.query(sql_query, [decodeURIComponent(req.query.companyName), req.query.dateJoined], (err, result) => {
         if (err) {
             next(err);
             return;
