@@ -118,20 +118,22 @@ li {
     position: relative;
     border-radius: 3px;
     padding-top: 5px;
-    margin-left: 725px;
-    margin-top: 40px;
+    margin-left: 730px;
+    margin-top: 45px;
     width: 360px;
-    height: 450px;
+    height: 435px;
     background-color: #d8e9e962;
 }
 
-#my_dataviz {
-    margin-top: 38px;
-    margin-left: 30px;
-}
-
 #chartLabel {
-    margin-left: 32px;
+    margin-left: 35px;
     margin-top: 48px;
     color: rgb(141, 141, 141);
 }
+
+
+#my_dataviz {
+    margin-top: 38px;
+    margin-left: 38px;
+}
+
