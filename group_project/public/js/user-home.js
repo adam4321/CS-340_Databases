@@ -198,7 +198,7 @@ recordForm.addEventListener('submit', (e) => {
             deleteBtn.setAttribute('onclick', `deleteBug('recordTable', this, ${response.id})`);
             
             // Clear the submit form and reset the spinner
-            updateChart(parseInt(recordForm.elements.bugFixed.value));
+            updateChartAdd();
             document.getElementById('recordForm').reset();
             setTimeout(() => { spinner.style.visibility = "hidden"; }, 1000);
 
@@ -233,7 +233,7 @@ function deleteBug(tbl, curRow, bugId) {
                     table.deleteRow(i);
                 }
             }
-            updateChart(-1);
+            updateChartDelete();
         } 
         else {
             console.error("Delete request error");
@@ -482,7 +482,7 @@ function resetTable() {
 
                 // Rehide the spinner
                 setTimeout(() => { spinner2.style.visibility = "hidden"; }, 1000);
-                updateChart(20);
+                updateChartReset();
             } 
             else {
                 console.error("Reset table request error.");
@@ -492,44 +492,10 @@ function resetTable() {
 }
 
 
-/* Doughnut Chart in D3.js ------------------------------------------------- */
+/* FIXED BUGS DOUGHNUT CHART ----------------------------------------------- */
 
-// Function to calculate the a new doughnut chart
-function printChart(val=0) {
-    RESET_VALUE = 20;
-    let fixedCount = 0;
-    let brokenCount = 0;
-
-    let recordTable = document.getElementById('recordTable');
-    let cells = document.getElementsByClassName('bugFixed')
-    let count = recordTable.rows.length - 1;
-    
-    // Gather the number of fixed bugs
-    for (let i = 0; i < cells.length; i++) {
-        try {
-            if (cells[i].firstChild.textContent == ' Yes ') {
-                fixedCount++;
-            } else if (cells[i].firstChild.textContent == ' No '){
-                brokenCount++;
-            }
-        } catch(e) {
-            console.error(e);
-        }
-    }
-
-    // If the table is reset, then val is passed as 20
-    if (val == RESET_VALUE) {
-        fixedCount = 2;
-        brokenCount = 18;
-    } else if (val == 1) {
-        fixedCount++;
-    } else if (val == -1) {
-        brokenCount++;
-    }
-
-    console.log(brokenCount)
-    console.log(fixedCount);
-
+// Function using D3.js to render a new doughnut chart with svg
+function printChart(fixedCount, brokenCount, countSize) {
     // Set the dimensions and margins of the graph
     let width = 300
         height = 300
@@ -557,7 +523,7 @@ function printChart(val=0) {
         .style("opacity", 0.45);
 
     // Create the central percentage
-    centralText.text(d3.format(".0%")(fixedCount / count));
+    centralText.text(d3.format(".0%")(fixedCount / countSize));
 
     // Set the graph color scale
     let color = d3.scaleOrdinal()
@@ -586,15 +552,112 @@ function printChart(val=0) {
 }
 
 
-// Function to update the doughnut chart
-function updateChart(val=0) {
-    let chartDiv = document.getElementById('my_dataviz');
+// Function to walk the bugs table and gather a count of fixed and broken bugs
+function countFixedVals() {
+    let recordTable = document.getElementById('recordTable');
+    let cells = document.getElementsByClassName('bugFixed')
+
+    let count = recordTable.rows.length - 1;
+    let fixedCount = 0;
+    
+    // Gather the number of fixed bugs
+    for (let i = 0; i < cells.length; i++) {
+        try {
+            if (cells[i].firstChild.textContent == ' Yes ') {
+                fixedCount++;
+            }
+        } catch(e) {
+            console.error(e);
+        }
+    }
+
+    // Calculate the number of broken bugs
+    let brokenCount = count - fixedCount;
+
+    let fixedObj = {fixed: fixedCount, broken: brokenCount, count: count};
+    return fixedObj;
+}
+
+
+// Function to create the chart on initial page load
+function initChart() {
+    // Call the function to crawl the table
+    let fixedObj = countFixedVals();
+
+    console.log("count: " + fixedObj.count);
+    console.log("fixed: " + fixedObj.fixed);
+    console.log("broken: " + fixedObj.broken);
+
+    printChart(fixedObj.fixed, fixedObj.broken, fixedObj.count);
+}
+
+
+// Function to update the chart on database reset
+function updateChartReset() {
+    let count = 20;
+    let fixedCount = 2;
+    let brokenCount = 18;
+
+    console.log("count: " + count);
+    console.log("fixed: " + fixedCount);
+    console.log("broken: " + brokenCount);
 
     // Clear the chart and then print it
+    let chartDiv = document.getElementById('my_dataviz');
     chartDiv.innerHTML = '';
-    printChart(val);
+    printChart(fixedCount, brokenCount, count);
+}
+
+
+// Function to update the chart when deleting a bug
+function updateChartDelete() {
+    // Call the function to crawl the table
+    let fixedObj = countFixedVals();
+
+    console.log("count: " + fixedObj.count);
+    console.log("fixed: " + fixedObj.fixed);
+    console.log("broken: " + fixedObj.broken);
+
+
+    // Clear the chart and then print it
+    let chartDiv = document.getElementById('my_dataviz');
+    chartDiv.innerHTML = '';
+    printChart(fixedObj.fixed, fixedObj.broken, fixedObj.count);
+}
+
+
+// Function to update the chart when adding a bug
+function updateChartAdd() {
+    // let count = 0;
+    // let fixedCount = 0;
+    // let brokenCount = 0;
+
+ 
+    // if (val == 1) {
+    //     fixedCount++;
+    // } else if (val == -1) {
+    //     brokenCount++;
+    // }
+
+    // console.log("count: " + count);
+    // console.log("fixed: " + fixedCount);
+    // console.log("broken: " + brokenCount);
+
+
+    // Call the function to crawl the table
+    let fixedObj = countFixedVals();
+
+    console.log("count: " + fixedObj.count);
+    console.log("fixed: " + fixedObj.fixed);
+    console.log("broken: " + fixedObj.broken);
+
+
+    // Clear the chart and then print it
+    let chartDiv = document.getElementById('my_dataviz');
+    chartDiv.innerHTML = '';
+    printChart(fixedObj.fixed, fixedObj.broken, fixedObj.count);
 }
 
 
 // Initial call to create and print the chart
-updateChart()
+initChart();
