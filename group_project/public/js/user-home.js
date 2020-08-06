@@ -644,22 +644,6 @@ function updateChartDelete() {
 
 // Function to update the chart when adding a bug
 function updateChartAdd() {
-    // let count = 0;
-    // let fixedCount = 0;
-    // let brokenCount = 0;
-
- 
-    // if (val == 1) {
-    //     fixedCount++;
-    // } else if (val == -1) {
-    //     brokenCount++;
-    // }
-
-    // console.log("count: " + count);
-    // console.log("fixed: " + fixedCount);
-    // console.log("broken: " + brokenCount);
-
-
     // Call the function to crawl the table
     let fixedObj = countFixedVals();
 
