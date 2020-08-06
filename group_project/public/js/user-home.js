@@ -2,6 +2,22 @@
 **  Description: USER-HOME client-side JavaScript file
 **************************************************************/
 
+// Function to force a page reload when using the back button
+window.onunload = function(){};
+
+if (window.history.state != null && window.history.state.hasOwnProperty('historic')) {
+    if (window.history.state.historic == true) {
+        document.body.style.display = 'none';
+        window.history.replaceState({historic: false}, '');
+        window.location.reload();
+    } else {
+        window.history.replaceState({historic  : true}, '');
+    }
+} else {
+    window.history.replaceState({historic  : true}, '');
+}
+
+
 /* INSERT BUG VERIFY PROGRAMMER CHECKED -------------------------------------*/
 
 // Function to verify that at least 1 programmer is checked
@@ -160,10 +176,11 @@ recordForm.addEventListener('submit', (e) => {
 
             // Fixed element
             let fixedCell = document.createElement('td');
+            fixedCell.className = 'bugFixed';
             if (recordForm.elements.bugFixed.value == 0) {
-                fixedCell.textContent = "No"
+                fixedCell.textContent = " No ";
             } else {
-                fixedCell.textContent = "Yes";
+                fixedCell.textContent = " Yes ";
             }
             newRow.appendChild(fixedCell);
 
@@ -197,6 +214,7 @@ recordForm.addEventListener('submit', (e) => {
             deleteBtn.setAttribute('onclick', `deleteBug('recordTable', this, ${response.id})`);
             
             // Clear the submit form and reset the spinner
+            updateChartAdd();
             document.getElementById('recordForm').reset();
             setTimeout(() => { spinner.style.visibility = "hidden"; }, 1000);
 
@@ -231,6 +249,7 @@ function deleteBug(tbl, curRow, bugId) {
                     table.deleteRow(i);
                 }
             }
+            updateChartDelete();
         } 
         else {
             console.error("Delete request error");
@@ -278,6 +297,7 @@ function viewAllBugs() {
             bugsArray.forEach(element => {
                 createRow(tableBody, element);
             });
+
         } else {
             console.error("View all bugs: request error.");
         }
@@ -388,10 +408,11 @@ function createRow(tableBody, bugData) {
 
     // Fixed element
     let fixedCell = document.createElement('td');
+    fixedCell.className = 'bugFixed';
     if (bugData.fixed == 0) {
-        fixedCell.textContent = "No"
+        fixedCell.textContent = " No "
     } else {
-        fixedCell.textContent = "Yes";
+        fixedCell.textContent = " Yes ";
     }
     newRow.appendChild(fixedCell);
 
@@ -477,12 +498,12 @@ function resetTable() {
 
                 // Rehide the spinner
                 setTimeout(() => { spinner2.style.visibility = "hidden"; }, 1000);
-
+                updateChartReset();
             } 
             else {
                 console.error("Reset table request error.");
             }
-        });
+        })
     }
 }
 
