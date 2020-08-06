@@ -2,6 +2,22 @@
 **  Description: USER-HOME client-side JavaScript file
 **************************************************************/
 
+// Function to force a page reload when using the back button
+window.onunload = function(){};
+
+if (window.history.state != null && window.history.state.hasOwnProperty('historic')) {
+    if (window.history.state.historic == true) {
+        document.body.style.display = 'none';
+        window.history.replaceState({historic: false}, '');
+        window.location.reload();
+    } else {
+        window.history.replaceState({historic  : true}, '');
+    }
+} else {
+    window.history.replaceState({historic  : true}, '');
+}
+
+
 /* INSERT BUG VERIFY PROGRAMMER CHECKED -------------------------------------*/
 
 // Function to verify that at least 1 programmer is checked
