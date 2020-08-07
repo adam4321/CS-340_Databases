@@ -116,9 +116,6 @@ li {
 #chart{
     position: relative;
     border-radius: 3px;
-    padding-top: 5px;
-    margin-left: 730px;
-    margin-top: 45px;
     width: 360px;
     height: 435px;
     background-color: #d8e9e962;
@@ -134,4 +131,29 @@ li {
 #my_dataviz {
     margin-top: 38px;
     margin-left: 30px;
+} 
+
+
+/* Top Row Cards ---------------------------------------------------------- */
+
+#top-row-container {
+    margin: 8px;
+    width: calc(100% - 16px);
+    display: flex;
+}
+
+#add-bug-container {
+    margin-right: 20px;
+    min-width: 530px;
+    flex-grow: 1;
+}
+
+#bug-chart-container {
+    min-width: 450px;
+    width: 450px;
+    text-align: center;
+}
+
+#bug-chart-title {
+    justify-content: center;
 }
