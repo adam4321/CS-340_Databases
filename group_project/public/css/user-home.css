@@ -142,3 +142,9 @@ li {
     width: 400px;
     height: 100%;
 }
+
+/* Fixed radio button ------------------------------------------------------ */
+
+.radio-input {
+    cursor: pointer;
+}

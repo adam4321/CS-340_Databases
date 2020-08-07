@@ -58,19 +58,22 @@
                     {{/each}} 
                 </div>
                 <div><label for="bug-start-date">Date Started</label></div>
-                <div><input required type="date" name="bugStartDate" id="bug-start-date-field" value="{{editBug.dateStarted}}"></div>
+                <div><input class="submitBtn" required type="date" name="bugStartDate" id="bug-start-date-field" value="{{editBug.dateStarted}}"></div>
                 <div><label for="bug-priority">Priority</label></div>
-                <div><input required type="number" min="1" max="5" name="bugPriority" id="bug-priority-field" value="{{editBug.priority}}"></div>
-                {{!-- <div>
-                    <select name="bugPriority" id="bug-priority-field" required class="submitBtn">
+                {{!-- <div><input required type="number" min="1" max="5" name="bugPriority" id="bug-priority-field" value="{{editBug.priority}}"></div> --}}
+                
+                
+                <div>
+                    <select class="submitBtn" name="bugPriority" id="bug-priority-field" required>
+                        <option selected="selected" value="{{editBug.priority}}">{{editBug.priority}}</option>
                         <option value="" disabled>Select a priority (Highest: 5)</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                    </select>
-                </div> --}}
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select> 
+                </div>
                 
                 {{!-- Render the correct state of fixed --}}
                 <div><label for="bug-fixed">Fixed</label></div>
