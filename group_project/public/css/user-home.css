@@ -112,10 +112,6 @@ li {
     width: 450px;
 }
 
-#chart{
-    padding-top: 25px;
-}
-
 #top-row-container {
     margin: 8px;
     width: calc(100% - 16px);
@@ -140,4 +136,9 @@ li {
 
 #my_dataviz {
     margin-top: 30px;
+}
+
+#bug-chart-text {
+    width: 400px;
+    height: 100%;
 }
