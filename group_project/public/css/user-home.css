@@ -137,3 +137,7 @@ li {
 #bug-chart-title {
     justify-content: center;
 }
+
+#my_dataviz {
+    margin-top: 30px;
+}

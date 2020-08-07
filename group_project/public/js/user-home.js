@@ -513,9 +513,9 @@ function resetTable() {
 // Function using D3.js to render a new doughnut chart with svg
 function printChart(fixedCount, brokenCount, countSize) {
     // Set the dimensions and margins of the graph
-    let width = 300
-        height = 300
-        margin = 10
+    let width = 380
+        height = 380
+        margin = 30
 
     // The radius of the pieplot is half the width or half the height (smallest one). I subtract a bit of margin.
     let radius = Math.min(width, height) / 2 - margin
@@ -534,8 +534,8 @@ function printChart(fixedCount, brokenCount, countSize) {
     // Set up graph text percentage in center
     var centralText = svg.append("text")
         .attr("text-anchor", "middle")
-        .attr('font-size', '55px')
-        .attr('y', 19)
+        .attr('font-size', '65px')
+        .attr('y', 20)
         .style("opacity", 0.45);
 
     // Create the central percentage
