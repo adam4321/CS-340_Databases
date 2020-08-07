@@ -12,11 +12,11 @@
             <div class="mdl-card__supporting-text mdl-color-text--grey-600">  
                 <form id="recordForm" action="/insertBug">
                     <div class="grid-container">
-                        <div><label class="textarea-label" for="bug-summary">Bug Summary</label></div>
+                        <div><label class="textarea-label div-label" for="bug-summary">Bug Summary</label></div>
                         <div><textarea required name="bugSummary" id="bug-summary-field"></textarea></div>
-                        <div><label class="textarea-label" for="bug-description">Bug Description</label></div>
+                        <div><label class="textarea-label div-label" for="bug-description">Bug Description</label></div>
                         <div><textarea required name="bugDescription" id="bug-description-field"></textarea></div>
-                        <div><label for="bug-project">Project</label></div>
+                        <div><label class="div-label" for="bug-project">Project</label></div>
                         <div>
                             <select class="submitBtn" required name="bugProject" id="bug-project-field">
                                 <option value="" disabled selected>Select a project</option>
@@ -26,7 +26,7 @@
                                 {{/each}}
                             </select>          
                         </div>
-                        <div><label for="bug-programmer">Programmers</label></div>
+                        <div><label class="div-label" for="bug-programmer">Programmers</label></div>
                         <div class="checkbox-container">
                             {{#each programmers}}
                                 <input 
@@ -41,10 +41,20 @@
                                 </label><br>
                             {{/each}}
                         </div>
-                        <div><label for="bug-start-date">Date Started</label></div>
+                        <div><label class="div-label" for="bug-start-date">Date Started</label></div>
                         <div><input required type="date" name="bugStartDate" id="bug-start-date-field"></div>
-                        <div><label for="bug-priority">Priority</label></div>
-                        <div><input required type="number" min="1" max="5" name="bugPriority" id="bug-priority-field"></div>
+                        <div><label class="div-label" for="bug-priority">Priority</label></div>
+                        {{!-- <div><input required type="number" min="1" max="5" name="bugPriority" id="bug-priority-field"></div> --}}
+                        <div>
+                            <select class="submitBtn" name="bugPriority" id="bug-priority-field" required>
+                                <option value="" disabled selected>Select a priority</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        </div>
                         <div><label for="bug-fixed">Fixed</label></div>
                         <div>
                             <input class="radio-input" type="radio" name="bugFixed" value="1" id="bug-fixed-yes">
@@ -52,7 +62,7 @@
                             <input class="radio-input" type="radio" name="bugFixed" value="0" id="bug-fixed-no" checked>
                             <label class="radio-label" for="bugFixed">No</label>
                         </div>
-                        <div><label class="textarea-label" for="bug-resolution">Resolution</label></div>
+                        <div><label class="textarea-label div-label" for="bug-resolution">Resolution</label></div>
                         <div><textarea name="bugResolution" id="bug-resolution-field"></textarea></div>
                         
                         <input type="submit" class="submitBtn" id="save" value="Add" onclick="checkBoxChecked()">

@@ -180,3 +180,7 @@ select {
 .submitBtn {
     cursor: pointer;
 }
+
+.div-label {
+    padding-top: 5px;
+}
