@@ -114,27 +114,8 @@ li {
 }
 
 #chart{
-    position: relative;
-    border-radius: 3px;
-    width: 360px;
-    height: 435px;
-    background-color: #d8e9e962;
+    padding-top: 25px;
 }
-
-#chartLabel {
-    margin-left: 34px;
-    margin-top: 48px;
-    color: rgb(141, 141, 141);
-}
-
-
-#my_dataviz {
-    margin-top: 38px;
-    margin-left: 30px;
-} 
-
-
-/* Top Row Cards ---------------------------------------------------------- */
 
 #top-row-container {
     margin: 8px;
