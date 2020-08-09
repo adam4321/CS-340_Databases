@@ -600,10 +600,6 @@ function initChart() {
     // Call the function to crawl the table
     let fixedObj = countFixedVals();
 
-    console.log("count: " + fixedObj.count);
-    console.log("fixed: " + fixedObj.fixed);
-    console.log("broken: " + fixedObj.broken);
-
     printChart(fixedObj.fixed, fixedObj.broken, fixedObj.count);
 }
 
@@ -613,10 +609,6 @@ function updateChartReset() {
     let count = 20;
     let fixedCount = 2;
     let brokenCount = 18;
-
-    console.log("count: " + count);
-    console.log("fixed: " + fixedCount);
-    console.log("broken: " + brokenCount);
 
     // Clear the chart and then print it
     let chartDiv = document.getElementById('my_dataviz');
@@ -630,11 +622,6 @@ function updateChartDelete() {
     // Call the function to crawl the table
     let fixedObj = countFixedVals();
 
-    console.log("count: " + fixedObj.count);
-    console.log("fixed: " + fixedObj.fixed);
-    console.log("broken: " + fixedObj.broken);
-
-
     // Clear the chart and then print it
     let chartDiv = document.getElementById('my_dataviz');
     chartDiv.innerHTML = '';
@@ -646,11 +633,6 @@ function updateChartDelete() {
 function updateChartAdd() {
     // Call the function to crawl the table
     let fixedObj = countFixedVals();
-
-    console.log("count: " + fixedObj.count);
-    console.log("fixed: " + fixedObj.fixed);
-    console.log("broken: " + fixedObj.broken);
-
 
     // Clear the chart and then print it
     let chartDiv = document.getElementById('my_dataviz');
