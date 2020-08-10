@@ -23,7 +23,7 @@
                     <div>
                         <select class="submitBtn" required name="bugProject" id="bug-project-field">
                             <option value="" disabled selected>Select a project</option>
-                            <option value="">NULL</option>
+                            <option value="null">NULL</option>
                             {{#each projects}}
                                 <option value="{{this.projectId}}">{{this.projectName}}</option>
                             {{/each}}

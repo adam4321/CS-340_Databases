@@ -95,6 +95,9 @@ recordForm.addEventListener('submit', (e) => {
 
     // Fill the project, if it has a value
     let project;
+    if (recordForm.elements.bugProject.value == 'null') {
+            recordForm.elements.bugProject.value = '';
+        }
     if (recordForm.elements.bugProject.value) {
         project = recordForm.elements.bugProject.value;
     }
@@ -146,7 +149,11 @@ recordForm.addEventListener('submit', (e) => {
             let projectCell = document.createElement('td');
             let dropdown = document.getElementById("bug-project-field");
             projectCell.className = 'mdl-data-table__cell--non-numeric'; 
-            projectCell.textContent = dropdown.options[dropdown.selectedIndex].text;
+            if (recordForm.elements.bugProject.value == '') {
+                projectCell.textContent = "NULL";
+            } else {
+                projectCell.textContent = dropdown.options[dropdown.selectedIndex].text;
+            }
             newRow.appendChild(projectCell);
 
             // Programmers element
